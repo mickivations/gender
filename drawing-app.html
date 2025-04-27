@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fabric.js Drawing with Template</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <style>
+    body { text-align: center; margin: 0; padding: 0; }
+    canvas { border: 1px solid #ccc; margin-top: 20px; display: block; }
+    button { margin: 5px; padding: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Gender? </h1>
+
+  <div>
+    <button onclick="addShape('rect')">Add Rectangle</button>
+    <button onclick="addShape('circle')">Add Circle</button>
+    <button onclick="enableDrawing()">Free Draw</button>
+    <button onclick="addShape('line')">Add Line</button>
+    <button onclick="addShape('triangle')">Add Triangle</button>
+    <button onclick="deleteObject()">Delete Object</button>
+    <button onclick="disableDrawing()">Select/Move</button>
+    <button onclick="saveImage()">Save as Image</button>
+    <input type="color" id="colorPicker" value="#0000ff" onchange="updateDrawingColor()">
+  </div>
+
+  <canvas id="c"></canvas>
+
+  <script>
+    const canvas = new fabric.Canvas('c');
+    let currentColor = '#0000ff';  // Default color is blue
+
+    // Function to resize the canvas based on the window size
+    function resizeCanvas() {
+      canvas.setWidth(window.innerWidth - 20);  // 20px for margin
+      canvas.setHeight(window.innerHeight - 100); // Adjust height for header and buttons
+      canvas.renderAll();
+      createTemplate();  // Re-create the template when the canvas resizes
+    }
+
+    // Update the drawing color when the user picks a color
+    function updateDrawingColor() {
+      currentColor = document.getElementById('colorPicker').value;
+      console.log('Current color selected:', currentColor);
+    }
+
+    // Add shapes to the canvas based on type
+    function addShape(type) {
+      let shape;
+      switch (type) {
+        case 'rect':
+          shape = new fabric.Rect({
+            left: 100,
+            top: 100,
+            fill: currentColor,
+            width: 60,
+            height: 70,
+            angle: 0
+          });
+          break;
+        case 'circle':
+          shape = new fabric.Circle({
+            left: 200,
+            top: 100,
+            fill: currentColor,
+            radius: 30
+          });
+          break;
+        case 'line':
+          shape = new fabric.Line([50, 0, 50, 200], {
+            stroke: currentColor,
+            strokeWidth: 8,
+            selectable: true
+          });
+          break;
+        case 'triangle':
+          shape = new fabric.Triangle({
+            width: 100,
+            height: 100,
+            left: 100,
+            top: 100,
+            fill: currentColor,
+            selectable: true
+          });
+          break;
+      }
+      canvas.add(shape);
+    }
+
+    // Enable free drawing mode and set the color
+    function enableDrawing() {
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush.width = 5;
+      canvas.freeDrawingBrush.color = currentColor;  // Set drawing color to the selected color
+    }
+
+    // Disable free drawing mode
+    function disableDrawing() {
+      canvas.isDrawingMode = false;
+    }
+
+    // Save the canvas as an image
+    function saveImage() {
+      const dataURL = canvas.toDataURL({
+        format: 'png'
+      });
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'my-drawing.png';
+      link.click();
+    }
+
+    // Delete the selected object (turn it white and make it small)
+    function deleteObject() {
+      const selectedObject = canvas.getActiveObject();
+      if (selectedObject) {
+        selectedObject.set({ fill: 'white', stroke: 'white', width: 1, height: 1 });
+        canvas.renderAll();
+      }
+    }
+
+    // Create a "background" layer with axis lines and circle outlines
+    function createTemplate() {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // Calculate the maximum possible radius for the circles
+      const maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
+
+      // Remove any existing axis lines, circles, or text objects (misplaced or duplicates)
+      canvas.getObjects().forEach(function(obj) {
+        if (obj.selectable === false || obj.type === 'text' || obj.type === 'circle') {
+          canvas.remove(obj); // Remove axis lines, text, and circles
+        }
+      });
+
+      // Axis 1: Vertical line (center of the canvas) - stops at the max radius
+      const axis1 = new fabric.Line([centerX, centerY, centerX, centerY - maxRadius], {
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        selectable: false,
+        evented: false
+      });
+
+      // Axis 2: Bottom-left diagonal line - stops at the max radius
+      const axis2 = new fabric.Line([centerX + 5, centerY - 2, centerX + maxRadius + 5, centerY - 2], {
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        selectable: false,
+        evented: false
+      });
+      axis2.set({ angle: 30 });
+
+      // Axis 3: Bottom-right diagonal line - stops at the max radius
+      const axis3 = new fabric.Line([centerX + 5, centerY + 8, centerX + maxRadius + 5, centerY + 8], {
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        selectable: false,
+        evented: false
+      });
+      axis3.set({ angle: 150 });
+
+      // Add text to the template
+      const label1 = new fabric.Text('3', {
+        left: centerX + 10,
+        top: 0,
+        fontSize: 24,
+        fill: '#AAAAAA',
+        selectable: true   // Make the text selectable to allow interaction
+      });
+
+      // Add text to the template
+      const label2 = new fabric.Text('B', {
+        left: centerX -maxRadius,
+        top: centerY + maxRadius/2,
+        fontSize: 24,
+        fill: '#AAAAAA',
+        selectable: true   // Make the text selectable to allow interaction
+      });
+
+      // Add text to the template
+      const label3 = new fabric.Text('C', {
+        left: centerX + maxRadius,
+        top: centerY + maxRadius/2,
+        fontSize: 24,
+        fill: '#AAAAAA',
+        selectable: true   // Make the text selectable to allow interaction
+      });
+
+      // Add center dot
+      const centerDot = new fabric.Circle({
+        left: centerX - 2,
+        top: centerY - 2,
+        radius: 7,
+        fill: 'gray',
+        selectable: false,  // Make it unselectable
+      });
+
+      // Add circle outlines radiating outward from the center
+      const circle1 = new fabric.Circle({
+        left: centerX - maxRadius,
+        top: centerY - maxRadius,
+        radius: maxRadius,
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        fill: 'transparent',
+        selectable: false
+      });
+
+      const circle2 = new fabric.Circle({
+        left: centerX - maxRadius * 0.75,
+        top: centerY - maxRadius * 0.75,
+        radius: maxRadius * 0.75,
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        fill: 'transparent',
+        selectable: false
+      });
+
+      const circle3 = new fabric.Circle({
+        left: centerX - maxRadius * 0.5,
+        top: centerY - maxRadius * 0.5,
+        radius: maxRadius * 0.5,
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        fill: 'transparent',
+        selectable: false
+      });
+
+      const circle4 = new fabric.Circle({
+        left: centerX - maxRadius * 0.25,
+        top: centerY - maxRadius * 0.25,
+        radius: maxRadius * 0.25,
+        stroke: '#AAAAAA',
+        strokeWidth: 10,
+        fill: 'transparent',
+        selectable: false
+      });
+
+      // Add the elements to the canvas
+      canvas.add(axis1, axis2, axis3, label1, label2, label3, centerDot, circle1, circle2, circle3, circle4);
+      canvas.sendToBack(axis1);
+      canvas.sendToBack(axis2);
+      canvas.sendToBack(axis3);
+    }
+
+    // Call the template creator immediately
+    createTemplate();
+
+    // Adjust canvas size when the window is resized
+    window.addEventListener('resize', resizeCanvas);
+
+    // Initial resize
+    resizeCanvas();
+  </script>
+
+</body>
+</html>
