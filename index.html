@@ -5,9 +5,38 @@
   <title>Fabric.js Drawing with Template</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   <style>
-    body { text-align: center; margin: 0; padding: 0; }
-    canvas { border: 1px solid #ccc; margin-top: 20px; display: block; }
-    button { margin: 5px; padding: 10px; }
+    body { 
+      text-align: center; 
+      margin: 0; 
+      padding: 0; 
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    canvas { 
+      border: 1px solid #ccc; 
+      margin-top: 20px; 
+      display: block; 
+      max-width: 100%;
+      max-height: 80vh; /* Allow canvas to grow but not exceed 80% of the screen height */
+      margin: 0 auto; /* Center the canvas horizontally */
+    }
+    button { 
+      margin: 5px; 
+      padding: 10px; 
+      font-size: 14px; 
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    input[type="color"] {
+      margin-top: 10px;
+      padding: 5px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -69,9 +98,9 @@
           });
           break;
         case 'line':
-          shape = new fabric.Line([50, 0, 50, 200], {
+          shape = new fabric.Line([20, 20, 500, 500], {
             stroke: currentColor,
-            strokeWidth: 8,
+            strokeWidth: 2,
             selectable: true
           });
           break;
@@ -123,6 +152,7 @@
 
     // Create a "background" layer with axis lines and circle outlines
     function createTemplate() {
+      // Recalculate the center of the canvas based on the current size
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
 
@@ -145,27 +175,26 @@
       });
 
       // Axis 2: Bottom-left diagonal line - stops at the max radius
-      const axis2 = new fabric.Line([centerX + 5, centerY - 2, centerX + maxRadius + 5, centerY - 2], {
+      const axis2 = new fabric.Line([centerX+5, centerY-2, centerX + maxRadius+5, centerY-2], {
         stroke: '#AAAAAA',
         strokeWidth: 10,
         selectable: false,
         evented: false
       });
-      axis2.set({ angle: 30 });
+     axis2.set({ angle: 30});
 
       // Axis 3: Bottom-right diagonal line - stops at the max radius
-      const axis3 = new fabric.Line([centerX + 5, centerY + 8, centerX + maxRadius + 5, centerY + 8], {
+      const axis3 = new fabric.Line([centerX+5, centerY+8, centerX + maxRadius+5, centerY+8], {
         stroke: '#AAAAAA',
         strokeWidth: 10,
         selectable: false,
         evented: false
       });
-      axis3.set({ angle: 150 });
-
+      axis3.set({ angle: 150});
       // Add text to the template
       const label1 = new fabric.Text('3', {
-        left: centerX + 10,
-        top: 0,
+        left: centerX ,  // Adjust text to be centered horizontally
+        top: 0,   // Adjust text to be placed above the center
         fontSize: 24,
         fill: '#AAAAAA',
         selectable: true   // Make the text selectable to allow interaction
@@ -173,8 +202,8 @@
 
       // Add text to the template
       const label2 = new fabric.Text('B', {
-        left: centerX -maxRadius,
-        top: centerY + maxRadius/2,
+        left: centerX - maxRadius,  // Adjust text to be centered horizontally
+        top: centerY + maxRadius/2,   // Adjust text to be placed above the center
         fontSize: 24,
         fill: '#AAAAAA',
         selectable: true   // Make the text selectable to allow interaction
@@ -182,8 +211,8 @@
 
       // Add text to the template
       const label3 = new fabric.Text('G', {
-        left: centerX + maxRadius,
-        top: centerY + maxRadius/2,
+        left: centerX + maxRadius,  // Adjust text to be centered horizontally
+        top: centerY + maxRadius/2,   // Adjust text to be placed above the center
         fontSize: 24,
         fill: '#AAAAAA',
         selectable: true   // Make the text selectable to allow interaction
@@ -191,8 +220,8 @@
 
       // Add center dot
       const centerDot = new fabric.Circle({
-        left: centerX - 2,
-        top: centerY - 2,
+        left: centerX-2,  // Adjust the center of the circle to the center of the canvas
+        top: centerY-2 ,  // Adjust the center of the circle to the center of the canvas
         radius: 7,
         fill: 'gray',
         selectable: false,  // Make it unselectable
@@ -200,8 +229,8 @@
 
       // Add circle outlines radiating outward from the center
       const circle1 = new fabric.Circle({
-        left: centerX - maxRadius,
-        top: centerY - maxRadius,
+        left: centerX - maxRadius,  // Position relative to center
+        top: centerY - maxRadius,   // Position relative to center
         radius: maxRadius,
         stroke: '#AAAAAA',
         strokeWidth: 10,
