@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Gender?</title>
+  <title>Fabric.js Drawing with Template</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   <style>
     body { 
@@ -51,7 +51,10 @@
     <button onclick="addShape('triangle')">Add Triangle</button>
     <button onclick="deleteObject()">Delete Object</button>
     <button onclick="disableDrawing()">Select/Move</button>
+    <button onclick="zoomIn()">Zoom In</button>
+    <button onclick="zoomOut()">Zoom Out</button>
     <button onclick="saveImage()">Save as Image</button>
+
     <input type="color" id="colorPicker" value="#0000ff" onchange="updateDrawingColor()">
   </div>
 
@@ -117,6 +120,18 @@
       }
       canvas.add(shape);
     }
+
+    // Function to zoom in
+function zoomIn() {
+  const zoom = canvas.getZoom();
+  canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, zoom + 0.1);
+}
+
+// Function to zoom out
+function zoomOut() {
+  const zoom = canvas.getZoom();
+  canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, zoom - 0.1);
+}
 
     // Enable free drawing mode and set the color
     function enableDrawing() {
@@ -193,8 +208,8 @@
       axis3.set({ angle: 150});
       // Add text to the template
       const label1 = new fabric.Text('3', {
-        left: centerX -25 ,  // Adjust text to be centered horizontally
-        top: centerY - maxRadius- 25,   // Adjust text to be placed above the center
+        left: centerX -25,  // Adjust text to be centered horizontally
+        top: centerY - maxRadius -25,   // Adjust text to be placed above the center
         fontSize: 24,
         fill: '#AAAAAA',
         selectable: true   // Make the text selectable to allow interaction
