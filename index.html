@@ -10,7 +10,7 @@
       margin: 0; 
       padding: 0; 
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #FFFFFF;
     }
     canvas { 
       border: 1px solid #ccc; 
@@ -64,6 +64,112 @@
     const canvas = new fabric.Canvas('c');
     let currentColor = '#0000ff';  // Default color is blue
 
+    let pendingShapeType = null;  // New global variable at the top
+
+function addShape(type) {
+  pendingShapeType = type;  // Save the type, wait for a click
+  setActiveTool(type)
+
+}
+///////pinch zoom start
+const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
+let initialDistance = null;
+let initialZoom = canvas.getZoom();
+
+function setActiveTool(toolName) {
+      const activeToolDiv = document.getElementById('activeTool');
+      activeToolDiv.textContent = 'Active Tool: ' + toolName;
+    }
+
+// Helper function to calculate distance between two fingers
+function getDistance(touches) {
+  const dx = touches[0].pageX - touches[1].pageX;
+  const dy = touches[0].pageY - touches[1].pageY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Listen for touchstart
+htmlCanvas.addEventListener('touchstart', function(event) {
+  if (event.touches.length === 2) {
+    initialDistance = getDistance(event.touches);
+    initialZoom = canvas.getZoom();
+  }
+});
+
+// Listen for touchmove
+htmlCanvas.addEventListener('touchmove', function(event) {
+  if (event.touches.length === 2 && initialDistance) {
+    event.preventDefault(); // Important! Prevent page zoom
+    const newDistance = getDistance(event.touches);
+    const zoomFactor = newDistance / initialDistance;
+    canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, initialZoom * zoomFactor);
+  }
+}, { passive: false }); // passive: false lets you call preventDefault()
+
+// Listen for touchend
+htmlCanvas.addEventListener('touchend', function() {
+  initialDistance = null;
+});
+
+/////////////// Pinch zoom end ///////////////
+
+canvas.on('mouse:down', function(event) {
+  if (!pendingShapeType) return;  // If no shape is pending, do nothing
+
+  const pointer = canvas.getPointer(event.e);
+  const left = pointer.x;
+  const top = pointer.y;
+
+  let shape;
+  switch (pendingShapeType) {
+    case 'rect':
+    setActiveTool('Rectangle');
+      shape = new fabric.Rect({
+        left: left-30,
+        top: top-35,
+        fill: currentColor,
+        width: 60,
+        height: 70,
+        angle: 0
+      });
+      break;
+    case 'circle':
+    setActiveTool('Circle');
+
+      shape = new fabric.Circle({
+        left: left-30,
+        top: top-30,
+        fill: currentColor,
+        radius: 30
+      });
+      break;
+    case 'line':
+    setActiveTool('Line');
+
+      shape = new fabric.Line([left, top, left, top + 200], {
+        stroke: currentColor,
+        strokeWidth: 8,
+        selectable: true
+      });
+      break;
+    case 'triangle':
+    setActiveTool('Triangle');
+
+      shape = new fabric.Triangle({
+        width: 100,
+        height: 100,
+        left: left-50,
+        top: top-50,
+        fill: currentColor,
+        selectable: true
+      });
+      break;
+  }
+
+  canvas.add(shape);
+  //pendingShapeType = null;  // Clear the pending shape
+});
+
     // Function to resize the canvas based on the window size
     function resizeCanvas() {
       canvas.setWidth(window.innerWidth - 20);  // 20px for margin
@@ -74,75 +180,49 @@
 
     // Update the drawing color when the user picks a color
     function updateDrawingColor() {
-      currentColor = document.getElementById('colorPicker').value;
-      console.log('Current color selected:', currentColor);
-    }
+  currentColor = document.getElementById('colorPicker').value;
+  console.log('Current color selected:', currentColor);
 
-    // Add shapes to the canvas based on type
-    function addShape(type) {
-      let shape;
-      switch (type) {
-        case 'rect':
-          shape = new fabric.Rect({
-            left: 100,
-            top: 100,
-            fill: currentColor,
-            width: 60,
-            height: 70,
-            angle: 0
-          });
-          break;
-        case 'circle':
-          shape = new fabric.Circle({
-            left: 200,
-            top: 100,
-            fill: currentColor,
-            radius: 30
-          });
-          break;
-        case 'line':
-          shape = new fabric.Line([20, 20, 500, 500], {
-            stroke: currentColor,
-            strokeWidth: 2,
-            selectable: true
-          });
-          break;
-        case 'triangle':
-          shape = new fabric.Triangle({
-            width: 100,
-            height: 100,
-            left: 100,
-            top: 100,
-            fill: currentColor,
-            selectable: true
-          });
-          break;
-      }
-      canvas.add(shape);
+  const selectedObject = canvas.getActiveObject();
+  if (selectedObject) {
+    if (selectedObject.type === 'line') {
+      selectedObject.set('stroke', currentColor);
+    } else if (selectedObject.type === 'text') {
+      selectedObject.set('fill', currentColor);
+    } else {
+      selectedObject.set('fill', currentColor);
     }
+    canvas.renderAll();
+  }
+}
 
     // Function to zoom in
-function zoomIn() {
-  const zoom = canvas.getZoom();
-  canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, zoom + 0.1);
-}
+    function zoomIn() {
+      const zoom = canvas.getZoom();
+      canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, zoom + 0.1);
+    }
 
 // Function to zoom out
-function zoomOut() {
-  const zoom = canvas.getZoom();
-  canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, zoom - 0.1);
-}
-
+    function zoomOut() {
+      const zoom = canvas.getZoom();
+      canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, zoom - 0.1);
+    }
+ 
     // Enable free drawing mode and set the color
     function enableDrawing() {
       canvas.isDrawingMode = true;
       canvas.freeDrawingBrush.width = 5;
       canvas.freeDrawingBrush.color = currentColor;  // Set drawing color to the selected color
+      pendingShapeType = null;  // Clear the pending shape
+      setActiveTool('Free Draw');
+
     }
 
     // Disable free drawing mode
     function disableDrawing() {
       canvas.isDrawingMode = false;
+      pendingShapeType = null;  // Clear the pending shape
+      setActiveTool('Select/Move');
     }
 
     // Save the canvas as an image
@@ -183,7 +263,7 @@ function zoomOut() {
 
       // Axis 1: Vertical line (center of the canvas) - stops at the max radius
       const axis1 = new fabric.Line([centerX, centerY, centerX, centerY - maxRadius], {
-        stroke: '#AAAAAA',
+        stroke: '#000000',
         strokeWidth: 10,
         selectable: false,
         evented: false
@@ -191,7 +271,7 @@ function zoomOut() {
 
       // Axis 2: Bottom-left diagonal line - stops at the max radius
       const axis2 = new fabric.Line([centerX+5, centerY-2, centerX + maxRadius+5, centerY-2], {
-        stroke: '#AAAAAA',
+        stroke: '#000000',
         strokeWidth: 10,
         selectable: false,
         evented: false
@@ -200,7 +280,7 @@ function zoomOut() {
 
       // Axis 3: Bottom-right diagonal line - stops at the max radius
       const axis3 = new fabric.Line([centerX+5, centerY+8, centerX + maxRadius+5, centerY+8], {
-        stroke: '#AAAAAA',
+        stroke: '#000000',
         strokeWidth: 10,
         selectable: false,
         evented: false
@@ -236,9 +316,9 @@ function zoomOut() {
       // Add center dot
       const centerDot = new fabric.Circle({
         left: centerX-2,  // Adjust the center of the circle to the center of the canvas
-        top: centerY-2 ,  // Adjust the center of the circle to the center of the canvas
+        top: centerY-4 ,  // Adjust the center of the circle to the center of the canvas
         radius: 7,
-        fill: 'gray',
+        fill: '#000000',
         selectable: false,  // Make it unselectable
       });
 
@@ -247,8 +327,8 @@ function zoomOut() {
         left: centerX - maxRadius,  // Position relative to center
         top: centerY - maxRadius,   // Position relative to center
         radius: maxRadius,
-        stroke: '#AAAAAA',
-        strokeWidth: 10,
+        stroke: '#DDDDDD',
+        strokeWidth: 5,
         fill: 'transparent',
         selectable: false
       });
@@ -257,8 +337,8 @@ function zoomOut() {
         left: centerX - maxRadius * 0.75,
         top: centerY - maxRadius * 0.75,
         radius: maxRadius * 0.75,
-        stroke: '#AAAAAA',
-        strokeWidth: 10,
+        stroke: '#DDDDDD',
+        strokeWidth: 5,
         fill: 'transparent',
         selectable: false
       });
@@ -267,8 +347,8 @@ function zoomOut() {
         left: centerX - maxRadius * 0.5,
         top: centerY - maxRadius * 0.5,
         radius: maxRadius * 0.5,
-        stroke: '#AAAAAA',
-        strokeWidth: 10,
+        stroke: '#DDDDDD',
+        strokeWidth: 5,
         fill: 'transparent',
         selectable: false
       });
@@ -277,17 +357,17 @@ function zoomOut() {
         left: centerX - maxRadius * 0.25,
         top: centerY - maxRadius * 0.25,
         radius: maxRadius * 0.25,
-        stroke: '#AAAAAA',
-        strokeWidth: 10,
+        stroke: '#DDDDDD',
+        strokeWidth: 5,
         fill: 'transparent',
         selectable: false
       });
 
       // Add the elements to the canvas
-      canvas.add(axis1, axis2, axis3, label1, label2, label3, centerDot, circle1, circle2, circle3, circle4);
-      canvas.sendToBack(axis1);
-      canvas.sendToBack(axis2);
-      canvas.sendToBack(axis3);
+      canvas.add(circle1, circle2, circle3, circle4, axis1, axis2, axis3, label1, label2, label3, centerDot);
+      canvas.sendToBack(circle1);
+      canvas.sendToBack(circle2);
+      canvas.sendToBack(circle3);
     }
 
     // Call the template creator immediately
@@ -295,10 +375,17 @@ function zoomOut() {
 
     // Adjust canvas size when the window is resized
     window.addEventListener('resize', resizeCanvas);
+    document.addEventListener('keydown', function(event) {
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      deleteObject();
+      }
+    });
 
     // Initial resize
     resizeCanvas();
   </script>
+  <div id="activeTool" style="margin-top: 10px; font-weight: bold;">Active Tool: None</div>
+
 
 </body>
 </html>
