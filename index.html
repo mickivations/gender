@@ -50,6 +50,10 @@
   <button onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
   <button onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
   <button onclick="saveImage()"><i class="fas fa-save"></i></button>
+
+
+
+  <input type="color" id="colorPicker" value="#0000ff" onchange="updateDrawingColor()">
     <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
   <button onclick="addShape('circle')"><i class="fas fa-circle"></i></button>
   <button onclick="addShape('triangle')"> <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke="white" width="12" height="12">
@@ -60,8 +64,6 @@
   <button onclick="addText()">T|</button>
 
   
-
-    <input type="color" id="colorPicker" value="#0000ff" onchange="updateDrawingColor()">
   </div>
 
   <canvas id="c"></canvas>
@@ -273,7 +275,7 @@ canvas.on('mouse:down', function(event) {
     function deleteObject() {
       const selectedObject = canvas.getActiveObject();
       if (selectedObject) {
-        selectedObject.set({ fill: 'white', stroke: 'white', width: 1, height: 1 });
+        selectedObject.set({ fill: 'white', stroke: 'white', width: 1, height: 1, top: -100 });
         canvas.renderAll();
       }
     }
