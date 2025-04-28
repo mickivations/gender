@@ -62,6 +62,9 @@
   <button onclick="addShape('line')"><i class="fas fa-slash"></i></button>
   <button onclick="enableDrawing()"><i class="fas fa-pencil-alt"></i></button>
   <button onclick="addText()">T|</button>
+  <button onclick="duplicateObject()"><i class="fas fa-clone"></i> </button>
+  <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8">
+<label for="opacitySlider">Opacity</label>
 
   
   </div>
@@ -73,6 +76,10 @@
     let currentColor = '#0000ff';  // Default color is blue
 
     let pendingShapeType = null;  // New global variable at the top
+
+
+// Set up the default opacity to 0.8
+let opacityValue = 0.8;
 
 function addShape(type) {
   pendingShapeType = type;  // Save the type, wait for a click
@@ -92,13 +99,58 @@ function addText(event) {
     editable: true,
     hasBorders: true,
     hasControls: true,
-    lockUniScaling: true
+    lockUniScaling: true,
+    opacity: opacityValue
   });
 
   // Add the text to the canvas
   canvas.add(text);
   canvas.setActiveObject(text); // Automatically select the new text object
   canvas.renderAll();
+}
+
+function duplicateObject() {
+  const selectedObject = canvas.getActiveObject();
+
+  if (selectedObject) {
+    let duplicatedObject;
+
+    // If the selected object is a group, duplicate the whole group with its contents
+    if (selectedObject.type === 'group') {
+      duplicatedObject = selectedObject.clone(function(cloned) {
+        // Clone each object inside the group individually
+        cloned.getObjects().forEach(function(obj) {
+          // Ensure each object inside the group gets its own unique color reference
+          obj.set({
+            fill: obj.fill, // Keep the original fill color
+            stroke: obj.stroke, // Keep the original stroke color
+          });
+        });
+      });
+    } else {
+      // Clone a single object (not a group)
+      duplicatedObject = fabric.util.object.clone(selectedObject);
+      duplicatedObject.set({
+        fill: selectedObject.fill, // Explicitly set the fill color (to avoid shared reference)
+        stroke: selectedObject.stroke, // Explicitly set the stroke color
+      });
+    }
+
+    // Offset the duplicate slightly to prevent overlap with the original
+    duplicatedObject.set({
+      left: selectedObject.left + 10,
+      top: selectedObject.top + 10,
+    });
+
+    // Add the duplicated object to the canvas
+    canvas.add(duplicatedObject);
+
+    // Optionally, make the duplicate the active object
+    canvas.setActiveObject(duplicatedObject);
+
+    canvas.renderAll();
+    console.log('Object duplicated');
+  }
 }
 
 ///////pinch zoom start
@@ -125,6 +177,27 @@ htmlCanvas.addEventListener('touchstart', function(event) {
     initialZoom = canvas.getZoom();
   }
 });
+
+// Add event listener to the slider
+document.getElementById('opacitySlider').addEventListener('input', (event) => {
+  opacityValue = event.target.value;
+  const selectedObject = canvas.getActiveObject();
+
+  if (selectedObject) {
+    selectedObject.set({
+      opacity: opacityValue
+    });
+
+    // Re-render the canvas to apply the change
+    canvas.renderAll();
+  }
+});
+
+// Set default opacity for the canvas objects
+canvas.getObjects().forEach((obj) => {
+  obj.set({ opacity: defaultOpacity });
+});
+
 
 // Listen for touchmove
 htmlCanvas.addEventListener('touchmove', function(event) {
@@ -168,7 +241,8 @@ canvas.on('mouse:down', function(event) {
         fill: currentColor,
         width: 60,
         height: 70,
-        angle: 0
+        angle: 0,
+        opacity: opacityValue
       });
       break;
     case 'circle':
@@ -177,7 +251,8 @@ canvas.on('mouse:down', function(event) {
         left: left - 30,
         top: top - 30,
         fill: currentColor,
-        radius: 30
+        radius: 30,
+        opacity: opacityValue
       });
       break;
     case 'line':
@@ -185,18 +260,20 @@ canvas.on('mouse:down', function(event) {
       shape = new fabric.Line([left, top, left, top + 200], {
         stroke: currentColor,
         strokeWidth: 8,
-        selectable: true
+        selectable: true,
+        opacity: opacityValue
       });
       break;
     case 'triangle':
       setActiveTool('Triangle');
       shape = new fabric.Triangle({
-        width: 100,
-        height: 100,
-        left: left - 50,
-        top: top - 50,
+        width: 60,
+        height: 60,
+        left: left - 30,
+        top: top - 30,
         fill: currentColor,
-        selectable: true
+        selectable: true,
+       opacity: opacityValue
       });
       break;
   }
