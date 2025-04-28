@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <meta charset="UTF-8">
   <title>Fabric.js Drawing with Template</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
@@ -44,16 +45,21 @@
   <h1>Gender? </h1>
 
   <div>
-    <button onclick="addShape('rect')">Add Rectangle</button>
-    <button onclick="addShape('circle')">Add Circle</button>
-    <button onclick="enableDrawing()">Free Draw</button>
-    <button onclick="addShape('line')">Add Line</button>
-    <button onclick="addShape('triangle')">Add Triangle</button>
-    <button onclick="deleteObject()">Delete Object</button>
-    <button onclick="disableDrawing()">Select/Move</button>
-    <button onclick="zoomIn()">Zoom In</button>
-    <button onclick="zoomOut()">Zoom Out</button>
-    <button onclick="saveImage()">Save as Image</button>
+  <button onclick="disableDrawing()"><i class="fas fa-mouse-pointer"></i></button>
+    <button onclick="deleteObject()"><i class="fas fa-trash-alt"></i></button>
+  <button onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+  <button onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
+  <button onclick="saveImage()"><i class="fas fa-save"></i></button>
+    <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
+  <button onclick="addShape('circle')"><i class="fas fa-circle"></i></button>
+  <button onclick="addShape('triangle')"> <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke="white" width="12" height="12">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4l8 16H4z"></path>
+  </svg></button>
+  <button onclick="addShape('line')"><i class="fas fa-slash"></i></button>
+  <button onclick="enableDrawing()"><i class="fas fa-pencil-alt"></i></button>
+  <button onclick="addText()">T|</button>
+
+  
 
     <input type="color" id="colorPicker" value="#0000ff" onchange="updateDrawingColor()">
   </div>
@@ -71,6 +77,28 @@ function addShape(type) {
   setActiveTool(type);
   
 }
+
+// Function to add editable text
+function addText(event) {
+
+  // Create the editable text object
+  const text = new fabric.Textbox('Click to edit', {
+    left: 20,
+    top: 20,
+    fontSize: 30,
+    fill: currentColor,
+    editable: true,
+    hasBorders: true,
+    hasControls: true,
+    lockUniScaling: true
+  });
+
+  // Add the text to the canvas
+  canvas.add(text);
+  canvas.setActiveObject(text); // Automatically select the new text object
+  canvas.renderAll();
+}
+
 ///////pinch zoom start
 const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
 let initialDistance = null;
