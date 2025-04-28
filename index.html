@@ -68,8 +68,8 @@
 
 function addShape(type) {
   pendingShapeType = type;  // Save the type, wait for a click
-  setActiveTool(type)
-
+  setActiveTool(type);
+  
 }
 ///////pinch zoom start
 const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
@@ -112,10 +112,18 @@ htmlCanvas.addEventListener('touchend', function() {
 });
 
 /////////////// Pinch zoom end ///////////////
-
 canvas.on('mouse:down', function(event) {
   if (!pendingShapeType) return;  // If no shape is pending, do nothing
 
+  // Check if an object was clicked
+  if (event.target) {
+    // An object was clicked, select it
+    canvas.setActiveObject(event.target);
+    console.log('Clicked on an object:', event.target.type);
+    return; // Don't add a new shape
+  }
+
+  // No object clicked, so we can add a new shape
   const pointer = canvas.getPointer(event.e);
   const left = pointer.x;
   const top = pointer.y;
@@ -123,10 +131,10 @@ canvas.on('mouse:down', function(event) {
   let shape;
   switch (pendingShapeType) {
     case 'rect':
-    setActiveTool('Rectangle');
+      setActiveTool('Rectangle');
       shape = new fabric.Rect({
-        left: left-30,
-        top: top-35,
+        left: left - 30,
+        top: top - 35,
         fill: currentColor,
         width: 60,
         height: 70,
@@ -134,18 +142,16 @@ canvas.on('mouse:down', function(event) {
       });
       break;
     case 'circle':
-    setActiveTool('Circle');
-
+      setActiveTool('Circle');
       shape = new fabric.Circle({
-        left: left-30,
-        top: top-30,
+        left: left - 30,
+        top: top - 30,
         fill: currentColor,
         radius: 30
       });
       break;
     case 'line':
-    setActiveTool('Line');
-
+      setActiveTool('Line');
       shape = new fabric.Line([left, top, left, top + 200], {
         stroke: currentColor,
         strokeWidth: 8,
@@ -153,13 +159,12 @@ canvas.on('mouse:down', function(event) {
       });
       break;
     case 'triangle':
-    setActiveTool('Triangle');
-
+      setActiveTool('Triangle');
       shape = new fabric.Triangle({
         width: 100,
         height: 100,
-        left: left-50,
-        top: top-50,
+        left: left - 50,
+        top: top - 50,
         fill: currentColor,
         selectable: true
       });
@@ -167,8 +172,8 @@ canvas.on('mouse:down', function(event) {
   }
 
   canvas.add(shape);
-  //pendingShapeType = null;  // Clear the pending shape
 });
+
 
     // Function to resize the canvas based on the window size
     function resizeCanvas() {
@@ -330,7 +335,8 @@ canvas.on('mouse:down', function(event) {
         stroke: '#DDDDDD',
         strokeWidth: 5,
         fill: 'transparent',
-        selectable: false
+        selectable: false,
+        evented: false
       });
 
       const circle2 = new fabric.Circle({
@@ -340,7 +346,8 @@ canvas.on('mouse:down', function(event) {
         stroke: '#DDDDDD',
         strokeWidth: 5,
         fill: 'transparent',
-        selectable: false
+        selectable: false,
+        evented: false
       });
 
       const circle3 = new fabric.Circle({
@@ -350,7 +357,8 @@ canvas.on('mouse:down', function(event) {
         stroke: '#DDDDDD',
         strokeWidth: 5,
         fill: 'transparent',
-        selectable: false
+        selectable: false,
+        evented: false
       });
 
       const circle4 = new fabric.Circle({
@@ -360,7 +368,8 @@ canvas.on('mouse:down', function(event) {
         stroke: '#DDDDDD',
         strokeWidth: 5,
         fill: 'transparent',
-        selectable: false
+        selectable: false,
+        evented: false
       });
 
       // Add the elements to the canvas
