@@ -12,8 +12,10 @@ body {
 
 
 h1 {
-  margin-top: 5px;
+  margin-top: 0px;
   color: #FFFFFF;
+  margin-bottom: 0px;
+
 }
 
 div {
@@ -32,7 +34,8 @@ button i {
 }
 
 #colorPicker {
-  margin-left: 10px;
+  width: 48px;
+  height:96px
 }
 
 #opacitySlider, #radii-slider {
@@ -70,50 +73,85 @@ canvas {
   justify-content: center;
   align-items: center;
   background: #000000;
+  margin-top: 0px;
 }
-
-/* Toolbar and buttons */
-
-
-/* Buttons */
-
-button {
-    flex: 1 1 auto;
-    padding: 10px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    background-color: #000000;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0 0 8px rgba(91, 206, 250, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 50px;
-    min-height: 50px;
-  }
-
-
-  
-
-  
-  button:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-  }
-
-  .toolbar {
+.toolbar {
     display: flex;
     flex-wrap: wrap;
-    padding: 10px;
     justify-content: center;
+    align-items: center;
     background-color: #1a1a1a;
+    padding: 5px;
+    gap: 8px;
     box-sizing: border-box;
+    z-index: 10;
+  }
+  /* Each pair: either row or column layout */
+.button-pair {
+    display: flex;
+    gap: 4px;
   }
   
-  /* Default: Toolbar at bottom (landscape) */
+  /* Buttons inside pairs */
+  .button-pair button {
+    width: 48px;
+    height: 7vh;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .toolbar > button {
+    width: 96px;  /* double the 48px in .button-pair */
+    height: 96px;
+    background-color: #333;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px; /* increase icon size too */
+  }
+  
+  .toolbar input[type="color"] {
+    width: 48px;
+    height: 48px;
+    border: none;
+    padding: 0;
+  }
+  
+  .toolbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .slider-menu,
+  .submenu {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background-color: #2a2a2a;
+    padding: 8px;
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+  }
+  
+  .toolbar-item.show-sliders .slider-menu,
+  .toolbar-item.show-shapes .submenu {
+    display: flex;
+  }
+  
+  /* Responsive layout */
   @media (max-aspect-ratio: 1/1) {
     .toolbar {
       flex-direction: row;
@@ -121,17 +159,14 @@ button {
       bottom: 0;
       left: 0;
       right: 0;
-      height: 100px;
+      height: 15%;
       width: 100%;
     }
-  
-    .toolbar > div,
-    .toolbar button {
-      flex: 1;
-    }
+    .button-pair {
+        flex-direction: column;
+      }
   }
   
-  /* Portrait: Toolbar at right */
   @media (min-aspect-ratio: 1/1) {
     .toolbar {
       flex-direction: column;
@@ -142,11 +177,48 @@ button {
       width: 100px;
       height: 100%;
     }
-  
-    .toolbar > div,
-    .toolbar button {
-      flex: 1;
-    }
   }
   
- 
+  /* Fullscreen overlay background */
+#shapesSubMenu {
+    display: none; /* Start hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* On top of everything */
+  }
+  
+  /* Modal content box */
+  #shapesSubMenu .shape-options {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Buttons inside the modal */
+  #shapesSubMenu button {
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  #shapesSubMenu button:hover {
+    background: #333;
+  }
+  
