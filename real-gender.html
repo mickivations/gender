@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gender?</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="app-style-sheet.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+</head>
+<body>
+  <h1>Gender?</h1>
+  <div id="container">
+  <canvas id="c"></canvas></div>
+  <div id="activeTool" style="margin-top: 10px; font-weight: bold;">Active Tool: Free Draw</div> 
+  
+  <div class="toolbar">
+    <div>
+    <button class="undo-btn" onclick="undo()">
+        <span class="material-icons">undo</span> 
+      </button>
+      
+      <button  onclick="redo()">
+        <span class="material-icons">redo</span> 
+      </button>
+    <button onclick="disableDrawing()">
+        <span class="material-icons">ads_click</span> 
+    </button>
+
+    <button onclick="enableDrawing()">
+        <span class="material-icons">brush</span> 
+    </button>
+    
+
+    <button onclick="zoomIn()">
+        <span class="material-icons">zoom_in</span> 
+    </button>
+
+    <button onclick="zoomOut()">
+        <span class="material-icons">zoom_out</span> 
+    </button>
+
+    <button onclick="saveImage()">
+        <span class="material-icons">file_download</span> 
+    </button>
+
+    <div>
+      <input type="color" id="colorPicker" value="#0000ff" onchange="updateDrawingColor()">
+
+      <!-- Toggle Button -->
+<button onclick="toggleSliderMenu()">
+    <span class="material-icons">tune</span>
+  </button>
+  
+  <!-- Sliders Menu -->
+  <div id="sliderMenu" style="display: none;">
+    <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8">
+    <label for="opacitySlider">Opacity</label>
+    <input type="range" id="radii-slider" min="0" max="10" step="1" value="3">
+    <label for="radii-slider">Radius</label>
+  </div>
+    </div>
+
+    <div class="menu">
+      <button id="shapesButton">
+        <span class="material-icons">format_shapes</span> 
+    </button>
+      <div id="shapesSubMenu" class="submenu" style="display: none;">
+        <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
+        <button onclick="addShape('circle')"><i class="fas fa-circle"></i></button>
+        <button onclick="addShape('triangle')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke="white" width="12" height="12">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4l8 16H4z"></path>
+          </svg>
+        </button>
+        <button onclick="addShape('line')"><i class="fas fa-slash"></i></button>
+        <button onclick="addText()"><i class="fas fa-font"></i><i class="fas fa-i-cursor"></i></button>
+      </div>
+      <button onclick="deleteObject()">
+        <span class="material-icons">delete</span> 
+      </button>
+      <button onclick="duplicateObject()">
+        <span class="material-icons">content_copy</span> 
+    </button>
+    </div>
+
+  </div>
+  </div><!--toolbar close-->
+
+
+  
+  <script src="script.js"></script>
+</body>
+</html>

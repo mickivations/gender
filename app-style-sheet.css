@@ -1,0 +1,152 @@
+body {
+
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #5BCEFA, #F5A9B8);
+    margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #F0F0F0;
+  height: 80vh;
+}
+
+
+
+h1 {
+  margin-top: 5px;
+  color: #FFFFFF;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+
+button:hover {
+  background-color: #000000;
+
+}
+
+button i {
+  pointer-events: none;
+}
+
+#colorPicker {
+  margin-left: 10px;
+}
+
+#opacitySlider, #radii-slider {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.menu {
+  display: inline-block;
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  background-color: #007bff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.submenu button {
+  background-color: #0062cc;
+  margin: 2px;
+}
+
+canvas { 
+    margin-top: 0px; 
+    display: block; 
+  }
+
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000000;
+}
+
+/* Toolbar and buttons */
+
+
+/* Buttons */
+
+button {
+    flex: 1 1 auto;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 8px rgba(91, 206, 250, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 50px;
+    min-height: 50px;
+  }
+
+
+  
+
+  
+  button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
+    background-color: #1a1a1a;
+    box-sizing: border-box;
+  }
+  
+  /* Default: Toolbar at bottom (landscape) */
+  @media (max-aspect-ratio: 1/1) {
+    .toolbar {
+      flex-direction: row;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      width: 100%;
+    }
+  
+    .toolbar > div,
+    .toolbar button {
+      flex: 1;
+    }
+  }
+  
+  /* Portrait: Toolbar at right */
+  @media (min-aspect-ratio: 1/1) {
+    .toolbar {
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100px;
+      height: 100%;
+    }
+  
+    .toolbar > div,
+    .toolbar button {
+      flex: 1;
+    }
+  }
+  
+ 
