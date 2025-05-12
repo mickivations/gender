@@ -430,13 +430,15 @@ function drawRadii(centerX, centerY, radius, count) {
       const filename = `drawing_${Date.now()}`;
     
       const payload = {
-        image: image,
-        filename: filename,
+       // image: image,
+       // filename: filename,
         user: user,
         notes: notes
       };
-      fetch('https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec'
-        ,{//'https://script.google.com/macros/s/AKfycbw0TuBrx4BkUKhn03tGAVB438gKAILLUTMx1eQOw4ZFaggwFrTpWRENFL3QBIJFhF8F/exec', {
+
+     // https://script.google.com/macros/library/d/1yE2DCZ44cMJXfAzmtORCI6Vfkf-dl5nrvY5QdZms8KZ6qwolrEqDidkX/1
+      fetch('https://script.google.com/macros/library/d/1yE2DCZ44cMJXfAzmtORCI6Vfkf-dl5nrvY5QdZms8KZ6qwolrEqDidkX/1'
+        ,{  //'https://script.google.com/macros/s/AKfycbw0TuBrx4BkUKhn03tGAVB438gKAILLUTMx1eQOw4ZFaggwFrTpWRENFL3QBIJFhF8F/exec', {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {
