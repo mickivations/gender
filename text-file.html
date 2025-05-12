@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><title>Submit to Google Sheet</title></head>
+<body>
+  <h2>Submit Data</h2>
+  <input id="name" placeholder="Your name"><br>
+  <input id="note" placeholder="A note"><br>
+  <button onclick="submitData()">Send</button>
+
+  <script>
+    function submitData() {
+      const name = document.getElementById('name').value;
+      const note = document.getElementById('note').value;
+
+      fetch('https://script.google.com/macros/s/AKfycbw0TuBrx4BkUKhn03tGAVB438gKAILLUTMx1eQOw4ZFaggwFrTpWRENFL3QBIJFhF8F/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, note })
+      })
+      .then(response => response.text())
+      .then(text => alert("Server said: " + text))
+      .catch(err => alert("Error: " + err));
+    }
+  </script>
+</body>
+</html>

@@ -336,8 +336,8 @@ function drawRadii(centerX, centerY, radius, count) {
     const y = centerY + radius * Math.sin(angle);
 
     const line = new fabric.Line([centerX, centerY, x, y], {
-      stroke: '#AAAAAA',
-      strokeWidth: 3,
+      stroke: '#DDDDDD',
+      strokeWidth: 5,
       selectable: false,
       evented: false
     });
@@ -408,7 +408,7 @@ function drawRadii(centerX, centerY, radius, count) {
       pendingShapeType = null;  // Clear the pending shape
       setActiveTool('Select/Move');
     }
-
+/*
     // Save the canvas as an image
     function saveImage() {
       const dataURL = canvas.toDataURL({
@@ -418,7 +418,44 @@ function drawRadii(centerX, centerY, radius, count) {
       link.href = dataURL;
       link.download = 'my-drawing.png';
       link.click();
+      
     }
+*/
+    function saveImage() {
+      const canvas = document.querySelector('canvas');
+      const image = canvas.toDataURL('image/png');
+    
+      const user = prompt("Enter your name:");
+      const notes = prompt("Any notes about your drawing?");
+      const filename = `drawing_${Date.now()}`;
+    
+      const payload = {
+        image: image,
+        filename: filename,
+        user: user,
+        notes: notes
+      };
+    
+      fetch('https://script.google.com/macros/s/AKfycbw0TuBrx4BkUKhn03tGAVB438gKAILLUTMx1eQOw4ZFaggwFrTpWRENFL3QBIJFhF8F/exec', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('Image saved successfully!\n' + data.url);
+        } else {
+          alert('Error saving image: ' + data.message);
+        }
+      })
+      .catch(err => {
+        alert('Network error: ' + err.message);
+      });
+    }
+    
 
     // Delete the selected object (turn it white and make it small)
     function deleteObject() {
@@ -514,8 +551,8 @@ function drawRadii(centerX, centerY, radius, count) {
         left: centerX - maxRadius,  // Position relative to center
         top: centerY - maxRadius,   // Position relative to center
         radius: maxRadius,
-        stroke: '#DDDDDD',
-        strokeWidth: 5,
+        stroke: '#AAAAAA',
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -525,8 +562,8 @@ function drawRadii(centerX, centerY, radius, count) {
         left: centerX - maxRadius * 0.75,
         top: centerY - maxRadius * 0.75,
         radius: maxRadius * 0.75,
-        stroke: '#DDDDDD',
-        strokeWidth: 5,
+        stroke: '#AAAAAA',
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -536,8 +573,8 @@ function drawRadii(centerX, centerY, radius, count) {
         left: centerX - maxRadius * 0.5,
         top: centerY - maxRadius * 0.5,
         radius: maxRadius * 0.5,
-        stroke: '#DDDDDD',
-        strokeWidth: 5,
+        stroke: '#AAAAAA',
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -547,8 +584,8 @@ function drawRadii(centerX, centerY, radius, count) {
         left: centerX - maxRadius * 0.25,
         top: centerY - maxRadius * 0.25,
         radius: maxRadius * 0.25,
-        stroke: '#DDDDDD',
-        strokeWidth: 5,
+        stroke: '#AAAAAA',
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
