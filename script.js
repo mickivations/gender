@@ -436,30 +436,24 @@ function drawRadii(centerX, centerY, radius, count) {
         notes: notes
       };
       
-     // https://script.google.com/macros/library/d/1yE2DCZ44cMJXfAzmtORCI6Vfkf-dl5nrvY5QdZms8KZ6qwolrEqDidkX/1\
-
-    // https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec
-      fetch('https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec'
-        ,{  //'https://script.google.com/macros/s/AKfycbw0TuBrx4BkUKhn03tGAVB438gKAILLUTMx1eQOw4ZFaggwFrTpWRENFL3QBIJFhF8F/exec', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    // https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec\
+    //https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec
+    fetch('https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: "Test User",
+        notes: "Uploaded from frontend",
+        filename: "test_image",
+        image: "data:image/png;base64,iVBORw0..." // your image data
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          alert('Image saved successfully!\n' + data.url);
-        } else {
-          alert('Error saving image: ' + data.message);
-        }
-      })
-      .catch(err => {
-        alert('Network error: ' + err.message);
-      });
-    }
-    
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.error(err));
+  }
 
     // Delete the selected object (turn it white and make it small)
     function deleteObject() {
@@ -659,3 +653,38 @@ function createRectangle(x, y) {
     // Initial resize
     resizeCanvas();
     enableDrawing();
+
+    // script.js
+async function uploadImage() {
+  const fileInput = document.getElementById('fileInput');
+  const status = document.getElementById('status');
+  const title = document.getElementById('title').value;
+
+  if (!fileInput.files.length) {
+    status.textContent = 'Please select a file.';
+    return;
+  }
+
+  const file = fileInput.files[0];
+
+  // 1. Get signed URL from your Cloud Function
+  const res = await fetch('https://us-central1-gender-gallery.cloudfunctions.net/getSignedUrl' + encodeURIComponent(title + '-' + Date.now() + '.png'));
+  const { url } = await res.json();
+
+  // 2. Upload the file directly to GCS using the signed URL
+  const uploadRes = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'image/png'
+    },
+    body: file
+  });
+
+  if (uploadRes.ok) {
+    status.textContent = 'Upload successful!';
+  } else {
+    status.textContent = 'Upload failed.';
+  }
+}
+
+    
