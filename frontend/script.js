@@ -1,3 +1,9 @@
+//airtable
+// //patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff
+
+//imgbb
+//d449e7eb6eddc18900a3521f89f418bc
+
 const canvas = new fabric.Canvas('c');
     let currentColor = '#ffff00';  // Default color is blue
 
@@ -654,37 +660,68 @@ function createRectangle(x, y) {
     resizeCanvas();
     enableDrawing();
 
-    // script.js
-async function uploadImage() {
-  const fileInput = document.getElementById('fileInput');
-  const status = document.getElementById('status');
-  const title = document.getElementById('title').value;
+   
 
-  if (!fileInput.files.length) {
-    status.textContent = 'Please select a file.';
-    return;
-  }
+//airtable
+// //patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff
 
-  const file = fileInput.files[0];
+//imgbb
+//d449e7eb6eddc18900a3521f89f418bc
 
-  // 1. Get signed URL from your Cloud Function
-  const res = await fetch('https://us-central1-gender-gallery.cloudfunctions.net/getSignedUrl' + encodeURIComponent(title + '-' + Date.now() + '.png'));
-  const { url } = await res.json();
+// Replace these with your actual API keys
+const IMGBB_API_KEY = 'd449e7eb6eddc18900a3521f89f418bc';
+const AIRTABLE_API_KEY = 'patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff';
+const AIRTABLE_BASE_ID = 'appMnJ5OpcAn5M282';
+const AIRTABLE_TABLE_NAME = 'Submissions';
 
-  // 2. Upload the file directly to GCS using the signed URL
-  const uploadRes = await fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'image/png'
-    },
-    body: file
+async function uploadImageToImgBB(base64Image) {
+  const formData = new FormData();
+  formData.append('image', base64Image.split(',')[1]); // remove "data:image/png;base64,"
+
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+    method: 'POST',
+    body: formData,
   });
 
-  if (uploadRes.ok) {
-    status.textContent = 'Upload successful!';
-  } else {
-    status.textContent = 'Upload failed.';
-  }
+  const data = await res.json();
+  return data.data.url;
 }
+
+async function sendToAirtable(title, name, imageUrl) {
+  const res = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      fields: {
+        Title: title,
+        Name: name,
+        Image: [{ url: imageUrl }],
+      },
+    }),
+  });
+
+  const data = await res.json();
+  return data;
+}
+
+document.getElementById('submissionForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const name = document.getElementById('name').value;
+  const base64 = canvas.toDataURL('image/png');
+
+  try {
+    const imageUrl = await uploadImageToImgBB(base64);
+    const airtableRes = await sendToAirtable(title, name, imageUrl);
+    alert('Submitted successfully!');
+    console.log('Airtable response:', airtableRes);
+  } catch (err) {
+    console.error('Upload error:', err);
+    alert('Something went wrong.');
+  }
+});
 
     
