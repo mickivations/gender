@@ -3,7 +3,7 @@
 
 //imgbb
 //d449e7eb6eddc18900a3521f89f418bc
-
+//require('dotenv').config();
 const canvas = new fabric.Canvas('c');
     let currentColor = '#ffff00';  // Default color is blue
 
@@ -669,6 +669,13 @@ function createRectangle(x, y) {
 //d449e7eb6eddc18900a3521f89f418bc
 
 // Replace these with your actual API keys
+/*
+const IMGBB_API_KEY = process.env.IMGBB_API_KEY;  // Securely access the secret
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME;
+*/
+
 const IMGBB_API_KEY = 'd449e7eb6eddc18900a3521f89f418bc';
 const AIRTABLE_API_KEY = 'patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff';
 const AIRTABLE_BASE_ID = 'appMnJ5OpcAn5M282';
