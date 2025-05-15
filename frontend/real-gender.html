@@ -15,11 +15,10 @@
 <body>
   <h1>Gender?</h1>
 
-  <form id="submissionForm">
-    <input type="text" id="name" placeholder="Your name" required />
-    <input type="text" id="title" placeholder="Title of creation" required />
-    <button type="submit">Submit</button>
-  </form>
+  <button id="shapesButton" onclick="toggleSubmitMenu()">
+    Submit to Gallery
+  </button>
+
   
 <p id="status"></p>
   <div id="container">
@@ -84,7 +83,14 @@
         <!--<button onclick="addText()"><i class="fas fa-font"></i><i class="fas fa-i-cursor"></i></button>-->
       </div>
     </div>
-    
+    <div id="submitMenu">
+      <form id="submissionForm">
+        <input type="text" id="name" placeholder="Artist Name (optional)"  /> <!--value="Anonymous" " -->
+        <input type="text" id="title" placeholder="Title"  />
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   </div>
   
   

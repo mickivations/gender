@@ -1,8 +1,4 @@
-//airtable
-// //patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff
 
-//imgbb
-//d449e7eb6eddc18900a3521f89f418bc
 //require('dotenv').config();
 const canvas = new fabric.Canvas('c');
     let currentColor = '#ffff00';  // Default color is blue
@@ -223,6 +219,10 @@ function toggleSliderMenu() {
 }
 function toggleShapesMenu() {
   const menu = document.getElementById('shapesSubMenu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+function toggleSubmitMenu() {
+  const menu = document.getElementById('submitMenu');
   menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
 /////////////// Pinch zoom end ///////////////
