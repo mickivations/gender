@@ -719,7 +719,7 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
   const title = document.getElementById('title').value;
   const name = document.getElementById('name').value;
   const base64 = canvas.toDataURL('image/png');
-
+  toggleSubmitMenu();
   try {
     const imageUrl = await uploadImageToImgBB(base64);
     const airtableRes = await sendToAirtable(title, name, imageUrl);
