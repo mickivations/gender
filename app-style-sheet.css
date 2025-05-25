@@ -204,8 +204,22 @@ canvas {
     justify-content: center;
     align-items: center;
     z-index: 1000; /* On top of everything */
+    overflow: auto; /* Optional: scroll whole modal if needed */
+    color: #000;
+
   }
   
+  #submitMenu form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Optional spacing between fields */
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
   /* Modal content box */
   #shapesSubMenu .shape-options {
     background: #ffffff;

@@ -1,7 +1,7 @@
-
-//require('dotenv').config();
 const canvas = new fabric.Canvas('c');
-    let currentColor = '#ffff00';  // Default color is blue
+canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
+
+let currentColor = '#ffff00';  // Default color is blue
 
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
@@ -232,6 +232,11 @@ document.getElementById('shapesSubMenu').addEventListener('click', function(e) {
     this.style.display = 'none';
   }
 });
+document.getElementById('submitMenu').addEventListener('click', function(e) {
+  if (e.target === this) {
+    this.style.display = 'none';
+  }
+});
 
 let shape;
 let x1;
@@ -358,14 +363,17 @@ function drawRadii(centerX, centerY, radius, count) {
 
     // Function to resize the canvas based on the window size
     function resizeCanvas() {
-      canvas.setWidth(window.innerWidth - 20);  // 20px for margin
-      canvas.setHeight(window.innerHeight - 100); // Adjust height for header and buttons
-      canvas.renderAll();
-      createTemplate();  // Re-create the template when the canvas resizes
-    //  const newRadiiCount = parseInt(event.target.value, 10);
-  const centerX = canvas.getWidth() / 2;
-  const centerY = canvas.getHeight() / 2;
-  drawRadii(centerX, centerY, maxRadius, newRadiiCount);
+        const size = Math.min(window.innerWidth - 20, window.innerHeight - 100);
+        canvas.setWidth(size);
+        canvas.setHeight(size);
+        canvas.renderAll();
+      
+        createTemplate(); // if you need to re-draw anything
+        const centerX = canvas.getWidth() / 2;
+        const centerY = canvas.getHeight() / 2;
+        drawRadii(centerX, centerY, maxRadius, newRadiiCount);
+
+      
     }
 
     // Update the drawing color when the user picks a color
@@ -384,6 +392,7 @@ function drawRadii(centerX, centerY, radius, count) {
     }
     canvas.renderAll();
   }
+  enableDrawing()
 }
 
     // Function to zoom in
@@ -427,40 +436,6 @@ function drawRadii(centerX, centerY, radius, count) {
       
     }
 */
-    function saveImage() {
-      const canvas = document.querySelector('canvas');
-      const image = canvas.toDataURL('image/png');
-    
-      const user = prompt("Enter your name:");
-      const notes = prompt("Any notes about your drawing?");
-      const filename = `drawing_${Date.now()}`;
-    
-      const payload = {
-       // image: image,
-       // filename: filename,
-        user: user,
-        notes: notes
-      };
-      
-    // https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec\
-    //https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec
-    fetch('https://script.google.com/macros/s/AKfycbwZHhWPnTCr37hJoERwTqA4F9i7dgWgpBcxO9mzBhdDwuuUZfg9pj_RGP-tPnbz1QJ3/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user: "Test User",
-        notes: "Uploaded from frontend",
-        filename: "test_image",
-        image: "data:image/png;base64,iVBORw0..." // your image data
-      })
-    })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
-  }
-
     // Delete the selected object (turn it white and make it small)
     function deleteObject() {
       const selectedObject = canvas.getActiveObject();
@@ -663,19 +638,6 @@ function createRectangle(x, y) {
    
 
 //airtable
-// //patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff
-
-//imgbb
-//d449e7eb6eddc18900a3521f89f418bc
-
-// Replace these with your actual API keys
-/*
-const IMGBB_API_KEY = process.env.IMGBB_API_KEY;  // Securely access the secret
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
-const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME;
-*/
-
 const IMGBB_API_KEY = 'd449e7eb6eddc18900a3521f89f418bc';
 const AIRTABLE_API_KEY = 'patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff';
 const AIRTABLE_BASE_ID = 'appMnJ5OpcAn5M282';
@@ -694,7 +656,7 @@ async function uploadImageToImgBB(base64Image) {
   return data.data.url;
 }
 
-async function sendToAirtable(title, name, imageUrl) {
+async function sendToAirtable(title, name, pronouns, imageUrl, altText, ax3, tags) {
   const res = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
     method: 'POST',
     headers: {
@@ -706,6 +668,10 @@ async function sendToAirtable(title, name, imageUrl) {
         Title: title,
         Name: name,
         Image: [{ url: imageUrl }],
+        AltText: altText,
+        AxisLabel: ax3,
+        pronouns: pronouns,
+        StringTags: tags,
       },
     }),
   });
@@ -718,17 +684,97 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
   e.preventDefault();
   const title = document.getElementById('title').value;
   const name = document.getElementById('name').value;
+  const altText = document.getElementById('altText').value;
+  const axis3 = document.getElementById('axis3').value;
+  const pronouns = document.getElementById('pronouns').value;
   const base64 = canvas.toDataURL('image/png');
+
+
+  // 1. Get checked checkbox values
+  const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
+    .map(input => input.value);
+
+  // 2. Get non-empty custom inputs
+  const customInputs = Array.from(document.querySelectorAll('#customOptionsContainer input'))
+    .map(input => input.value.trim())
+    .filter(val => val.length > 0);
+
+    const allChoices = [...selectedOptions, ...customInputs]
+    .map(str => str.trim())
+    .filter(str => str.length > 0);
+    const tagsString = allChoices.join(", "); // e.g., "Option 1, Custom input"
+
+
   toggleSubmitMenu();
   try {
     const imageUrl = await uploadImageToImgBB(base64);
-    const airtableRes = await sendToAirtable(title, name, imageUrl);
+    console.log("allChoices:", allChoices);
+    const airtableRes = await sendToAirtable(title, name, pronouns, imageUrl, altText, axis3, tagsString);
     alert('Submitted successfully!');
     console.log('Airtable response:', airtableRes);
+    
   } catch (err) {
     console.error('Upload error:', err);
     alert('Something went wrong.');
   }
 });
+/*
+function handleSubmit() {
+  const imageData = canvas.toDataURL({
+    format: 'png',
+    quality: 0.9
+  });
+
+  fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/dispatches', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer YOUR_GITHUB_PAT',
+      'Accept': 'application/vnd.github.everest-preview+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      event_type: 'submit_data',
+      client_payload: {
+        imageData: imageData,
+        timestamp: new Date().toISOString()
+      }
+    })
+  })
+  .then(res => {
+    if (res.ok) {
+      alert('Submitted!');
+    } else {
+      alert('Submission failed.');
+      res.text().then(console.error);
+    }
+  });
+}*/
+
+//// form script 
+const maxCustomOptions = 20;
+  const container = document.getElementById('customOptionsContainer');
+  const addButton = document.getElementById('addCustomOption');
+
+  let customOptionCount = 0;
+
+  addButton.addEventListener('click', () => {
+    if (customOptionCount < maxCustomOptions) {
+      customOptionCount++;
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = `customOption${customOptionCount}`;
+      input.placeholder = `Other ${customOptionCount}`;
+      input.maxLength = 100;
+      input.style.marginTop = '0.5rem';
+
+      container.appendChild(input);
+    }
+
+    if (customOptionCount === maxCustomOptions) {
+      addButton.disabled = true;
+      addButton.textContent = 'Limit reached';
+    }
+  });
 
     

@@ -18,6 +18,8 @@
   <button id="submitButton" onclick="toggleSubmitMenu()">
     Submit to Gallery
   </button>
+  
+  <a href="../gallery/gallery.html"> View Charts </a>
 
   
 <p id="status"></p>
@@ -83,11 +85,46 @@
         <!--<button onclick="addText()"><i class="fas fa-font"></i><i class="fas fa-i-cursor"></i></button>-->
       </div>
     </div>
+
     <div id="submitMenu">
       <form id="submissionForm">
-        <input type="text" id="name" placeholder="Artist Name (optional)"  /> <!--value="Anonymous" " -->
+        <input type="text" id="name" placeholder="Name (optional)"  /> 
+        <input type="text" id="pronouns" placeholder="Pronouns (optional)" />
         <input type="text" id="title" placeholder="Title"  />
-
+        Please describe your artwork for screen readers. 
+        Can be as simple or complicated as you wish 
+        <input type="text" id="altText" placeholder="AltText" required />
+        <input type="text" id="axis3" placeholder="3 Axis Label (optional)" />
+        <fieldset id="tagGroup">
+          <legend>What words do you identify with that you would like to include with the chart? (if you would like different spelling, feel free to add the correct spelling in the more words section)</legend>
+        
+          <!-- Predefined checkboxes -->
+          <label><input type="checkbox" name="options" value="trans"> trans</label>
+          <label><input type="checkbox" name="options" value="cis"> cis</label>
+          <label><input type="checkbox" name="options" value="boy"> boy</label>
+          <label><input type="checkbox" name="options" value="boy"> boy</label>
+<label><input type="checkbox" name="options" value="girl"> girl</label>
+<label><input type="checkbox" name="options" value="butch"> butch</label>
+<label><input type="checkbox" name="options" value="stud"> stud</label>
+<label><input type="checkbox" name="options" value="dyke"> dyke</label>
+<label><input type="checkbox" name="options" value="femme"> femme</label>
+<label><input type="checkbox" name="options" value="non-binary"> non-binary</label>
+<label><input type="checkbox" name="options" value="genderqueer"> genderqueer</label>
+<label><input type="checkbox" name="options" value="genderfluid"> genderfluid</label>
+<label><input type="checkbox" name="options" value="fag"> fag</label>
+<label><input type="checkbox" name="options" value="dykefag"> dykefag</label>
+<label><input type="checkbox" name="options" value="fagdyke"> fagdyke</label>
+<label><input type="checkbox" name="options" value="futch"> futch</label>
+<label><input type="checkbox" name="options" value="man"> man</label>
+<label><input type="checkbox" name="options" value="woman"> woman</label>
+    
+          <!-- Container for dynamic inputs -->
+          <div id="customOptionsContainer"></div>
+        
+          <!-- Add button -->
+          <button type="button" id="addCustomOption">+ Add another option</button>
+        </fieldset>
+        
         <button type="submit">Submit</button>
       </form>
     </div>
