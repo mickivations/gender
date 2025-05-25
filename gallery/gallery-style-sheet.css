@@ -1,0 +1,114 @@
+body {
+    font-family: "Rubik Bubbles", sans-serif;
+    padding: 20px;
+    background-color: #000;
+    color: #fff;
+background-image:
+radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+  }
+  h1
+  {
+    text-align: center;
+  }
+
+  .values {
+    font-weight: bold;
+    color: #fff; /*rgb(160, 228, 255);*/
+    font-family: "Rubik Bubbles";
+    font-size: 1.1em;
+  }
+
+  #detail-holder{
+    background:black; 
+    padding:20px; 
+    max-width:600px; 
+    width:90%; 
+    border-radius:10px;
+    position:relative;
+    font-family: "Nunito";
+    font-weight: 800;
+  }
+
+  #modalDescription{
+    font-family: "Nunito";
+    font-weight: 800;
+  }
+
+  #modalTags{
+    font-family: "Nunito";
+    font-weight: 800;
+  }
+
+  #gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;   /* centers the flex items inside */
+
+  }
+
+  .card {
+    text-align: center;   /* centers the flex items inside */
+
+   /* border: 1px solid #ddd;*/
+    background-color: #000;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 300px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    background-image:
+radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+  }
+  .card img {
+    border: 1px solid #ddd;
+    max-width: 100%;
+    border-radius: 6px;
+    aspect-ratio: 1 / 1;         /* This forces a square shape */
+  object-fit: cover; 
+  }
+  .card h3 {
+    margin: 10px 0 5px;
+    color: #fff;
+  }
+  .card p {
+    margin: 0;
+    color: #ddd;
+    font-family: "Nunito";
+    font-weight: 800;
+
+  }
+
+  .bebas-neue-regular {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .oi-regular {
+    font-family: "Oi", serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+
+  .rubik-moonrocks-regular {
+    font-family: "Rubik Moonrocks", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+.nunito-semi> {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 1000;
+  font-style: normal;
+}
