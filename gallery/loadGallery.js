@@ -24,8 +24,7 @@ fetch(airtableEndpoint, {
   data.records.forEach(record => {
     const card = document.createElement('div');
     card.className = 'card';
-    
-
+  
     // Adjust these field names to match your Airtable exactly
     const images = record.fields['Image']; // assuming this field holds an array of images
     const title = record.fields['Title'] || '';
@@ -35,6 +34,9 @@ fetch(airtableEndpoint, {
     const axis = record.fields['AxisLabel'] || '';
     const tags = record.fields['Tags'] || '';
     const stringTags = record.fields['StringTags'] || '';
+    const description = record.fields['Description'] || '';
+
+    let combinedDetails = `${altText}<br><br>${description}`;
 
     if (images && images.length > 0) {
       const img = document.createElement('img');
@@ -46,7 +48,8 @@ fetch(airtableEndpoint, {
   img.addEventListener('click', () => {
     modalImage.src = images[0].url;
     modalTitle.textContent = title;
-    modalDescription.textContent = altText;
+    modalDescription.innerHTML = combinedDetails;
+    console.log("combined:", description);
     modalTags.textContent = "Tag(s): "+ tags + stringTags;
     modal.style.display = 'flex';
   });

@@ -1,5 +1,6 @@
 body {
-    font-family: "Rubik Bubbles", sans-serif;
+    font-family: "Nunito", sans-serif;
+    font-weight: 1000;
     padding: 20px;
     background-color: #000;
     color: #fff;
@@ -11,15 +12,19 @@ radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px
 background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
 background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
   }
+  
   h1
   {
     text-align: center;
+    font-family: "Rubik Bubbles", sans-serif;
+
   }
 
   .values {
     font-weight: bold;
     color: #fff; /*rgb(160, 228, 255);*/
-    font-family: "Rubik Bubbles";
+    font-family: "Nunito", sans-serif;
+    font-weight: 1000;
     font-size: 1.1em;
   }
 
@@ -36,7 +41,7 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
 
   #modalDescription{
     font-family: "Nunito";
-    font-weight: 800;
+    font-weight: 600;
   }
 
   #modalTags{
@@ -79,6 +84,7 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
   .card h3 {
     margin: 10px 0 5px;
     color: #fff;
+    font-family: "Rubik Bubbles", sans-serif;
   }
   .card p {
     margin: 0;
