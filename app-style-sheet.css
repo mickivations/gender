@@ -5,8 +5,16 @@ body {
     margin: 0;
   padding: 0;
   text-align: center;
-  color: #F0F0F0;
   height: 80vh;
+  background-color: #000;
+    color: #fff;
+background-image:
+radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
 }
 
 
@@ -248,4 +256,28 @@ canvas {
   #shapesSubMenu button:hover {
     background: #333;
   }
+
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+  
+  .checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+    background: #f8f8f8;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .checkbox-grid label:hover {
+    background: #eee;
+  }
+  
   
