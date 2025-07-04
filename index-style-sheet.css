@@ -1,88 +1,109 @@
 body {
-    margin: 5%;
-    overflow-y: auto;
-    font-size: 1em;
+  margin: 5%;
+  overflow-y: auto;
+  font-size: 1rem; /* base 16px */
+}
+
+/* Increase font size and spacing on small/mobile screens */
+@media (max-width: 600px) {
+  body {
+    font-size: 1.25rem; /* ~20px font size on mobile */
   }
 
   .tutorial-container {
-    max-width: 90vw;
-    margin: 2rem auto;
-    text-align: center;
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    height:65vh
-  }
-  
-  .slider {
-    position: relative;
-    height: 65vh;
-    max-height: 65vh;
-    overflow-y: auto;
-  }
-  
-  .slide {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .slide img {
-    border-radius: 1rem;
-    max-height: 50vh;
-    height: auto; 
-    width: auto; 
-    max-width: 100%;
-  }
-  
-  .slide.active {
-    display: block;
-    height: 100%;
-  }
-  
-  .slider-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  .slider-buttons button {
-    padding: 0.5rem 1rem;
-    font-size: 1.5rem;
-    background-color: #5BCEFA;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    color: white;
-  }
-  
-  .slider-buttons button:hover {
-    background-color: #3ea5cc;
-  }
-  
-  .slider-dots {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  .dot {
-    height: 12px;
-    width: 12px;
-    margin: 0 6px;
-    background-color: #ccc;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .active-dot {
-    background-color: #5BCEFA;
+    padding: 1.5rem;
+    max-width: 95vw;
   }
 
-  .intro
-  {
-    text-align: left;
-    justify-content: left;
+  .slider-buttons button {
+    font-size: 2rem;
+    padding: 0.75rem 1.25rem;
   }
-  
+
+  .slide p,
+  .slide h2,
+  .intro {
+    font-size: 1.1rem;
+  }
+}
+
+.tutorial-container {
+  max-width: 90vw;
+  margin: 2rem auto;
+  text-align: center;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  height: 65vh;
+}
+
+.slider {
+  position: relative;
+  height: 65vh;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.slide {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slide img {
+  border-radius: 1rem;
+  max-height: 50vh;
+  height: auto; 
+  width: auto; 
+  max-width: 100%;
+}
+
+.slide.active {
+  display: block;
+  height: 100%;
+}
+
+.slider-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.slider-buttons button {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  background-color: #5BCEFA;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: white;
+}
+
+.slider-buttons button:hover {
+  background-color: #3ea5cc;
+}
+
+.slider-dots {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 6px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.active-dot {
+  background-color: #5BCEFA;
+}
+
+.intro {
+  text-align: left;
+  justify-content: left;
+}
