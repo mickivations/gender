@@ -1,0 +1,59 @@
+exports.handler = async function (event, context) {
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ message: 'Only POST requests allowed' }),
+    };
+  }
+
+  const { title, name, pronouns, imageBase64, altText, ax3, tags } = JSON.parse(event.body);
+
+  const imgBBKey = process.env.IMGBB_API_KEY;
+  const airtableKey = process.env.AIRTABLE_API_KEY;
+   const baseId = process.env.AIRTABLE_BASE_ID;
+  const tableName = process.env.AIRTABLE_TABLE_NAME;
+  
+  try {
+    // Upload image to ImgBB
+    const formData = new URLSearchParams();
+    formData.append('image', imageBase64.split(',')[1]);
+
+    const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
+      method: 'POST',
+      body: formData,
+    });
+    const uploadData = await uploadRes.json();
+    const imageUrl = uploadData.data.url;
+
+    // Send to Airtable
+    const airtableRes = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${airtableKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fields: {
+          Title: title,
+          Name: name,
+          pronouns: pronouns,
+          AltText: altText,
+          AxisLabel: ax3,
+          StringTags: tags,
+          Image: [{ url: imageUrl }],
+        },
+      }),
+    });
+
+    const data = await airtableRes.json();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true, data }),
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message }),
+    };
+  }
+};
