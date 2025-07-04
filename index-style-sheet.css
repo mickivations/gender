@@ -1,0 +1,77 @@
+body {
+    margin: 10%;
+    overflow-y: auto;
+  }
+
+  .tutorial-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+    background: #fff8;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  
+  .slider {
+    position: relative;
+  }
+  
+  .slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .slide img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .slide.active {
+    display: flex;
+  }
+  
+  .slider-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .slider-buttons button {
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    background-color: #5BCEFA;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .slider-buttons button:hover {
+    background-color: #3ea5cc;
+  }
+  
+  .slider-dots {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .active-dot {
+    background-color: #5BCEFA;
+  }
+  

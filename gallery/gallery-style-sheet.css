@@ -87,7 +87,7 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
     color: #fff;
     font-family: "Rubik Bubbles", sans-serif;
   }
-  
+
   .card p {
     margin: 0;
     color: #ddd;
@@ -114,4 +114,19 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
   font-optical-sizing: auto;
   font-weight: 1000;
   font-style: normal;
+}
+
+a:link, a:visited {
+  background-color: #444444;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 6px;
+
+}
+
+a:hover, a:active {
+  background-color: rgb(53, 53, 59);
 }

@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
+
+  <title>Visualizing Gender Zine</title>
+   <link rel="stylesheet" href="frontend/app-style-sheet.css">
+   <link rel="stylesheet" href="index-style-sheet.css">
+   <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
    <h1>Have You Ever Thought About Gender?</h1>
- An Interactive Zine
-A collaborative experiment in visual self-expression, created by trans people—for when language and identities don’t give the full picture. Users can create gender charts that reflect how they understand and feel their gender, and add them to a growing collection of gender charts.
-
-Goals
-• Celebrate trans creativity by giving people tools to visually express their gender outside of language.
- • Build a living archive of gender charts.
- • Explore the nuances of labels by analyzing the similarities and differences between people with the same identities and their intersections.
-
+<!--
 Tutorial 
 The chart is comprised of 3 axis. 
 
@@ -21,12 +19,88 @@ One is for boy or masculine however you’d like to define it
 Another is for girl or feminine energy
 The 3rd is 3 or other or you can label it whatever you would like when submitting your chart. 
 
+B for boy or masculine energy, G for girl or femmininine energy and 3 or other. An axis you can leave as is (3/Other) or you can name yourself
+-->
 The circles represent percentages. The center is 0%, the first circle is 25%, 50%, 75%, 100%
 
 You can feel as much or as little gender as you wish. It doesn’t need to add up to 100. 
+
+<div class="tutorial-container">
+   <h2>Have You Ever Thought About Gender?</h2>
+   <div class="slider">
+      <div class="slide active">
+         An Interactive Zine
+         A collaborative experiment in visual self-expression, created by trans people—for when language and identities don’t give the full picture. Users can create gender charts that reflect how they understand and feel their gender, and add them to a growing collection of gender charts.
+         
+         Goals
+         • Celebrate trans creativity by giving people tools to visually express their gender outside of language.
+          • Build a living archive of gender charts.
+          • Explore the nuances of labels by analyzing the similarities and differences between people with the same identities and their intersections.
+         </div>
+      <div class="slide">
+         <img src="frontend/assets/gifs/axes.gif" alt="One is for boy or masculine however you’d like to define it. Another is for girl or feminine energy.The 3rd is 3 or other or you can label it whatever you would like when submitting your chart.">
+         <p>The chart is comprised of 3 axis. </p>
+       </div>
+      <div class="slide">
+        <img src="frontend/assets/gifs/percentages.gif" alt="Percentages explanation GIF">
+        <p>The circles represent percentages. The center is 0%, the first circle is 25%, 50%, 75%, 100%
+         You can feel as much or as little gender as you wish. It doesn’t need to add up to 100.
+        </p>
+      </div>
+      <div class="slide">
+        <img src="frontend/assets/gifs/create.gif" alt="Create chart GIF">
+        <p>Once you’re ready, click "Design Your Gender" to begin!</p>
+      </div>
+    </div>
+    
+    <div class="slider-buttons">
+      <button id="prevBtn">◀</button>
+      <button id="nextBtn">▶</button>
+    </div>
+    
+    <div class="slider-dots" id="sliderDots"></div>
+    
+    <script>
+      const slides = document.querySelectorAll('.slide');
+      const dotsContainer = document.getElementById('sliderDots');
+      let current = 0;
+    
+      function showSlide(index) {
+        slides[current].classList.remove('active');
+        dotsContainer.children[current].classList.remove('active-dot');
+        current = index;
+        slides[current].classList.add('active');
+        dotsContainer.children[current].classList.add('active-dot');
+      }
+    
+      function createDots() {
+        for (let i = 0; i < slides.length; i++) {
+          const dot = document.createElement('span');
+          dot.classList.add('dot');
+          if (i === 0) dot.classList.add('active-dot');
+          dot.addEventListener('click', () => showSlide(i));
+          dotsContainer.appendChild(dot);
+        }
+      }
+    
+      document.getElementById('nextBtn').addEventListener('click', () => {
+        let next = (current + 1) % slides.length;
+        showSlide(next);
+      });
+    
+      document.getElementById('prevBtn').addEventListener('click', () => {
+        let prev = (current - 1 + slides.length) % slides.length;
+        showSlide(prev);
+      });
+    
+      createDots();
+    </script>
+
+
+
 <!--
 <explore sample charts> <explore 3rd axis labels> <big create your chart>
 <br> -->
-   <a href="frontend/real-gender.html"> Design Your Gender </a>
+   <a href="frontend/gender-creator.html"> Design Your Gender </a>
 </body>
 </html>
