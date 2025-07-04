@@ -25,10 +25,65 @@ body {
   overflow: hidden; /* keep no scroll */
 }
 
+a:link, a:visited {
+  background-color: #444444;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 6px;
+
+}
+
+a:hover, a:active {
+  background-color: rgb(53, 53, 59);
+}
+
+input {
+  background-color: #000;
+  color: #FFF;
+  border-color: #AAAAAA;
+  margin: 5px;
+ }
+
+ input::placeholder {
+  opacity: 0.5;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+legend .secondary-line {
+  font-size: 0.9rem;       /* smaller text */
+  color: #ccc;             /* lighter color, for example */
+  font-style: italic;      /* optional: make it look like a note */
+  display: inline-block;   /* keeps it inline after <br> */
+  margin-top: 4px;         /* space between lines */
+}
+
+
+
+ textarea{
+  background-color: #000;
+  color: #FFF;
+  opacity: 1;
+  font-family: 'Roboto', sans-serif;
+  border-color: #FFF;
+  margin: 5px;
+ }
+
+ textarea::placeholder {
+  opacity: 0.5;
+  color: white;
+  
+}
+
 h1 {
   margin-top: 0px;
   color: #FFFFFF;
   margin-bottom: 0px;
+  font-family: "Rubik Bubbles", sans-serif;
 }
 
 div {
@@ -85,7 +140,7 @@ canvas {
 }
 
 #container {
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   background-color: #000;
@@ -110,10 +165,10 @@ canvas {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 5px;
   gap: 8px;
   box-sizing: border-box;
   z-index: 10;
+  padding: 10px;
   background: #111;
 }
 
@@ -194,7 +249,7 @@ canvas {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 15%;
+    max-height: 30%;
     width: 100%;
     overflow-x: auto;
   }
@@ -248,28 +303,31 @@ canvas {
 
 #submitMenu {
   display: none; /* Start hidden */
+  justify-content: flex-start; 
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
-  justify-content: center;
+  background-color: rgba(0, 0, 0); /* Dimmed background */
   align-items: center;
   z-index: 1000; /* On top of everything */
   overflow: auto; /* Optional: scroll whole modal if needed */
   color: #000;
+  box-sizing: border-box;
 }
 
 #submitMenu form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Optional spacing between fields */
-  background: white;
-  padding: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  color:#FFFFFF;
+  height:auto;
   border-radius: 8px;
-  max-height: 80vh;
   overflow-y: auto;
+  box-sizing: border-box;
+  margin-bottom: 1vh;
+
 }
 
 /* Modal content box */

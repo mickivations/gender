@@ -5,23 +5,21 @@
   <title>Gender?</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+ 
   <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="app-style-sheet.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.js"></script>
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.js"></script> 
 
-  <!--<script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.js"></script>-->
+  <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.js"></script>
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 </head>
 <body>
-  <h1>Gender?</h1>
-
-  <button id="submitButton" onclick="toggleSubmitMenu()">
-    Submit to Gallery
-  </button>
+  <h1>Visualizing Gender</h1>
   
   <a href="../gallery/gallery.html"> View Charts </a>
 
@@ -60,6 +58,9 @@
     <button onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
     <button onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
 </div>
+<button id="submitButton" onclick="toggleSubmitMenu()" style = "font-size: 18px; background-color: #666; border-color:white; margin-left: 2rem;">
+  Submit to Gallery
+</button>
 
 <!--
 <div class="button-pair">
@@ -74,8 +75,7 @@
       <div class="slider-menu" id="sliderMenu">
         <label for="opacitySlider">Opacity</label>
         <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8">
-        <label for="widthSlider">Brush Width</label>
-        <input type="range" id="widthSlider" min="1" max="100" step="1" value="10">
+
         <label for="radii-slider">Radius</label>
         <input type="range" id="radii-slider" min="0" max="10" step="1" value="3">
       </div>
@@ -98,17 +98,20 @@
 
     <div id="submitMenu">
       <form id="submissionForm">
+        <img id="canvasPreview" alt="Preview of artwork" style="max-width: 50%; margin-bottom: 1rem; margin: auto" />
         <input type="text" id="name" placeholder="Name (optional)"  /> 
         <input type="text" id="pronouns" placeholder="Pronouns (optional)" />
         <input type="text" id="title" placeholder="Title"  />
-        Please describe your artwork for screen readers. 
-        Can be as simple or complicated as you wish 
-        <input type="text" id="altText" placeholder="Alt Text" required />
-        <input type="text" id="descript" placeholder="Any more information you'd like to share?"/>
+        <textarea id="altText" placeholder="Alt Text (required): Please describe your artwork for screen readers. Can be as simple or complicated as you wish  " rows="6" maxlength="5000" required></textarea>
         <input type="text" id="axis3" placeholder="3 Axis Label (optional)" />
+        <input type="text" id="descript" placeholder="Any more information you'd like to share?"/>
+        <br>
         <fieldset id="tagGroup">
-          <legend>What words do you identify with that you would like to include with the chart? (if you would like different spelling, feel free to add the correct spelling in the more words section)</legend>
-        
+          <legend>
+            What words do you identify with that you would like to include with the chart? <br>
+            <span class="secondary-line">If you would like different spelling, feel free to add the correct spelling in the more words section</span>
+          </legend>
+          
           <!-- Predefined checkboxes -->
           <div class="checkbox-grid">
           <label><input type="checkbox" name="options" value="trans"> trans</label>
@@ -127,18 +130,22 @@
 <label><input type="checkbox" name="options" value="fagdyke"> fagdyke</label>
 <label><input type="checkbox" name="options" value="futch"> futch</label>
 <label><input type="checkbox" name="options" value="man"> man</label>
-<label><input type="checkbox" name="options" value="woman"> woman</label> </div>
-    
+<label><input type="checkbox" name="options" value="woman"> woman</label> 
+<label><input type="checkbox" name="options" value="agender"> agender</label> </div>
+
           <!-- Container for dynamic inputs -->
           <div id="customOptionsContainer"></div>
         
           <!-- Add button -->
           <button type="button" id="addCustomOption">+ Add another option</button>
         </fieldset>
-        
         <button type="submit">Submit</button>
-      </form>
+
+      </form>        
+      <button onClick="toggleSubmitMenu()" style = "margin-top:3rem; height:25px; margin:auto; background-color: black; color:white;">X</button>
+  </div> 
     </div>
+
   </div>
   
   

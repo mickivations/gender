@@ -3,7 +3,7 @@
   const canvas = new fabric.Canvas('c');
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
-let currentColor = '#ffff00';  // Default color is blue
+let currentColor = '#ffff00';  // Default color is yelow
 
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
@@ -153,8 +153,13 @@ document.getElementById('opacitySlider').addEventListener('input', (event) => {
   }
 });
 
+/*
 document.getElementById('widthSlider').addEventListener('input', (event) => {
+  console.log(event.target.value);
   brushWidth = event.target.value;
+  console.log(brushWidth);
+
+  enableDrawing();
   const selectedObject = canvas.getActiveObject();
 
   if (selectedObject) {
@@ -165,7 +170,7 @@ document.getElementById('widthSlider').addEventListener('input', (event) => {
     // Re-render the canvas to apply the change
     canvas.renderAll();
   }
-});
+}); */
 
 // Set default opacity for the canvas objects
 canvas.getObjects().forEach((obj) => {
@@ -197,8 +202,16 @@ function toggleShapesMenu() {
   menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
 function toggleSubmitMenu() {
+  const dataURL = canvas.toDataURL({
+    format: 'png',
+    quality: 1.0
+  });
+
+  const img = document.getElementById('canvasPreview');
+  img.src = dataURL;
+
   const menu = document.getElementById('submitMenu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 /////////////// Pinch zoom end ///////////////
 
@@ -423,7 +436,7 @@ function drawRadii(centerX, centerY, radius, count) {
     function deleteObject() {
       const selectedObject = canvas.getActiveObject();
       if (selectedObject) {
-        selectedObject.set({ fill: 'white', stroke: 'white', width: 1, height: 1, top: -100 });
+        selectedObject.set({ fill: 'black', stroke: 'black', width: 1, height: 1,  top: -100, strokeWidth: 0});
         canvas.renderAll();
       }
     }
