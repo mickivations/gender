@@ -1,6 +1,7 @@
 body {
     margin: 5%;
     overflow-y: auto;
+    font-size: 1em;
   }
 
   .tutorial-container {
@@ -28,8 +29,11 @@ body {
   
   .slide img {
     width: 100%;
-    max-width: 400px;
     border-radius: 1rem;
+    max-height: 50vh;
+    height: auto; 
+    width: auto; 
+    max-width: 100%;
   }
   
   .slide.active {
@@ -41,7 +45,6 @@ body {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-top: 1rem;
   }
   
   .slider-buttons button {
