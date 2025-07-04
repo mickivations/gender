@@ -1,20 +1,23 @@
 body {
-    margin: 10%;
+    margin: 5%;
     overflow-y: auto;
   }
 
   .tutorial-container {
-    max-width: 600px;
+    max-width: 90vw;
     margin: 2rem auto;
     text-align: center;
-    background: #fff8;
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    height:65vh
   }
   
   .slider {
     position: relative;
+    height: 65vh;
+    max-height: 65vh;
+    overflow-y: auto;
   }
   
   .slide {
@@ -27,11 +30,11 @@ body {
     width: 100%;
     max-width: 400px;
     border-radius: 1rem;
-    margin-bottom: 1rem;
   }
   
   .slide.active {
-    display: flex;
+    display: block;
+    height: 100%;
   }
   
   .slider-buttons {
@@ -73,5 +76,11 @@ body {
   
   .active-dot {
     background-color: #5BCEFA;
+  }
+
+  .intro
+  {
+    text-align: left;
+    justify-content: left;
   }
   

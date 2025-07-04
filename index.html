@@ -20,45 +20,63 @@ Another is for girl or feminine energy
 The 3rd is 3 or other or you can label it whatever you would like when submitting your chart. 
 
 B for boy or masculine energy, G for girl or femmininine energy and 3 or other. An axis you can leave as is (3/Other) or you can name yourself
--->
+
 The circles represent percentages. The center is 0%, the first circle is 25%, 50%, 75%, 100%
 
 You can feel as much or as little gender as you wish. It doesn’t need to add up to 100. 
-
+-->
 <div class="tutorial-container">
-   <h2>Have You Ever Thought About Gender?</h2>
    <div class="slider">
       <div class="slide active">
-         An Interactive Zine
-         A collaborative experiment in visual self-expression, created by trans people—for when language and identities don’t give the full picture. Users can create gender charts that reflect how they understand and feel their gender, and add them to a growing collection of gender charts.
-         
-         Goals
-         • Celebrate trans creativity by giving people tools to visually express their gender outside of language.
-          • Build a living archive of gender charts.
-          • Explore the nuances of labels by analyzing the similarities and differences between people with the same identities and their intersections.
-         </div>
+         <span class = "intro">
+         <h2>An Interactive Zine </h2>
+         <p>
+         A collaborative experiment in visual self-expression, created by trans people. Users can create gender charts that reflect how they understand and feel their gender, and add to a growing collection of gender charts.
+         <br>
+         Goals <ul>
+         <li>Celebrate trans creativity by giving people tools to visually express their gender outside of language.
+         </li><li>
+          Build a living archive of gender charts.
+         </li><li>
+          Explore the nuances of labels by analyzing the similarities and differences between people with the same identities and their intersections.
+         </li>
+         </ul>
+      </p>
+      </span>
+      </div>
       <div class="slide">
          <img src="frontend/assets/gifs/axes.gif" alt="One is for boy or masculine however you’d like to define it. Another is for girl or feminine energy.The 3rd is 3 or other or you can label it whatever you would like when submitting your chart.">
          <p>The chart is comprised of 3 axis. </p>
        </div>
       <div class="slide">
-        <img src="frontend/assets/gifs/percentages.gif" alt="Percentages explanation GIF">
-        <p>The circles represent percentages. The center is 0%, the first circle is 25%, 50%, 75%, 100%
+        <img src="frontend/assets/gifs/percentages.gif" alt="The center is 0%, the first circle is 25%, 50%, 75%, 100%">
+        <p>The circles represent percentages. 
          You can feel as much or as little gender as you wish. It doesn’t need to add up to 100.
         </p>
       </div>
       <div class="slide">
-        <img src="frontend/assets/gifs/create.gif" alt="Create chart GIF">
-        <p>Once you’re ready, click "Design Your Gender" to begin!</p>
+        <img src="frontend/assets/gifs/examples.gif" alt="Gender Charts with all different ways of drawing / interpretting">
+        <p>You can describe your gender in whatever way makes sense to you.
+         <br>
+         <a href="frontend/gender-creator.html"> Design Your Gender </a>
+         <a href="gallery/gallery.html"> View Gender Charts </a>
+        </p>
+      </div>
+      <div class="slide">
+         <a href="frontend/gender-creator.html"> Design Your Gender </a>
+         <a href="gallery/gallery.html"> View Gender Gallery </a>
+
       </div>
     </div>
     
     <div class="slider-buttons">
       <button id="prevBtn">◀</button>
+
+    <div class="slider-dots" id="sliderDots"></div>
       <button id="nextBtn">▶</button>
     </div>
     
-    <div class="slider-dots" id="sliderDots"></div>
+
     
     <script>
       const slides = document.querySelectorAll('.slide');
@@ -98,9 +116,9 @@ You can feel as much or as little gender as you wish. It doesn’t need to add u
 
 
 
+
 <!--
 <explore sample charts> <explore 3rd axis labels> <big create your chart>
 <br> -->
-   <a href="frontend/gender-creator.html"> Design Your Gender </a>
 </body>
 </html>
