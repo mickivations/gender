@@ -1,4 +1,6 @@
-const canvas = new fabric.Canvas('c');
+
+  // Create canvas
+  const canvas = new fabric.Canvas('c');
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
 let currentColor = '#ffff00';  // Default color is blue
@@ -6,6 +8,7 @@ let currentColor = '#ffff00';  // Default color is blue
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
 let pendingShapeType = null;
+let brushWidth = 10;
 
 let maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
 let newRadiiCount = 3;
@@ -22,6 +25,8 @@ function addShape(type) {
 const undoStack = [];
 const redoStack = [];
 let isRestoringState = false;
+console.log(fabric.EraserBrush); // Should NOT be undefined
+
 
 function saveState() {
   if (isRestoringState) return; // prevent saving during undo/redo
@@ -63,50 +68,6 @@ canvas.on('after:render', () => {
 ['object:added', 'object:modified', 'object:removed'].forEach(event => {
   canvas.on(event, saveState);
 });
-
-// Function to add editable text
-function addText(event) {
-
-  // Create the editable text object
-  const text = new fabric.Textbox('Click to edit', {
-    left: 20,
-    top: 20,
-    fontSize: 30,
-    fill: currentColor,
-    editable: true,
-    hasBorders: true,
-    hasControls: true,
-    lockUniScaling: true,
-    opacity: opacityValue
-  });
-
-  // Add the text to the canvas
-  canvas.add(text);
-  canvas.setActiveObject(text); // Automatically select the new text object
-  canvas.renderAll();
-}
-
-const shapesButton = document.getElementById('shapesButton');
-const shapesSubMenu = document.getElementById('shapesSubMenu');
-/*
-// Toggle submenu on button click
-shapesButton.addEventListener('click', () => {
-  shapesSubMenu.style.display = shapesSubMenu.style.display === 'none' ? 'block' : 'none';
-});
-
-*/
-/*
-// Optional: Hide submenu when clicking outside
-document.addEventListener('click', (event) => {
-  if (!event.target.closest('.menu')) {
-    shapesSubMenu.style.display = 'none';
-  }
-});
-/*
-document.getElementById("radii-slider").addEventListener("input", function (event) {
-  const newRadiiCount = parseInt(event.target.value, 10);
-  drawRadii(radiiGroup, centerX, centerY, radius, newRadiiCount);
-});*/
 
 function duplicateObject() {
   const selectedObject = canvas.getActiveObject();
@@ -185,6 +146,20 @@ document.getElementById('opacitySlider').addEventListener('input', (event) => {
   if (selectedObject) {
     selectedObject.set({
       opacity: opacityValue
+    });
+
+    // Re-render the canvas to apply the change
+    canvas.renderAll();
+  }
+});
+
+document.getElementById('widthSlider').addEventListener('input', (event) => {
+  brushWidth = event.target.value;
+  const selectedObject = canvas.getActiveObject();
+
+  if (selectedObject) {
+    selectedObject.set({
+      width: brushWidth
     });
 
     // Re-render the canvas to apply the change
@@ -309,7 +284,7 @@ canvas.on('mouse:down', function(event) {
         setActiveTool('Line');
         shape = new fabric.Line([x1, y1, x2, y2], {
           stroke: currentColor,
-          strokeWidth: 8,
+          strokeWidth: brushWidth,
           selectable: true,
           opacity: opacityValue
         });
@@ -409,12 +384,20 @@ function drawRadii(centerX, centerY, radius, count) {
  
     // Enable free drawing mode and set the color
     function enableDrawing() {
+      console.log(fabric.version);
       canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush.width = 5;
+      canvas.freeDrawingBrush.width = brushWidth;
       canvas.freeDrawingBrush.color = currentColor;  // Set drawing color to the selected color
+      canvas.freeDrawingBrush.opacity = opacityValue;
       pendingShapeType = null;  // Clear the pending shape
       //setActiveTool('Free Draw');
 
+    }
+
+    function enableEraser() {
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush = new fabric.EraserBrush(canvas);
+      canvas.freeDrawingBrush.width = brushWidth;
     }
 
     // Disable free drawing mode
@@ -451,6 +434,7 @@ function drawRadii(centerX, centerY, radius, count) {
       // Recalculate the center of the canvas based on the current size
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
+      canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
       // recalculate the maximum possible radius for the circles
        maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
@@ -597,45 +581,10 @@ document.getElementById("radii-slider").addEventListener("input", function (even
   drawRadii(centerX, centerY, maxRadius, newRadiiCount);
 });
 
-
-function createRectangle(x, y) {
-    return new fabric.Rect({
-      left: x,
-      top: y,
-      width: 1,
-      height: 1,
-      fill: 'rgba(91,206,250,0.4)',
-      stroke: '#5BCEFA',
-      strokeWidth: 2,
-      selectable: true,
-    });
-  }
-  
-  function createCircle(x, y) {
-    return new fabric.Circle({
-      left: x,
-      top: y,
-      radius: 1,
-      fill: 'rgba(245,169,184,0.4)',
-      stroke: '#F5A9B8',
-      strokeWidth: 2,
-      selectable: true,
-    });
-  }
-  
-  function createLine(x, y) {
-    return new fabric.Line([x, y, x, y], {
-      stroke: '#5BCEFA',
-      strokeWidth: 2,
-      selectable: true,
-    });
-  }
-
     // Initial resize
     resizeCanvas();
     enableDrawing();
 
-   
 
 //airtable
 const IMGBB_API_KEY = 'd449e7eb6eddc18900a3521f89f418bc';
@@ -778,3 +727,82 @@ const maxCustomOptions = 20;
   });
 
     
+// Function to add editable text
+function addText(event) {
+
+  // Create the editable text object
+  const text = new fabric.Textbox('Click to edit', {
+    left: 20,
+    top: 20,
+    fontSize: 30,
+    fill: currentColor,
+    editable: true,
+    hasBorders: true,
+    hasControls: true,
+    lockUniScaling: true,
+    opacity: opacityValue
+  });
+
+  // Add the text to the canvas
+  canvas.add(text);
+  canvas.setActiveObject(text); // Automatically select the new text object
+  canvas.renderAll();
+}
+
+const shapesButton = document.getElementById('shapesButton');
+const shapesSubMenu = document.getElementById('shapesSubMenu');
+/*
+// Toggle submenu on button click
+shapesButton.addEventListener('click', () => {
+  shapesSubMenu.style.display = shapesSubMenu.style.display === 'none' ? 'block' : 'none';
+});
+
+*/
+/*
+// Optional: Hide submenu when clicking outside
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.menu')) {
+    shapesSubMenu.style.display = 'none';
+  }
+});
+/*
+document.getElementById("radii-slider").addEventListener("input", function (event) {
+  const newRadiiCount = parseInt(event.target.value, 10);
+  drawRadii(radiiGroup, centerX, centerY, radius, newRadiiCount);
+});*/
+
+/*
+function createRectangle(x, y) {
+    return new fabric.Rect({
+      left: x,
+      top: y,
+      width: 1,
+      height: 1,
+      stroke: '#5BCEFA',
+      strokeWidth: 2,
+      selectable: true,
+    });
+  }
+  
+  function createCircle(x, y) {
+    return new fabric.Circle({
+      left: x,
+      top: y,
+      radius: 1,
+      fill: 'rgba(245,169,184,0.4)',
+      stroke: '#F5A9B8',
+      strokeWidth: 2,
+      selectable: true,
+    });
+  }
+  
+  function createLine(x, y) {
+    return new fabric.Line([x, y, x, y], {
+      stroke: '#5BCEFA',
+      strokeWidth: 2,
+      selectable: true,
+    });
+  }
+*/
+
+   
