@@ -599,48 +599,8 @@ document.getElementById("radii-slider").addEventListener("input", function (even
     enableDrawing();
 
 
-//airtable
-const IMGBB_API_KEY = 'd449e7eb6eddc18900a3521f89f418bc';
-const AIRTABLE_API_KEY = 'patrgI0a9jrqSYQFl.0aeb268d8112aadea5cc60363ecc57994754d7d2b3a6dc71cdee307f23d9cfff';
-const AIRTABLE_BASE_ID = 'appMnJ5OpcAn5M282';
-const AIRTABLE_TABLE_NAME = 'Submissions';
 
-async function uploadImageToImgBB(base64Image) {
-  const formData = new FormData();
-  formData.append('image', base64Image.split(',')[1]); // remove "data:image/png;base64,"
-
-  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-    method: 'POST',
-    body: formData,
-  });
-
-  const data = await res.json();
-  return data.data.url;
-}
-
-async function sendToAirtable(title, name, pronouns, imageUrl, altText, ax3, tags) {
-  const res = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      fields: {
-        Title: title,
-        Name: name,
-        Image: [{ url: imageUrl }],
-        AltText: altText,
-        AxisLabel: ax3,
-        pronouns: pronouns,
-        StringTags: tags,
-      },
-    }),
-  });
-
-  const data = await res.json();
-  return data;
-}
+  
 
 document.getElementById('submissionForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -668,17 +628,28 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
 
 
   toggleSubmitMenu();
-  try {
-    const imageUrl = await uploadImageToImgBB(base64);
-    console.log("allChoices:", allChoices);
-    const airtableRes = await sendToAirtable(title, name, pronouns, imageUrl, altText, axis3, tagsString);
-    alert('Submitted successfully!');
-    console.log('Airtable response:', airtableRes);
-    
-  } catch (err) {
-    console.error('Upload error:', err);
-    alert('Something went wrong.');
-  }
+
+const payload = {
+  title,
+  name,
+  pronouns,
+  imageBase64: base64,
+  altText,
+  ax3: axis3,
+  tags: tagsString,
+};
+
+const res = await fetch('/.netlify/functions/submit', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(payload),
+});
+
+const data = await res.json();
+console.log(data);
+
 });
 /*
 function handleSubmit() {
@@ -817,5 +788,3 @@ function createRectangle(x, y) {
     });
   }
 */
-
-   
