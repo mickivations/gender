@@ -9,7 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="app-style-sheet.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.js"></script>
+
+  <!--<script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.js"></script>-->
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 </head>
 <body>
@@ -28,23 +32,26 @@
   <div id="activeTool" style="margin-top: 10px; font-weight: bold; float:left">Active Tool: Free Draw</div> 
   
   <div class="toolbar">
+
+    <div class="button-pair">
+      <button onclick="undo()"><span class="material-icons">undo</span></button>
+      <button onclick="redo()"><span class="material-icons">redo</span></button></div>
     <div class="button-pair">
         <button onclick="deleteObject()">
           <span class="material-icons">delete</span> 
         </button>
-        <button onclick="duplicateObject()">
-          <span class="material-icons">content_copy</span> 
-        </button>
+        <button onclick="disableDrawing()"><span class="material-icons">touch_app</span></button>
       </div>
+    
+    <!-- Select + Shapes
     <div class="button-pair">
-    <button onclick="undo()"><span class="material-icons">undo</span></button>
-    <button onclick="redo()"><span class="material-icons">redo</span></button></div>
-    <div class="button-pair">
+
     <button onclick="disableDrawing()"><span class="material-icons">ads_click</span></button>
     <button id="shapesButton" onclick="toggleShapesMenu()">
         <span class="material-icons">format_shapes</span>
-      </button></div>
+      </button></div>-->
     <button onclick="enableDrawing()"><span class="material-icons">brush</span></button>
+
     <!-- Color Picker -->
 <div class="toolbar-item">
     <input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">
@@ -54,25 +61,28 @@
     <button onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
 </div>
 
+<!--
 <div class="button-pair">
   <button onclick="toggleSliderMenu()"><span class="material-icons">tune</span></button>
     <button onclick="saveImage()"><span class="material-icons">upload</span></button>
 
-</div>
+</div> -->
     
   
-    <!-- Sliders Menu -->
+    <!-- Sliders Menu (Deprecated) -->
     <div class="toolbar-item" id="sliderGroup">
       <div class="slider-menu" id="sliderMenu">
         <label for="opacitySlider">Opacity</label>
         <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8">
+        <label for="widthSlider">Brush Width</label>
+        <input type="range" id="widthSlider" min="1" max="100" step="1" value="10">
         <label for="radii-slider">Radius</label>
         <input type="range" id="radii-slider" min="0" max="10" step="1" value="3">
       </div>
     </div>
   
-    <!-- Shapes Menu -->
-      
+    <!-- Shapes Menu (Deprecated) -->
+    
       <div id="shapesSubMenu">
         <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
         <button onclick="addShape('circle')"><i class="fas fa-circle"></i></button>

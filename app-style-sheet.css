@@ -1,40 +1,43 @@
-body {
-
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #5BCEFA, #F5A9B8);
-    margin: 0;
+/* Make sure html and body fill the viewport for percentage heights to work */
+html, body {
+  height: 100%;
+  margin: 0;
   padding: 0;
-  text-align: center;
-  height: 80vh;
-  background-color: #000;
-    color: #fff;
-background-image:
-radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+  overflow: hidden; /* prevent body scroll */
 }
 
-
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #5BCEFA, #F5A9B8);
+  margin: 0; /* changed from 20px to 0 to avoid scroll */
+  padding: 0px;
+  text-align: center;
+  height: 100%; /* changed from 80vh to 100% */
+  background-color: #000;
+  color: #fff;
+  background-image:
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+    radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+  overflow: hidden; /* keep no scroll */
+}
 
 h1 {
   margin-top: 0px;
   color: #FFFFFF;
   margin-bottom: 0px;
-
 }
 
 div {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
-
 
 button:hover {
   background-color: #000000;
-
 }
 
 button i {
@@ -43,7 +46,7 @@ button i {
 
 #colorPicker {
   width: 48px;
-  height:96px
+  height: 96px;
 }
 
 #opacitySlider, #radii-slider {
@@ -71,231 +74,245 @@ button i {
   margin: 2px;
 }
 
+/* Make canvas fill container exactly */
 canvas { 
-    margin-top: 0px; 
-    display: block; 
-  }
+  display: block; 
+  width: 100% !important;  /* fill width of container */
+  height: 100% !important; /* fill height of container */
+  margin-top: 0px; 
+  padding: 0;
+  overflow: hidden;
+}
 
 #container {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #000;
-    color: #fff;
-background-image:
-radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-
+  color: #fff;
+  background-image:
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+    radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
   margin-top: 0px;
+
+  /* Take full viewport height minus toolbar */
+  height: 100vh;
+  margin-right: 110px; /* leave space for toolbar on right */
+  overflow: hidden; /* prevent scroll */
 }
+
 .toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    gap: 8px;
-    box-sizing: border-box;
-    z-index: 10;
-    background-color: #000;
-    color: #fff;
-background-image:
-radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  gap: 8px;
+  box-sizing: border-box;
+  z-index: 10;
+  background: #111;
+}
 
-  }
-  /* Each pair: either row or column layout */
+/* Each pair: either row or column layout */
 .button-pair {
-    display: flex;
-    gap: 4px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+/* Buttons inside pairs */
+.button-pair button {
+  width: 48px;
+  height: 7vh;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toolbar > button {
+  width: 96px;  /* double the 48px in .button-pair */
+  height: 96px;
+  background-color: #333;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px; /* increase icon size too */
+  flex-shrink: 0;
+}
+
+.toolbar input[type="color"] {
+  width: 48px;
+  height: 48px;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.toolbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.slider-menu,
+.submenu {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background-color: #2a2a2a;
+  padding: 8px;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+}
+
+.toolbar-item.show-sliders .slider-menu,
+.toolbar-item.show-shapes .submenu {
+  display: flex;
+}
+
+/* Responsive layout */
+@media (max-aspect-ratio: 1/1) {
+  .toolbar {
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 15%;
+    width: 100%;
+    overflow-x: auto;
   }
-  
-  /* Buttons inside pairs */
-  .button-pair button {
-    width: 48px;
-    height: 7vh;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #333;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
+  .button-pair {
+    flex-direction: column;
+  }
+  #container {
+    margin-bottom: 15vh; /* avoid overlap with toolbar */
+    margin-right: 0;
+    height: calc(100vh - 15vh); /* fill height minus toolbar */
+    overflow: hidden;
+  }
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .toolbar {
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 110px;
+    max-width: 110px;
+    height: 100vh;
+    overflow-y: auto;  /* enable vertical scroll */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
   }
 
-  .toolbar > button {
-    width: 96px;  /* double the 48px in .button-pair */
-    height: 96px;
-    background-color: #333;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px; /* increase icon size too */
+  #container {
+    margin-right: 110px; /* add margin so content not covered by toolbar */
+    height: 100vh;
+    overflow: hidden; /* no scroll */
   }
-  
-  .toolbar input[type="color"] {
-    width: 48px;
-    height: 48px;
-    border: none;
-    padding: 0;
-  }
-  
-  .toolbar-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .slider-menu,
-  .submenu {
-    display: none;
-    flex-direction: column;
-    gap: 4px;
-    background-color: #2a2a2a;
-    padding: 8px;
-    border-radius: 6px;
-    color: white;
-    font-size: 12px;
-  }
-  
-  .toolbar-item.show-sliders .slider-menu,
-  .toolbar-item.show-shapes .submenu {
-    display: flex;
-  }
-  
-  /* Responsive layout */
-  @media (max-aspect-ratio: 1/1) {
-    .toolbar {
-      flex-direction: row;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 15%;
-      width: 100%;
-    }
-    .button-pair {
-        flex-direction: column;
-      }
-  }
-  
-  @media (min-aspect-ratio: 1/1) {
-    .toolbar {
-      flex-direction: column;
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 100px;
-      height: 100%;
-    }
-  }
-  
-  /* Fullscreen overlay background */
+}
+
+/* Fullscreen overlay background */
 #shapesSubMenu {
-    display: none; /* Start hidden */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* On top of everything */
-  }
+  display: none; /* Start hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* On top of everything */
+}
 
-  #submitMenu {
-    display: none; /* Start hidden */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* On top of everything */
-    overflow: auto; /* Optional: scroll whole modal if needed */
-    color: #000;
+#submitMenu {
+  display: none; /* Start hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* On top of everything */
+  overflow: auto; /* Optional: scroll whole modal if needed */
+  color: #000;
+}
 
-  }
-  
-  #submitMenu form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; /* Optional spacing between fields */
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
+#submitMenu form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Optional spacing between fields */
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
 
-  /* Modal content box */
-  #shapesSubMenu .shape-options {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
-  }
-  
-  /* Buttons inside the modal */
-  #shapesSubMenu button {
-    background: #1a1a1a;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  #shapesSubMenu button:hover {
-    background: #333;
-  }
+/* Modal content box */
+#shapesSubMenu .shape-options {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
 
-  .checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.5rem;
-    padding: 0.5rem 0;
-  }
-  
-  .checkbox-grid label {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.95rem;
-    background: #f8f8f8;
-    padding: 0.4rem 0.6rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .checkbox-grid label:hover {
-    background: #eee;
-  }
-  
-  
+/* Buttons inside the modal */
+#shapesSubMenu button {
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#shapesSubMenu button:hover {
+  background: #333;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.checkbox-grid label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
