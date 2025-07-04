@@ -34,20 +34,20 @@ body {
 }
 
 .tutorial-container {
-  max-width: 90vw;
+  
   margin: 0rem auto;
   text-align: center;
   border-radius: 1rem;
   padding: 0rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  height: 65vh;
+  
 }
 
 .slider {
   position: relative;
-  height: 65vh;
-  max-height: 65vh;
   overflow-y: auto;
+  height: 65vh;
+  max-width: 90vw;
 }
 
 .slide {
