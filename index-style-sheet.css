@@ -10,6 +10,10 @@ body {
     font-size: 1.25rem; /* ~20px font size on mobile */
   }
 
+    h1 {
+      font-size: 1.5rem; /* ~20px font size on mobile */
+    }
+
   .tutorial-container {
     padding: 1.5rem;
     max-width: 95vw;
