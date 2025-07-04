@@ -16,5 +16,8 @@
     "url": "https://github.com/mickivations/gender/issues"
   },
   "homepage": "https://github.com/mickivations/gender#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "dotenv": "^17.0.1"
+  }
 }

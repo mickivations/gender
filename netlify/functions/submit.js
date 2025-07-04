@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 exports.handler = async function (event, context) {
   if (event.httpMethod !== 'POST') {
     return {
@@ -17,15 +19,22 @@ exports.handler = async function (event, context) {
     // Upload image to ImgBB
     const formData = new URLSearchParams();
     formData.append('image', imageBase64.split(',')[1]);
+    console.log("Before ImgBB upload");
+    console.log("ImgBB API Key:", imgBBKey ? "Present" : "Missing or empty");
 
     const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
       method: 'POST',
       body: formData,
     });
+
+    console.log("After ImgBB upload, status:", uploadRes.status);
+
     const uploadData = await uploadRes.json();
     const imageUrl = uploadData.data.url;
 
     // Send to Airtable
+    console.log("Before Airtable update");
+
     const airtableRes = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
       method: 'POST',
       headers: {
@@ -46,6 +55,8 @@ exports.handler = async function (event, context) {
     });
 
     const data = await airtableRes.json();
+    console.log("After Airtable update, status:", airtableRes.status);
+
     return {
       statusCode: 200,
       body: JSON.stringify({ success: true, data }),
@@ -56,4 +67,5 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ error: err.message }),
     };
   }
+  
 };
