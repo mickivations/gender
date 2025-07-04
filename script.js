@@ -638,17 +638,22 @@ const payload = {
   ax3: axis3,
   tags: tagsString,
 };
-
 const res = await fetch('/.netlify/functions/submit', {
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(payload),
 });
 
 const data = await res.json();
-console.log(data);
+
+if (res.ok && data.success) {
+  alert('Submission successful!');
+} else {
+  alert('Submission failed: ' + (data.error || 'Unknown error'));
+}
+
+
+
 
 });
 /*
