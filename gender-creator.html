@@ -48,8 +48,9 @@
     <button id="shapesButton" onclick="toggleShapesMenu()">
         <span class="material-icons">format_shapes</span>
       </button></div>-->
+  <div class="toolbar-item">
     <button onclick="enableDrawing()"><span class="material-icons">brush</span></button>
-
+  </div>
     <!-- Color Picker -->
 <div class="toolbar-item">
     <input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">
@@ -58,9 +59,10 @@
     <button onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
     <button onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
 </div>
-<button id="submitButton" onclick="toggleSubmitMenu()" style = "font-size: 18px; background-color: #666; border-color:white; margin-left: 2rem;">
+<div class="toolbar-item">
+<button id="submitButton" onclick="toggleSubmitMenu()">
   Submit to Gallery
-</button>
+</button> </div>
 
 <!--
 <div class="button-pair">

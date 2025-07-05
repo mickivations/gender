@@ -1,3 +1,9 @@
+:root {
+  --toolbar_height: calc(100vh - 10vh - 100vw);
+  --toolbar_button_width: calc(100vw / 10);
+  --toolbar_button_height: calc(var(--toolbar_height)/2);
+}
+
 /* Make sure html and body fill the viewport for percentage heights to work */
 html, body {
   height: 100%;
@@ -23,6 +29,7 @@ body {
   background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
   background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
   overflow: hidden; /* keep no scroll */
+  display: block;
 }
 
 a:link, a:visited {
@@ -95,13 +102,15 @@ button i {
 }
 
 #colorPicker {
-  width: 48px;
-  height: 96px;
+  flex: 0 0 calc(2 * var(--button_width)); /* double width */
+  height: 100%;
+  margin: 4px;
 }
 
 #opacitySlider, #radii-slider {
   vertical-align: middle;
   margin-left: 5px;
+
 }
 
 .menu {
@@ -158,54 +167,34 @@ canvas {
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  box-sizing: border-box;
-  z-index: 10;
-  padding: 10px;
-  background: #111;
+  justify-content: center; /* or space-between if you prefer */
+  align-items: stretch;
+  height: var(--toolbar_height); /* fills leftover vertical space */
+  width: 100vw; /* full width */
+  overflow: hidden;
+  background-color: transparent;
 }
 
-/* Each pair: either row or column layout */
 .button-pair {
   display: flex;
+  flex: 0 0 calc(2 * var(--button_width)); /* container width = 2 button widths */
   gap: 4px;
-  flex-wrap: nowrap;
 }
 
-/* Buttons inside pairs */
 .button-pair button {
-  width: 48px;
-  height: 7vh;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #333;
-  border: none;
+  flex: 1 1 0; /* share the pair’s width equally */
+  height: var(--button_height);
+  background-color: transparent;
   color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  flex-shrink: 0;
+  border: 1px solid white;
+  border-radius: 5px;
+
 }
 
-.toolbar > button {
-  width: 96px;  /* double the 48px in .button-pair */
-  height: 96px;
-  background-color: #333;
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px; /* increase icon size too */
-  flex-shrink: 0;
-}
+
 
 .toolbar input[type="color"] {
-  width: 48px;
+  width: 20vw;
   height: 48px;
   border: none;
   padding: 0;
@@ -213,10 +202,25 @@ canvas {
 }
 
 .toolbar-item {
+  flex: 0 0 calc(2 * var(--toolbar_button_width) + 8px);
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 4px;
+  
+}
+
+.toolbar-item button,
+.toolbar-item input[type="color"] {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 4px;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
 .slider-menu,
@@ -261,6 +265,9 @@ canvas {
 
 @media (min-aspect-ratio: 1/1) {
   .toolbar {
+      display: inline-block;
+  grid-template-columns: repeat(10, 1fr); /* 10 equal columns */
+  height: var(--toolbar_height);
     flex-direction: column;
     position: fixed;
     top: 0;
