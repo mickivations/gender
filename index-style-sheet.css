@@ -1,7 +1,9 @@
 body {
   margin: 0%;
+  padding: 2%;
+  display:block;
   overflow-y: auto;
-  font-size: 1rem; /* base 16px */
+  font-size: 1.25rem; /* base 16px */
 }
 
 /* Increase font size and spacing on small/mobile screens */
@@ -16,6 +18,7 @@ body {
 
   .tutorial-container {
     max-width: 95vw;
+    margin: auto;
   }
 
   .slider-buttons button {
@@ -34,14 +37,14 @@ body {
 }
 
 .tutorial-container {
-  
-  margin: 0rem auto;
-  text-align: center;
-  border-radius: 1rem;
-  padding: 0rem;
+  max-width: 1200px;
+  width: 100%;
+  padding: 1rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  
+  border-radius: 1rem;
+  margin: auto;
 }
+
 
 .slider {
   position: relative;
@@ -112,4 +115,5 @@ body {
 .intro {
   text-align: left;
   justify-content: left;
+  width: 100%;
 }
