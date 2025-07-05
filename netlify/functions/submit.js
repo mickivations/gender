@@ -29,8 +29,19 @@ exports.handler = async function (event, context) {
 
     console.log("After ImgBB upload, status:", uploadRes.status);
 
-    const uploadData = await uploadRes.json();
-    const imageUrl = uploadData.data.url;
+   // const uploadData = await uploadRes.json();
+   // const imageUrl = uploadData.data.url;
+// debug version 
+const uploadData = await uploadRes.json();
+console.log("ImgBB response:", uploadData);
+
+if (!uploadData.success || !uploadData.data || !uploadData.data.url) {
+  throw new Error(
+    "ImgBB upload failed: " + (uploadData?.error?.message || JSON.stringify(uploadData))
+  );
+}
+
+const imageUrl = uploadData.data.url;
 
     // Send to Airtable
     console.log("Before Airtable update");
