@@ -124,10 +124,29 @@ a:link, a:visited {
   text-decoration: none;
   display: inline-block;
   border-radius: 6px;
+  font-size: 1.2rem;
+
 
 }
 
 a:hover, a:active {
+  background-color: rgb(53, 53, 59);
+}
+
+button {
+  background-color: #444444;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 6px;
+  font-family: "Rubik Bubbles", sans-serif;
+  font-size: 1.2rem;
+
+}
+
+button:hover, button:active {
   background-color: rgb(53, 53, 59);
 }
 
@@ -143,6 +162,7 @@ a:hover, a:active {
   position: relative;
   width: 90%;
   margin: auto;
+  padding-top: 10px;
   margin-bottom: 1rem;
 }
 
