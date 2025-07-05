@@ -15,6 +15,28 @@
 <body>
   <h1>Gender Chart Gallery</h1>
   <a href="../frontend/gender-creator.html"> Create Your Gender Chart </a>
+  <button id="toggleTagFiltersBtn" type="button">Filter by Tags</button>
+
+  <div id="tagFilterContainer" style ="display:none">
+    <div id="tagControlsRow">
+      <input type="text" id="tagSearch" placeholder="Search by tag..." autocomplete="on">
+      <button id="showAllTagsBtn" type="button">View Tags</button>
+      <label id="filterModeToggle">
+        <input type="checkbox" id="andMode">
+        Match <strong>ALL</strong> tags
+      </label>
+    </div>
+  
+    <div id="tagSuggestions"></div>
+    <div id="selectedTags"></div>
+  </div>  
+
+
+<div id="allTagsList" style="display:none; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; margin-top: 5px;">
+
+</div>
+
+
   <div id="gallery">Loading...</div>
 
    <!-- Modal -->
@@ -24,6 +46,7 @@ background:rgba(0,0,0,0.8); align-items:center; z-index:999; flex-direction:colu
   <button id="closeModal" style="position:absolute; top:10px; right:10px;">X</button>
   <img id="modalImage" src="" alt="" style="max-width:100%; border-radius:6px;" />
   <h2 id="modalTitle"></h2>
+  <p id="modalID"></p>
   <p id="modalDescription"></p>
   
   <p id="modalTags"></p>
