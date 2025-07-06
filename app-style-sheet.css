@@ -269,7 +269,7 @@ canvas {
     bottom: 0;
     left: 0;
     right: 0;
-    max-height: 30%;
+   /* max-height: 30%;*/
     height: var(--toolbar_height); /* ensure actual height constraint */
     width: 100%;
     overflow-x: auto;
@@ -493,7 +493,7 @@ canvas {
 /* Responsive adjustments and (pointer: coarse) */
 @media (max-width: 600px)  {
   body{
-    background-color: gray;
+    background-color: blue;
 
   }
 
