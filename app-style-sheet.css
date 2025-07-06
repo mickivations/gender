@@ -462,7 +462,7 @@ canvas {
 }
 
 /* Responsive adjustments */
-@media (max-width: 500px) {
+@media (max-width: 800px) and (pointer: coarse) {
   #submitMenu form {
     max-width: 95vw;
     padding: 1rem;
