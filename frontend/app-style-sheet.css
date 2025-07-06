@@ -462,7 +462,7 @@ canvas {
 }
 
 /* Responsive adjustments and (pointer: coarse) */
-@media (max-width: 400px)  {
+@media (max-width: 600px)  {
   body{
     background-color: green;
   }
