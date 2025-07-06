@@ -147,6 +147,8 @@ button i {
 
 /* Make canvas fill container exactly */
 canvas { 
+  touch-action: pinch-zoom; /* ALLOWS pinch but blocks pan (default scroll) */
+  -ms-touch-action: pinch-zoom; /* for older IE */
   display: block; 
   width: 100% !important;  /* fill width of container */
   height: 100% !important; /* fill height of container */
@@ -495,7 +497,7 @@ canvas {
 /* Responsive adjustments and (pointer: coarse) */
 @media (max-width: 600px)  {
   body{
-    background-color: grey;
+    background-color: black;
 
   }
 
