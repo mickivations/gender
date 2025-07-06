@@ -471,9 +471,10 @@ canvas {
     font-size: 1.1rem;
     padding: 0.6rem;
   }
-    button,
+    
+  body, button,
     a {
-      font-size: 1.5rem; /* bigger font size */
+      font-size: 5rem; /* bigger font size */
       padding: 10px 16px; /* a bit more padding for touch comfort */
     }
   
