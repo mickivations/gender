@@ -191,7 +191,7 @@ canvas {
   display: flex;
   flex: 0 0 var(--toolbar_button_width); /* container width = 2 button widths */
   /*min-width: var(--toolbar_button_width);;*/
-  gap: 4px;
+  gap: 0px;
   background-color: transparent !important;
   backdrop-filter: none !important; /* remove any blur just in case */
 }
@@ -232,7 +232,7 @@ canvas {
   height: 100%;
   font-size: 1rem;
   cursor: pointer;
-  margin: 4px;
+  margin: 0px;
   background-color: transparent;
   color: white;
   border: 1px solid white;
@@ -275,7 +275,7 @@ canvas {
     flex-direction: column;
   }
   #container {
-    margin-bottom: 15vh; /* avoid overlap with toolbar */
+    margin-bottom: 0vh; /* avoid overlap with toolbar */
     margin-right: 0;
     width: 100vw;
     height: 100vw; /* square */
@@ -299,7 +299,7 @@ canvas {
     height: 100vh;
     overflow-y: auto;  /* enable vertical scroll */
     padding-top: 10px;
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
     box-sizing: border-box;
   }
 
