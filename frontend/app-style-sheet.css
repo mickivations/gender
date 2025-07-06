@@ -1,5 +1,5 @@
 :root {
-  --toolbar_height: calc(100vh - 10vh - 100vw);
+  --toolbar_height: calc(89vh - 100vw);
   --toolbar_button_width: calc(100vw / 10);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
@@ -15,6 +15,7 @@ html, body {
 
 body {
   font-family: "Nunito", sans-serif;
+  font-weight: 1000;
   background: linear-gradient(135deg, #5BCEFA, #F5A9B8);
   margin: 0; /* changed from 20px to 0 to avoid scroll */
   padding: 0px;
@@ -238,6 +239,7 @@ canvas {
   border-radius: 5px;
   font-size: large;
   font-family: "Nunito";
+  font-weight: 1000;
 }
 
 .slider-menu,
@@ -460,11 +462,11 @@ canvas {
 }
 
 /* Responsive adjustments */
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   #submitMenu form {
     max-width: 95vw;
     padding: 1rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   #submitMenu button[type="submit"] {
@@ -472,17 +474,25 @@ canvas {
     padding: 0.6rem;
   }
     
-  body, button,
-    a {
-      font-size: 5rem; /* bigger font size */
+  body{
+      font-size: 1.1rem !important; /* bigger font size */
       padding: 10px 16px; /* a bit more padding for touch comfort */
     }
+
+    .toolbar button span.material-icons {
+      font-size: 2rem; /* or larger as you prefer */
+    }
+
+    .toolbar-item button span.material-icons {
+      font-size: 4rem; /* or larger as you prefer */
+    }
+  
   
 }
 
 .nunito-semi> {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 1000;
+  font-weight: 1000 !important;
   font-style: normal;
 }
