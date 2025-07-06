@@ -1,6 +1,6 @@
 :root {
   --toolbar_height: calc(89vh - 100vw);
-  --toolbar_button_width: calc(100vw / 10);
+  --toolbar_button_width: calc(99vw / 10);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
 }
@@ -169,7 +169,6 @@ canvas {
   background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
   background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
   margin-top: 0px;
-
   /* Take full viewport height minus toolbar */
   height: 100vh;
   overflow: hidden; /* prevent scroll */
@@ -191,14 +190,15 @@ canvas {
   display: flex;
   flex: 0 0 var(--toolbar_button_width); /* container width = 2 button widths */
   /*min-width: var(--toolbar_button_width);;*/
+  height: var(--toolbar_height);
   gap: 0px;
   background-color: transparent !important;
   backdrop-filter: none !important; /* remove any blur just in case */
 }
 
 .button-pair button {
-  flex: 1 1 0; /* share the pair’s width equally */
-  height: var(--button_height);
+  flex: 1 1 var(--toolbar_button_width); /* share the pair’s width equally */
+  max-height: var(--toolbar_button_height);
   color: white;
   border: 1px solid white;
   border-radius: 5px;
@@ -218,7 +218,7 @@ canvas {
 }
 
 .toolbar-item {
-  flex: 0 0 calc(2 * var(--toolbar_button_width) + 8px);
+  flex: 0 0 calc(2 * var(--toolbar_button_width));
   height: 100%;
   display: flex;
   justify-content: center;
