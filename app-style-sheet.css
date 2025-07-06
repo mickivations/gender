@@ -1,6 +1,6 @@
 :root {
   --toolbar_height: calc(100vh - 10vh - 100vw);
-  --toolbar_button_width: calc(100vw / 9);
+  --toolbar_button_width: calc(100vw / 10);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
 }
@@ -188,8 +188,8 @@ canvas {
 
 .button-pair {
   display: flex;
-  flex: 0 0 calc(2 * var(--button_width)); /* container width = 2 button widths */
-  min-width: var(--button_width);;
+  flex: 0 0 var(--toolbar_button_width); /* container width = 2 button widths */
+  /*min-width: var(--toolbar_button_width);;*/
   gap: 4px;
   background-color: transparent !important;
   backdrop-filter: none !important; /* remove any blur just in case */
