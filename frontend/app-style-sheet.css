@@ -466,7 +466,8 @@ canvas {
 /* Responsive adjustments and (pointer: coarse) */
 @media (max-width: 600px)  {
   body{
-    background-color: blue;
+    background-color: rgb(255, 119, 0);
+
   }
   #submitMenu form {
     max-width: 95vw;
