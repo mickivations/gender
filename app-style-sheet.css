@@ -204,6 +204,8 @@ canvas {
   border-radius: 5px;
   background-color: transparent !important;
   backdrop-filter: none !important; /* remove any blur just in case */
+  box-sizing: border-box;
+
 
 }
 
@@ -464,7 +466,7 @@ canvas {
 /* Responsive adjustments and (pointer: coarse) */
 @media (max-width: 600px)  {
   body{
-    background-color: green;
+    background-color: red;
   }
   #submitMenu form {
     max-width: 95vw;
@@ -478,11 +480,19 @@ canvas {
   }
 
     .toolbar button span.material-icons {
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
       font-size: 1.1rem/* 1.5rem;  or larger as you prefer */
     }
 
     .toolbar-item button span.material-icons {
-      font-size: 4rem; /* or larger as you prefer */
+      font-size: 3rem; /* or larger as you prefer */
     }
   
   
