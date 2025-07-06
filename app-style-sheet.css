@@ -198,7 +198,7 @@ canvas {
 
 .button-pair button {
   flex: 1 1 var(--toolbar_button_width); /* share the pair’s width equally */
-  max-height: var(--toolbar_button_height);
+  height: var(--toolbar_button_height);
   color: white;
   border: 1px solid white;
   border-radius: 5px;
@@ -475,7 +475,7 @@ canvas {
   }
 
     .toolbar button span.material-icons {
-      font-size: 2rem; /* or larger as you prefer */
+      font-size: 1.5rem; /* or larger as you prefer */
     }
 
     .toolbar-item button span.material-icons {
