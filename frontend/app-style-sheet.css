@@ -1,7 +1,7 @@
 :root {
   --toolbar_height: calc(89vh - 100vw);
-  --toolbar_button_width: calc(99vw / 10);
-  --toolbar_button_height: calc(var(--toolbar_height)/3);
+  --toolbar_button_width: calc(100vw / 10);
+  --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
 }
 
@@ -188,7 +188,7 @@ canvas {
 
 .button-pair {
   display: flex;
-  flex: 0 0 var(--toolbar_button_width); /* container width = 2 button widths */
+  flex: 1 1 var(--toolbar_button_width); /* container width = 2 button widths */
   /*min-width: var(--toolbar_button_width);;*/
   height: var(--toolbar_height);
   gap: 0px;
@@ -478,7 +478,7 @@ canvas {
   }
 
     .toolbar button span.material-icons {
-      font-size: 1rem/* 1.5rem;  or larger as you prefer */
+      font-size: 1.1rem/* 1.5rem;  or larger as you prefer */
     }
 
     .toolbar-item button span.material-icons {
