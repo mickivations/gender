@@ -132,6 +132,7 @@ function getDistance(touches) {
 
 // Listen for touchstart
 htmlCanvas.addEventListener('touchstart', function(event) {
+  console.log('Pinch start');
   if (event.touches.length === 2) {
     initialDistance = getDistance(event.touches);
     initialZoom = canvas.getZoom();
@@ -180,6 +181,7 @@ canvas.getObjects().forEach((obj) => {
 
 // Listen for touchmove
 htmlCanvas.addEventListener('touchmove', function(event) {
+  console.log("touch move");
   if (event.touches.length === 2 && initialDistance) {
     event.preventDefault(); // Important! Prevent page zoom
     const newDistance = getDistance(event.touches);
@@ -190,6 +192,7 @@ htmlCanvas.addEventListener('touchmove', function(event) {
 
 // Listen for touchend
 htmlCanvas.addEventListener('touchend', function() {
+  console.log('touch end');
   initialDistance = null;
 });
 
