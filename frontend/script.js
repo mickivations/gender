@@ -118,8 +118,7 @@ function duplicateObject() {
 //const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
 const htmlCanvas = document.querySelector('canvas');
 
-console.log(canvas.getWidth(), canvas.getHeight());
-console.log(htmlCanvas.clientWidth, htmlCanvas.clientHeight);
+
 
 htmlCanvas.addEventListener('click', () => alert('Canvas clicked'));
 
@@ -609,6 +608,12 @@ document.getElementById("radii-slider").addEventListener("input", function (even
     // Initial resize
     resizeCanvas();
     enableDrawing();
+
+    canvas.setWidth(window.innerWidth);
+    canvas.setHeight(window.innerHeight);
+    canvas.renderAll();
+    console.log(canvas.getWidth(), canvas.getHeight());
+    console.log(htmlCanvas.clientWidth, htmlCanvas.clientHeight);
 
 
 
