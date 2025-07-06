@@ -156,6 +156,10 @@ canvas {
   padding: 0;
   overflow: hidden;
   touch-action: none;
+  border: 5px solid red;
+  z-index: 9999;
+  position: relative;
+
 
 }
 

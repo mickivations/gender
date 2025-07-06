@@ -113,14 +113,23 @@ function duplicateObject() {
   }
 }
 
+
 ///////pinch zoom start
-const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
+//const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
+const htmlCanvas = document.querySelector('canvas');
+
+console.log(canvas.getWidth(), canvas.getHeight());
+console.log(htmlCanvas.clientWidth, htmlCanvas.clientHeight);
+
+htmlCanvas.addEventListener('click', () => alert('Canvas clicked'));
+
+
 let initialDistance = null;
 let initialZoom = canvas.getZoom();
 
 function setActiveTool(toolName) {
-      const activeToolDiv = document.getElementById('activeTool');
-      activeToolDiv.textContent = 'Active Tool: ' + toolName;
+      //const activeToolDiv = document.getElementById('activeTool');
+      //activeToolDiv.textContent = 'Active Tool: ' + toolName;
     }
 
 // Helper function to calculate distance between two fingers
