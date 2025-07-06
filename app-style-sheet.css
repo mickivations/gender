@@ -153,6 +153,8 @@ canvas {
   margin-top: 0px; 
   padding: 0;
   overflow: hidden;
+  touch-action: none;
+
 }
 
 #container {
