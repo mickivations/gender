@@ -14,7 +14,7 @@ html, body {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Nunito", sans-serif;
   background: linear-gradient(135deg, #5BCEFA, #F5A9B8);
   margin: 0; /* changed from 20px to 0 to avoid scroll */
   padding: 0px;
@@ -189,6 +189,7 @@ canvas {
 .button-pair {
   display: flex;
   flex: 0 0 calc(2 * var(--button_width)); /* container width = 2 button widths */
+  min-width: var(--button_width);;
   gap: 4px;
   background-color: transparent !important;
   backdrop-filter: none !important; /* remove any blur just in case */
@@ -284,8 +285,8 @@ canvas {
 @media (min-aspect-ratio: 1/1) {
   .toolbar {
       display: inline-block;
-  grid-template-columns: repeat(10, 1fr); /* 10 equal columns */
-  height: var(--toolbar_height);
+    grid-template-columns: repeat(10, 1fr); /* 10 equal columns */
+    height: var(--toolbar_height);
     flex-direction: column;
     position: fixed;
     top: 0;
