@@ -461,8 +461,8 @@ canvas {
   border: 1px solid #555;
 }
 
-/* Responsive adjustments */
-@media (max-width: 800px) and (pointer: coarse) {
+/* Responsive adjustments and (pointer: coarse) */
+@media (max-width: 800px)  {
   #submitMenu form {
     max-width: 95vw;
     padding: 1rem;
