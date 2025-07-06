@@ -494,6 +494,15 @@ canvas {
     .toolbar-item button span.material-icons {
       font-size: 3rem; /* or larger as you prefer */
     }
+
+    .button-pair {
+      flex-direction: column;
+    }
+  
+    .button-pair button {
+      flex: 1;
+      height: auto; /* override the fixed height so flex can do its thing */
+    }
   
   
 }
