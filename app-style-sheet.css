@@ -477,7 +477,7 @@ canvas {
   body{
       font-size: 1.1rem !important; /* bigger font size */
       padding: 10px 16px; /* a bit more padding for touch comfort */
-    outline: 5px solid lime;  /* just to confirm this media query runs */
+    background-color: lime !important; /* just to confirm this media query runs */
     }
 
     .toolbar button span.material-icons {
