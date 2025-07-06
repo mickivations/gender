@@ -1,7 +1,8 @@
 :root {
   --toolbar_height: calc(100vh - 10vh - 100vw);
-  --toolbar_button_width: calc(100vw / 10);
+  --toolbar_button_width: calc(100vw / 9);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
+  --canvas_height: calc(88vh - var(--toolbar_height));
 }
 
 /* Make sure html and body fill the viewport for percentage heights to work */
@@ -22,24 +23,40 @@ body {
   background-color: #000;
   color: #fff;
   background-image:
-    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-    radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+    radial-gradient(white, rgba(255,255,255,0.2) 1.5px, transparent 20px),
+    radial-gradient(white, rgba(255,255,255,0.15) 1px, transparent 15px),
+    radial-gradient(white, rgba(255,255,255,0.1) 1.5px, transparent 25px),
+    radial-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1) 1.5px, transparent 20px),
+    radial-gradient(white, rgba(255,255,255,0.2) 1px, transparent 10px),
+    radial-gradient(white, rgba(255,255,255,0.1) 1px, transparent 10px);
+  background-size:
+    300px 300px,
+    200px 200px,
+    150px 150px,
+    100px 100px,
+    80px 80px,
+    60px 60px;
+  background-position:
+    0 0,
+    40px 60px,
+    130px 270px,
+    70px 100px,
+    30px 0,
+    50px 1000px;
   overflow: hidden; /* keep no scroll */
   display: block;
 }
 
 a:link, a:visited {
-  background-color: #444444;
-  color: white;
   padding: 5px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  border-radius: 6px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: transparent !important;
+  font-family: "Nunito";
 }
 
 a:hover, a:active {
@@ -101,12 +118,6 @@ button i {
   pointer-events: none;
 }
 
-#colorPicker {
-  flex: 0 0 calc(2 * var(--button_width)); /* double width */
-  height: 100%;
-  margin: 4px;
-}
-
 #opacitySlider, #radii-slider {
   vertical-align: middle;
   margin-left: 5px;
@@ -160,7 +171,6 @@ canvas {
 
   /* Take full viewport height minus toolbar */
   height: 100vh;
-  margin-right: 110px; /* leave space for toolbar on right */
   overflow: hidden; /* prevent scroll */
 }
 
@@ -172,22 +182,26 @@ canvas {
   height: var(--toolbar_height); /* fills leftover vertical space */
   width: 100vw; /* full width */
   overflow: hidden;
-  background-color: transparent;
+  background-color: transparent !important;
+  backdrop-filter: none !important; /* remove any blur just in case */
 }
 
 .button-pair {
   display: flex;
   flex: 0 0 calc(2 * var(--button_width)); /* container width = 2 button widths */
   gap: 4px;
+  background-color: transparent !important;
+  backdrop-filter: none !important; /* remove any blur just in case */
 }
 
 .button-pair button {
   flex: 1 1 0; /* share the pair’s width equally */
   height: var(--button_height);
-  background-color: transparent;
   color: white;
   border: 1px solid white;
   border-radius: 5px;
+  background-color: transparent !important;
+  backdrop-filter: none !important; /* remove any blur just in case */
 
 }
 
@@ -221,6 +235,8 @@ canvas {
   color: white;
   border: 1px solid white;
   border-radius: 5px;
+  font-size: large;
+  font-family: "Nunito";
 }
 
 .slider-menu,
@@ -258,7 +274,9 @@ canvas {
   #container {
     margin-bottom: 15vh; /* avoid overlap with toolbar */
     margin-right: 0;
-    height: calc(100vh - 15vh); /* fill height minus toolbar */
+    width: 100vw;
+    height: 100vw; /* square */
+    max-height: var(--canvas_height);;
     overflow: hidden;
   }
 }
@@ -452,4 +470,11 @@ canvas {
     font-size: 1.1rem;
     padding: 0.6rem;
   }
+}
+
+.nunito-semi> {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 1000;
+  font-style: normal;
 }
