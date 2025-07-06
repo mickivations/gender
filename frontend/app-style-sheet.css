@@ -1,7 +1,7 @@
 :root {
   --toolbar_height: calc(89vh - 100vw);
   --toolbar_button_width: calc(99vw / 10);
-  --toolbar_button_height: calc(var(--toolbar_height)/2);
+  --toolbar_button_height: calc(var(--toolbar_height)/3);
   --canvas_height: calc(88vh - var(--toolbar_height));
 }
 
@@ -462,7 +462,7 @@ canvas {
 }
 
 /* Responsive adjustments and (pointer: coarse) */
-@media (max-width: 500px)  {
+@media (max-width: 400px)  {
   body{
     background-color: green;
   }
