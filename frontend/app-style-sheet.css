@@ -1,5 +1,5 @@
 :root {
-  --toolbar_height: min(calc(89vh - 100vw), 30vh); /* prevent absurd height */
+  --toolbar_height: min(calc(89vh - 100vw), 28vh); /* prevent absurd height */
   --toolbar_button_width: calc(100vw / 10);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
@@ -289,7 +289,7 @@ canvas {
   }
 
   .toolbar button span.material-icons {
-    font-size: .5rem;
+    font-size: 1.1rem;
     line-height: 1;
     padding: 0;
     margin: 0;
@@ -493,7 +493,7 @@ canvas {
 /* Responsive adjustments and (pointer: coarse) */
 @media (max-width: 600px)  {
   body{
-    background-color: blue;
+    background-color: gray;
 
   }
 
@@ -517,11 +517,11 @@ canvas {
       justify-content: center;
       width: 100%;
       height: 50%;
-      font-size: 1rem/* 1.5rem;  or larger as you prefer */
+      font-size: 2rem/* 1.5rem;  or larger as you prefer */
     }
 
     .toolbar-item button span.material-icons {
-      font-size: 1rem; /* or larger as you prefer */
+      font-size: 2rem; /* or larger as you prefer */
     }
 
     .button-pair {
