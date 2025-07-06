@@ -3,6 +3,26 @@
   const canvas = new fabric.Canvas('c');
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
+function scaleCanvasObjectsToFit(newWidth, newHeight) {
+  const prevWidth = canvas.getWidth();
+  const prevHeight = canvas.getHeight();
+  const scaleX = newWidth / prevWidth;
+  const scaleY = newHeight / prevHeight;
+
+  canvas.getObjects().forEach((obj) => {
+    obj.scaleX *= scaleX;
+    obj.scaleY *= scaleY;
+    obj.left *= scaleX;
+    obj.top *= scaleY;
+    obj.setCoords();
+  });
+
+  canvas.setWidth(newWidth);
+  canvas.setHeight(newHeight);
+  canvas.renderAll();
+}
+
+
 let currentColor = '#ffff00';  // Default color is yelow
 
 // Set up the default opacity to 0.8
@@ -362,18 +382,17 @@ function drawRadii(centerX, centerY, radius, count) {
 
     // Function to resize the canvas based on the window size
     function resizeCanvas() {
-        const size = Math.min(window.innerWidth - 20, window.innerHeight - 100);
-        canvas.setWidth(size);
-        canvas.setHeight(size);
-        canvas.renderAll();
-      
-        createTemplate(); // if you need to re-draw anything
-        const centerX = canvas.getWidth() / 2;
-        const centerY = canvas.getHeight() / 2;
-        drawRadii(centerX, centerY, maxRadius, newRadiiCount);
-
-      
+      const newSize = Math.min(window.innerWidth - 20, window.innerHeight - 100);
+      scaleCanvasObjectsToFit(newSize, newSize);
+    
+      maxRadius = newSize / 2.2; // recalculate for your template + radii
+      createTemplate();
+    
+      const centerX = canvas.getWidth() / 2;
+      const centerY = canvas.getHeight() / 2;
+      drawRadii(centerX, centerY, maxRadius, newRadiiCount);
     }
+    
 
     // Update the drawing color when the user picks a color
     function updateDrawingColor() {
@@ -757,6 +776,48 @@ function addText(event) {
 
 const shapesButton = document.getElementById('shapesButton');
 const shapesSubMenu = document.getElementById('shapesSubMenu');
+
+let isDragging = false;
+let lastPosX = 0;
+let lastPosY = 0;
+
+// Enable pan on mouse or touch drag
+canvas.on('mouse:down', function(opt) {
+  const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
+
+  // Only start panning if no object is selected and not drawing
+  if (!canvas.getActiveObject() && !canvas.isDrawingMode) {
+    isDragging = true;
+    canvas.selection = false;
+    lastPosX = evt.clientX;
+    lastPosY = evt.clientY;
+  }
+});
+
+canvas.on('mouse:move', function(opt) {
+  if (isDragging) {
+    const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
+
+    const deltaX = evt.clientX - lastPosX;
+    const deltaY = evt.clientY - lastPosY;
+
+    const vpt = canvas.viewportTransform;
+    vpt[4] += deltaX;
+    vpt[5] += deltaY;
+
+    canvas.requestRenderAll();
+
+    lastPosX = evt.clientX;
+    lastPosY = evt.clientY;
+  }
+});
+
+canvas.on('mouse:up', function() {
+  isDragging = false;
+  canvas.selection = true;
+});
+
+
 /*
 // Toggle submenu on button click
 shapesButton.addEventListener('click', () => {
