@@ -3,6 +3,9 @@
   --toolbar_button_width: calc(100vw / 10);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
+  --sidebar_width: calc(100vw - 90vh);
+  --sidebar_button_width: calc(var(--sidebar_width) / 2);
+  --sidebar_button_height: calc(100vh / 10);
 }
 
 /* Make sure html and body fill the viewport for percentage heights to work */
@@ -12,6 +15,7 @@ html, body {
   padding: 0;
   overflow: hidden; /* prevent body scroll */
 }
+
 
 body {
   font-family: "Nunito", sans-serif;
@@ -471,14 +475,12 @@ canvas {
 /* ===== Sidebar toolbar for wider screens (tablets/desktops) ===== */
 @media (min-width: 600px) {
   .toolbar {
-    display: inline-block;
-    grid-template-columns: repeat(10, 1fr);
+    display: flex;
     flex-direction: column;
     position: fixed;
     top: 0;
     right: 0;
-    width: 110px;
-    max-width: 110px;
+    width: var(--sidebar_width);
     height: 100vh;
     overflow-y: auto;
     padding-top: 10px;
@@ -486,16 +488,33 @@ canvas {
     z-index: 1000;
   }
 
+  .toolbar-item {
+    width: 100%;
+    flex: 1 1 var(--sidebar_button_height);
+    /*height: var(--sidebar_button_height); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+  } 
+
   .button-pair {
     flex-direction: row;
+    flex: 0 0 var(--sidebar_button_height);
     width: 100%;
-    height: auto;
+    height: var(--sidebar_button_height);
+    gap: 0px; /* force no internal spacing */
+    margin: 0px !important;
+    padding: 0px;
+
   }
 
   .button-pair button {
-    flex: 1 1 50%;
-    height: auto;
-    min-height: 0;
+    flex: 1 1 var(--sidebar_button_width);
+    height: var(--sidebar_button_height);
+    min-height: 10px;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -520,6 +539,13 @@ canvas {
     height: 100vh;
     overflow: hidden;
   }
+  #main-content {
+    margin-right: var(--sidebar_width); /* reserve space for sidebar */
+    text-align: center;
+    width: calc(100vw - var(--sidebar_width)); /* prevent overflow */
+    box-sizing: border-box;
+  }
+  
 }
 
 
