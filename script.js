@@ -8,7 +8,7 @@ let currentColor = '#ffff00';  // Default color is yelow
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
 let pendingShapeType = null;
-let brushWidth = 10;
+let brushWidth = 8;
 
 let maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
 let newRadiiCount = 3;
