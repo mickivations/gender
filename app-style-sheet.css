@@ -462,7 +462,10 @@ canvas {
 }
 
 /* Responsive adjustments and (pointer: coarse) */
-@media (max-width: 600px)  {
+@media (max-width: 500px)  {
+  body{
+    background-color: green;
+  }
   #submitMenu form {
     max-width: 95vw;
     padding: 1rem;
@@ -475,7 +478,7 @@ canvas {
   }
 
     .toolbar button span.material-icons {
-      font-size: 1.5rem; /* or larger as you prefer */
+      font-size: 1rem/* 1.5rem;  or larger as you prefer */
     }
 
     .toolbar-item button span.material-icons {
