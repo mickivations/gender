@@ -147,7 +147,7 @@ button i {
 
 /* Make canvas fill container exactly */
 canvas { 
-  touch-action: pinch-zoom; /* ALLOWS pinch but blocks pan (default scroll) */
+  touch-action: none;/*pinch-zoom;  ALLOWS pinch but blocks pan (default scroll) */
   -ms-touch-action: pinch-zoom; /* for older IE */
   display: block; 
   width: 100% !important;  /* fill width of container */
