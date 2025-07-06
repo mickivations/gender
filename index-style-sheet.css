@@ -4,8 +4,35 @@ body {
   display:block;
   overflow-y: auto;
   font-size: 1.25rem; /* base 16px */
+  background-image:
+    radial-gradient(white, rgba(255,255,255,0.2) 1.5px, transparent 20px),
+    radial-gradient(white, rgba(255,255,255,0.15) 1px, transparent 15px),
+    radial-gradient(white, rgba(255,255,255,0.1) 1.5px, transparent 25px),
+    radial-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1) 1.5px, transparent 20px),
+    radial-gradient(white, rgba(255,255,255,0.2) 1px, transparent 10px),
+    radial-gradient(white, rgba(255,255,255,0.1) 1px, transparent 10px);
+  background-size:
+    300px 300px,
+    200px 200px,
+    150px 150px,
+    100px 100px,
+    80px 80px,
+    60px 60px;
+  background-position:
+    0 0,
+    40px 60px,
+    130px 270px,
+    70px 100px,
+    30px 0,
+    50px 1000px;
 }
 
+.nunito-semi> {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
 /* Increase font size and spacing on small/mobile screens */
 @media (max-width: 600px) {
   body {
@@ -49,8 +76,9 @@ body {
 .slider {
   position: relative;
   overflow-y: auto;
-  height: 65vh;
+  height: 70vh;
   max-width: 90vw;
+  max-height: 100%;
 }
 
 .slide {
@@ -116,4 +144,9 @@ body {
   text-align: left;
   justify-content: left;
   width: 100%;
+}
+
+h2{
+  font-family: "Nunito";
+  font-weight: 1000;
 }
