@@ -466,7 +466,7 @@ canvas {
 /* Responsive adjustments and (pointer: coarse) */
 @media (max-width: 600px)  {
   body{
-    background-color: #ff0000;
+    background-color: gray;
 
   }
   #submitMenu form {
@@ -507,7 +507,7 @@ canvas {
         min-height: 0;
         padding: 0;
         margin: 0;
-      max-height: var(--toolbar_button_height);;
+      max-height: var(--toolbar_button_height) !important;
     }
   
   
