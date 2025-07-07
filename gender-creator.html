@@ -120,30 +120,24 @@
           
           <!-- Predefined checkboxes -->
           <div class="checkbox-grid">
-          <label><input type="checkbox" name="options" value="trans"> trans</label>
-          <label><input type="checkbox" name="options" value="cis"> cis</label>
-          <label><input type="checkbox" name="options" value="boy"> boy</label>
-<label><input type="checkbox" name="options" value="girl"> girl</label>
-<label><input type="checkbox" name="options" value="butch"> butch</label>
-<label><input type="checkbox" name="options" value="stud"> stud</label>
-<label><input type="checkbox" name="options" value="dyke"> dyke</label>
-<label><input type="checkbox" name="options" value="femme"> femme</label>
-<label><input type="checkbox" name="options" value="non-binary"> non-binary</label>
-<label><input type="checkbox" name="options" value="genderqueer"> genderqueer</label>
-<label><input type="checkbox" name="options" value="genderfluid"> genderfluid</label>
-<label><input type="checkbox" name="options" value="fag"> fag</label>
-<label><input type="checkbox" name="options" value="dykefag"> dykefag</label>
-<label><input type="checkbox" name="options" value="fagdyke"> fagdyke</label>
-<label><input type="checkbox" name="options" value="futch"> futch</label>
-<label><input type="checkbox" name="options" value="man"> man</label>
-<label><input type="checkbox" name="options" value="woman"> woman</label> 
-<label><input type="checkbox" name="options" value="agender"> agender</label> </div>
+            <div id="tagFilterContainer">
 
-          <!-- Container for dynamic inputs -->
-          <div id="customOptionsContainer"></div>
-        
-          <!-- Add button -->
-          <button type="button" id="addCustomOption">+ Add another option</button>
+              <div id="selectedTags"></div>
+             <div id="allTagsList"></div>
+              <input type="text" id="tagSearch" placeholder="Search or add tag">
+
+              <div id="tagSuggestions"></div>
+              
+            </div>
+            
+            <input type="hidden" name="tags" id="selectedTagsInput">
+
+
+            
+            
+            </div>
+
+          
         </fieldset>
         <button type="submit">Submit</button>
 

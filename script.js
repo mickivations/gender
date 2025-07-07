@@ -1,6 +1,8 @@
 
   // Create canvas
   const canvas = new fabric.Canvas('c');
+  const allTags = new Set();
+const selectedTags = new Set();
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
 function scaleCanvasObjectsToFit(newWidth, newHeight) {
@@ -610,8 +612,6 @@ document.getElementById("radii-slider").addEventListener("input", function (even
     resizeCanvas();
     enableDrawing();
 
-
-
   
 
 document.getElementById('submissionForm').addEventListener('submit', async (e) => {
@@ -641,15 +641,16 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
 
   toggleSubmitMenu();
 
-const payload = {
-  title,
-  name,
-  pronouns,
-  imageBase64: base64,
-  altText,
-  ax3: axis3,
-  tags: tagsString,
-};
+  const payload = {
+    title,
+    name,
+    pronouns,
+    imageBase64: base64,
+    altText,
+    ax3: axis3,
+    tags: Array.from(selectedTags).join(', '), // comma-separated string
+  };
+  
 const res = await fetch('/.netlify/functions/submit', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -668,6 +669,34 @@ if (res.ok && data.success) {
 
 
 });
+
+let knownTags = ["stud", "transfemme", "transmasc", "xenogender", "dyke", "cis", "it", "trans"];
+console.error('pre fetch');
+
+fetch('/.netlify/functions/get-tags')
+  .then(res => res.json())
+  .then(data => {
+    console.error('in  tagging');
+    const combined = [...new Set(knownTags.concat(data.tags))].sort();
+    knownTags = combined;
+    console.log('Loaded tags from Airtable:', knownTags); // ← move your log here
+    setupTagSearchForForm();
+    setupShowAllTagsButtonForForm(); // ← add this too
+
+    renderAllTagsList(); // ← show tags immediately
+
+  })
+  .catch(err => {
+    console.error('Failed to load tag suggestions:', err);
+    setupTagSearchForForm();
+    setupShowAllTagsButtonForForm(); // ← add this too
+
+    renderAllTagsList(); // ← show tags immediately
+  });
+
+  
+
+
 /*
 function handleSubmit() {
   const imageData = canvas.toDataURL({
@@ -701,13 +730,14 @@ function handleSubmit() {
 }*/
 
 //// form script 
+/*
 const maxCustomOptions = 20;
   const container = document.getElementById('customOptionsContainer');
   const addButton = document.getElementById('addCustomOption');
 
   let customOptionCount = 0;
-
-  addButton.addEventListener('click', () => {
+*/
+ /* addButton.addEventListener('click', () => {
     if (customOptionCount < maxCustomOptions) {
       customOptionCount++;
 
@@ -726,7 +756,6 @@ const maxCustomOptions = 20;
       addButton.textContent = 'Limit reached';
     }
   });
-
     
 // Function to add editable text
 function addText(event) {
@@ -847,3 +876,282 @@ function createRectangle(x, y) {
     });
   }
 */
+
+function setupTagSearchForForm() {
+  const input = document.getElementById('tagSearch');
+  const suggestions = document.getElementById('tagSuggestions');
+  const selectedTagsDiv = document.getElementById('selectedTags');
+  const hiddenInput = document.getElementById('selectedTagsInput');
+
+  input.addEventListener('input', () => {
+    const query = input.value.trim().toLowerCase();
+    suggestions.innerHTML = '';
+
+    if (!query) return;
+
+    const matching = Array.from(allTags).filter(tag =>
+      tag.includes(query) && !selectedTags.has(tag)
+    );
+
+    matching.forEach(tag => {
+      const div = document.createElement('div');
+      div.textContent = tag;
+      div.className = 'tag-suggestion';
+      div.addEventListener('click', () => {
+        selectedTags.add(tag);
+        input.value = '';
+        suggestions.innerHTML = '';
+        updateSelectedTagsUI();
+      });
+      suggestions.appendChild(div);
+    });
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = input.value.trim().toLowerCase();
+      if (val && !selectedTags.has(val)) {
+        selectedTags.add(val);
+        allTags.add(val); // Let new tags in!
+        input.value = '';
+        suggestions.innerHTML = '';
+        updateSelectedTagsUI();
+      }
+    }
+  });
+
+  function updateSelectedTagsUI() {
+    selectedTagsDiv.innerHTML = '';
+    selectedTags.forEach(tag => {
+      const tagElem = document.createElement('span');
+      tagElem.className = 'selected-tag';
+      tagElem.textContent = tag;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = '×';
+      removeBtn.className = 'remove-tag-btn';
+      removeBtn.addEventListener('click', () => {
+        selectedTags.delete(tag);
+        updateSelectedTagsUI();
+      });
+
+      tagElem.appendChild(removeBtn);
+      selectedTagsDiv.appendChild(tagElem);
+    });
+
+    hiddenInput.value = Array.from(selectedTags).join(', ');
+  }
+}
+
+function renderAllTagsList() {
+  const allTagsList = document.getElementById('allTagsList');
+  const input = document.getElementById('tagSearch');
+  const suggestions = document.getElementById('tagSuggestions');
+
+  allTagsList.style.display = 'block';
+  allTagsList.innerHTML = '';
+
+  const selected = new Set(
+    Array.from(document.querySelectorAll('#selectedTags .selected-tag')).map(
+      span => span.textContent.replace('×', '').trim().toLowerCase()
+    )
+  );
+
+  Array.from(allTags).sort().forEach(tag => {
+    if (selected.has(tag)) return;
+
+    const div = document.createElement('div');
+    div.textContent = tag;
+    div.classList.add('tag-suggestion');
+    div.style.cursor = 'pointer';
+    div.style.padding = '4px 8px';
+
+    div.addEventListener('click', () => {
+      selectedTags.add(tag);
+      updateSelectedTagsUI();
+      input.value = '';
+      suggestions.innerHTML = '';
+      renderAllTagsList(); // Re-render to reflect new selection
+    });
+
+    allTagsList.appendChild(div);
+  });
+}
+/*
+function setupShowAllTagsButtonForForm() {
+  const showAllTagsBtn = document.getElementById('showAllTagsBtn');
+  const allTagsList = document.getElementById('allTagsList');
+  const input = document.getElementById('tagSearch');
+  const suggestions = document.getElementById('tagSuggestions');
+
+  showAllTagsBtn.addEventListener('click', () => {
+    if (allTagsList.style.display === 'none' || allTagsList.style.display === '') {
+      // Show and populate the list
+      allTagsList.style.display = 'block';
+      allTagsList.innerHTML = '';
+
+      const selected = new Set(
+        Array.from(document.querySelectorAll('#selectedTags .selected-tag')).map(
+          span => span.textContent.replace('×', '').trim().toLowerCase()
+        )
+      );
+
+      Array.from(allTags).sort().forEach(tag => {
+        if (selected.has(tag)) return;
+
+        const div = document.createElement('div');
+        div.textContent = tag;
+        div.classList.add('tag-suggestion');
+        div.style.cursor = 'pointer';
+        div.style.padding = '4px 8px';
+
+        div.addEventListener('click', () => {
+          selectedTags.add(tag);
+          updateSelectedTagsUI();
+          allTagsList.style.display = 'none';
+          input.value = '';
+          suggestions.innerHTML = '';
+        });
+
+        allTagsList.appendChild(div);
+        allTagsList.style.display = 'block';
+      });
+    } else {
+      allTagsList.style.display = 'none';
+    }
+      
+  }); 
+}*/
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/.netlify/functions/get-tags')
+    .then(res => res.json())
+    .then(data => {
+      const combined = [...new Set(knownTags.concat(data.tags))].sort();
+      combined.forEach(tag => allTags.add(tag.toLowerCase()));
+      setupTagSearchForForm();
+      renderAllTagsList(); // show immediately
+    })
+    .catch(err => {
+      console.error('Failed to load tag suggestions:', err);
+      knownTags.forEach(tag => allTags.add(tag.toLowerCase()));
+      setupTagSearchForForm();
+      renderAllTagsList(); // show fallback tags
+    });
+});
+
+function setupTagSearchForForm() {
+  const input = document.getElementById('tagSearch');
+  const suggestions = document.getElementById('tagSuggestions');
+
+  input.addEventListener('input', () => {
+    const query = input.value.trim().toLowerCase();
+    suggestions.innerHTML = '';
+
+    if (!query) return;
+
+    const matching = Array.from(allTags).filter(tag =>
+      tag.includes(query) && !selectedTags.has(tag)
+    );
+
+    matching.forEach(tag => {
+      const div = document.createElement('div');
+      div.textContent = tag;
+      div.className = 'tag-suggestion';
+      div.style.cursor = 'pointer';
+      div.style.padding = '4px 8px';
+      div.addEventListener('click', () => {
+        selectedTags.add(tag);
+        input.value = '';
+        suggestions.innerHTML = '';
+        updateSelectedTagsUI();
+        renderAllTagsList(); // update list
+      });
+      suggestions.appendChild(div);
+    });
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = input.value.trim().toLowerCase();
+      if (val && !selectedTags.has(val)) {
+        selectedTags.add(val);
+        allTags.add(val);
+        input.value = '';
+        suggestions.innerHTML = '';
+        updateSelectedTagsUI();
+        renderAllTagsList();
+      }
+    }
+  });
+}
+
+function updateSelectedTagsUI() {
+  const selectedTagsDiv = document.getElementById('selectedTags');
+  const hiddenInput = document.getElementById('selectedTagsInput');
+
+  selectedTagsDiv.innerHTML = '';
+  selectedTags.forEach(tag => {
+    const tagElem = document.createElement('span');
+    tagElem.className = 'selected-tag';
+    tagElem.textContent = tag;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = '×';
+    removeBtn.className = 'remove-tag-btn';
+    removeBtn.style.marginLeft = '6px';
+    removeBtn.addEventListener('click', () => {
+      selectedTags.delete(tag);
+      updateSelectedTagsUI();
+      renderAllTagsList(); // re-render when tag removed
+    });
+
+    tagElem.appendChild(removeBtn);
+    tagElem.style.marginRight = '8px';
+    tagElem.style.display = 'inline-block';
+    tagElem.style.padding = '4px 8px';
+    tagElem.style.background = '#ddd';
+    tagElem.style.borderRadius = '12px';
+
+    selectedTagsDiv.appendChild(tagElem);
+  });
+
+  hiddenInput.value = Array.from(selectedTags).join(', ');
+}
+
+function renderAllTagsList() {
+  const allTagsList = document.getElementById('allTagsList');
+  const input = document.getElementById('tagSearch');
+  const suggestions = document.getElementById('tagSuggestions');
+
+  allTagsList.innerHTML = '';
+
+  const selected = new Set(selectedTags);
+
+  Array.from(allTags).sort().forEach(tag => {
+    if (selected.has(tag)) return;
+
+    const div = document.createElement('div');
+    div.textContent = tag;
+    div.classList.add('tag-suggestion');
+    div.style.cursor = 'pointer';
+    div.style.padding = '4px 8px';
+    div.style.margin = '4px';
+    div.style.display = 'inline-block';
+    div.style.background = '#eee';
+    div.style.borderRadius = '10px';
+
+    div.addEventListener('click', () => {
+      selectedTags.add(tag);
+      updateSelectedTagsUI();
+      input.value = '';
+      suggestions.innerHTML = '';
+      renderAllTagsList();
+    });
+
+    allTagsList.appendChild(div);
+  });
+}
+
