@@ -380,18 +380,13 @@ function drawRadii(centerX, centerY, radius, count) {
 }
 
 
-    // Function to resize the canvas based on the window size
-    function resizeCanvas() {
-      const newSize = Math.min(window.innerWidth - 20, window.innerHeight - 100);
-      scaleCanvasObjectsToFit(newSize, newSize);
-    
-      maxRadius = newSize / 2.2; // recalculate for your template + radii
-      createTemplate();
-    
-      const centerX = canvas.getWidth() / 2;
-      const centerY = canvas.getHeight() / 2;
-      drawRadii(centerX, centerY, maxRadius, newRadiiCount);
-    }
+function resizeCanvas() {
+  const newSize = Math.min(window.innerWidth - 20, window.innerHeight - 100);
+  scaleCanvasObjectsToFit(newSize, newSize);
+  maxRadius = newSize / 2.2;
+  createTemplate(); // ← this updates and locks the template
+}
+
     
 
     // Update the drawing color when the user picks a color
@@ -472,90 +467,24 @@ function drawRadii(centerX, centerY, radius, count) {
     }
 
     
-    // Create a "background" layer with axis lines and circle outlines
     function createTemplate() {
-      // Recalculate the center of the canvas based on the current size
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
+    
       canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
-
-      // recalculate the maximum possible radius for the circles
-       maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
-
-      // Remove any existing axis lines, circles, or text objects (misplaced or duplicates)
-      canvas.getObjects().forEach(function(obj) {
-        if (obj.selectable === false || obj.type === 'text' || obj.type === 'circle') {
-          canvas.remove(obj); // Remove axis lines, text, and circles
+      maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
+    
+      // Remove existing template elements
+      canvas.getObjects().forEach(obj => {
+        if (obj.templateElement) {
+          canvas.remove(obj);
         }
       });
-
-      // Axis 1: Vertical line (center of the canvas) - stops at the max radius
-   /*   const axis1 = new fabric.Line([centerX, centerY, centerX, centerY - maxRadius], {
-        stroke: '#000000',
-        strokeWidth: 10,
-        selectable: false,
-        evented: false
-      });
-
-      // Axis 2: Bottom-left diagonal line - stops at the max radius
-      const axis2 = new fabric.Line([centerX+5, centerY-2, centerX + maxRadius+5, centerY-2], {
-        stroke: '#000000',
-        strokeWidth: 10,
-        selectable: false,
-        evented: false
-      });
-     axis2.set({ angle: 30});
-
-      // Axis 3: Bottom-right diagonal line - stops at the max radius
-      const axis3 = new fabric.Line([centerX+5, centerY+8, centerX + maxRadius+5, centerY+8], {
-        stroke: '#000000',
-        strokeWidth: 10,
-        selectable: false,
-        evented: false
-      });
-      axis3.set({ angle: 150});
-
-*/
-      // Add text to the template
-      const label1 = new fabric.Text('3', {
-        left: centerX -25,  // Adjust text to be centered horizontally
-        top: centerY - maxRadius -25,   // Adjust text to be placed above the center
-        fontSize: 24,
-        fill: '#AAAAAA',
-        selectable: true   // Make the text selectable to allow interaction
-      });
-
-      // Add text to the template
-      const label2 = new fabric.Text('B', {
-        left: centerX - maxRadius,  // Adjust text to be centered horizontally
-        top: centerY + maxRadius/2,   // Adjust text to be placed above the center
-        fontSize: 24,
-        fill: '#AAAAAA',
-        selectable: true   // Make the text selectable to allow interaction
-      });
-
-      // Add text to the template
-      const label3 = new fabric.Text('G', {
-        left: centerX + maxRadius,  // Adjust text to be centered horizontally
-        top: centerY + maxRadius/2,   // Adjust text to be placed above the center
-        fontSize: 24,
-        fill: '#AAAAAA',
-        selectable: true   // Make the text selectable to allow interaction
-      });
-/*
-      // Add center dot
-      const centerDot = new fabric.Circle({
-        left: centerX,  // Adjust the center of the circle to the center of the canvas
-        top: centerY-4,  // Adjust the center of the circle to the center of the canvas
-        radius: 1,
-        fill: '#FFFFFF',
-        selectable: false,  // Make it unselectable
-      });
-*/
-      // Add circle outlines radiating outward from the center
+    
+      // Create circles
       const circle1 = new fabric.Circle({
-        left: centerX - maxRadius,  // Position relative to center
-        top: centerY - maxRadius,   // Position relative to center
+        left: centerX - maxRadius,
+        top: centerY - maxRadius,
         radius: maxRadius,
         stroke: '#AAAAAA',
         strokeWidth: 3,
@@ -563,7 +492,7 @@ function drawRadii(centerX, centerY, radius, count) {
         selectable: false,
         evented: false
       });
-
+    
       const circle2 = new fabric.Circle({
         left: centerX - maxRadius * 0.75,
         top: centerY - maxRadius * 0.75,
@@ -574,7 +503,7 @@ function drawRadii(centerX, centerY, radius, count) {
         selectable: false,
         evented: false
       });
-
+    
       const circle3 = new fabric.Circle({
         left: centerX - maxRadius * 0.5,
         top: centerY - maxRadius * 0.5,
@@ -585,7 +514,7 @@ function drawRadii(centerX, centerY, radius, count) {
         selectable: false,
         evented: false
       });
-
+    
       const circle4 = new fabric.Circle({
         left: centerX - maxRadius * 0.25,
         top: centerY - maxRadius * 0.25,
@@ -596,35 +525,71 @@ function drawRadii(centerX, centerY, radius, count) {
         selectable: false,
         evented: false
       });
-
-      // Group all template elements
-const templateGroup = new fabric.Group([
-  circle1,
-  circle2,
-  circle3,
-  circle4,
-  label1,
-  label2,
-  label3,
-  ...radiiLines  // if you already drew radii before calling createTemplate
-], {
-  selectable: false,
-  evented: false,
-  hasControls: false,
-  lockMovementX: true,
-  lockMovementY: true
-});
-
-// Send the group to the back
-canvas.add(templateGroup);
-canvas.sendToBack(templateGroup);
-
-      
+    
+      // Create labels
+      const label1 = new fabric.Text('3', {
+        left: centerX - 25,
+        top: centerY - maxRadius - 25,
+        fontSize: 24,
+        fill: '#AAAAAA',
+        selectable: false,
+        evented: false
+      });
+    
+      const label2 = new fabric.Text('B', {
+        left: centerX - maxRadius,
+        top: centerY + maxRadius / 2,
+        fontSize: 24,
+        fill: '#AAAAAA',
+        selectable: false,
+        evented: false
+      });
+    
+      const label3 = new fabric.Text('G', {
+        left: centerX + maxRadius,
+        top: centerY + maxRadius / 2,
+        fontSize: 24,
+        fill: '#AAAAAA',
+        selectable: false,
+        evented: false
+      });
+    
+      // Draw radii lines
+      const radiiCount = newRadiiCount; // from your global or slider input
+      const radiiLines = [];
+      for (let i = 0; i < radiiCount; i++) {
+        const angle = (2 * Math.PI * i) / radiiCount - Math.PI / 2;
+        const x = centerX + maxRadius * Math.cos(angle);
+        const y = centerY + maxRadius * Math.sin(angle);
+    
+        const line = new fabric.Line([centerX, centerY, x, y], {
+          stroke: '#DDDDDD',
+          strokeWidth: 5,
+          selectable: false,
+          evented: false
+        });
+    
+        radiiLines.push(line);
+      }
+    
+      // Tag all template objects for easy removal later
+      const templateElements = [circle1, circle2, circle3, circle4, label1, label2, label3, ...radiiLines];
+      templateElements.forEach(obj => obj.templateElement = true);
+    
+      // Group and lock them
+      const templateGroup = new fabric.Group(templateElements, {
+        selectable: false,
+        evented: false,
+        hasControls: false,
+        lockMovementX: true,
+        lockMovementY: true
+      });
+    
+      // Add and send to back
+      canvas.add(templateGroup);
+      canvas.sendToBack(templateGroup);
     }
-
-    // Call the template creator immediately
-    createTemplate();
-
+    
     // Adjust canvas size when the window is resized
     window.addEventListener('resize', resizeCanvas);
     document.addEventListener('keydown', function(event) {
@@ -644,12 +609,6 @@ document.getElementById("radii-slider").addEventListener("input", function (even
     // Initial resize
     resizeCanvas();
     enableDrawing();
-
-    canvas.setWidth(window.innerWidth);
-    canvas.setHeight(window.innerHeight);
-    canvas.renderAll();
-    console.log(canvas.getWidth(), canvas.getHeight());
-    console.log(htmlCanvas.clientWidth, htmlCanvas.clientHeight);
 
 
 
