@@ -41,7 +41,11 @@ fetch('/.netlify/functions/get-gallery')
 
           //modalAxis.innerHTML = `<strong>Axis Label:</strong> ${axis}`;
           if(axis){
-          modalAxis.textContent = "Axis Label " + axis; // "Axis Label: " + axis;
+          modalAxis.textContent = "Axis Label: " + axis; // "Axis Label: " + axis;
+        }
+        else{
+          modalAxis.textContent = ""; // "Axis Label: " + axis;
+
         }
           modalDescription.innerHTML = combinedDetails;
           modalTags.textContent = "Tag(s): " + stringTags;

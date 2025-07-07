@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gender Gallery</title>
+  <link rel="stylesheet" href="gallery-style-sheet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>Gender Chart Gallery</h1>
+  <button id="toggleTagFiltersBtn" type="button">Filter Charts</button>
+
+  <div id="tagFilterContainer" style ="display:none">
+    <div id="tagControlsRow">
+      <input type="text" id="tagSearch" placeholder="Search by tag..." autocomplete="on">
+      <button id="showAllTagsBtn" type="button">View Tags</button>
+      <label id="filterModeToggle">
+        <input type="checkbox" id="andMode">
+        Match <strong>ALL</strong> tags
+      </label>
+      <div id="tagSuggestions"></div>
+    <div id="selectedTags"></div>
+    
+    </div>
+  
+    <div id="allTagsList"></div>
+  </div>  
+
+
+
+
+</div>
+
+
+  <div id="gallery">Loading...</div>
+
+   <!-- Modal -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+background:rgba(0,0,0,0.8); align-items:center; z-index:999; flex-direction:column; overflow: auto;">
+<div id = "detail-holder"  style="background:black; padding:20px; max-width:600px; width:90%; border-radius:10px; position:relative;">
+  <button id="closeModal" style="position:absolute; top:10px; right:10px;">X</button>
+  <img id="modalImage" src="" alt="" style="max-width:100%; border-radius:6px;" />
+  <h2 id="modalTitle"></h2>
+  <p id="modalID"></p>
+  <p id="modalAxis"></p>
+  <p id="modalDescription"></p>
+  <p id="modalTags"></p>
+</div>
+</div>
+
+
+
+
+
+</div>
+</div>
+<script src="loadGallery.js"> </script>
+</body>
+</html>
