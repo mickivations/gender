@@ -597,11 +597,28 @@ function drawRadii(centerX, centerY, radius, count) {
         evented: false
       });
 
-      // Add the elements to the canvas
-      canvas.add(circle1, circle2, circle3, circle4,  label1, label2, label3); //axis1, axis2, axis3,
-      canvas.sendToBack(circle1);
-      canvas.sendToBack(circle2);
-      canvas.sendToBack(circle3);
+      // Group all template elements
+const templateGroup = new fabric.Group([
+  circle1,
+  circle2,
+  circle3,
+  circle4,
+  label1,
+  label2,
+  label3,
+  ...radiiLines  // if you already drew radii before calling createTemplate
+], {
+  selectable: false,
+  evented: false,
+  hasControls: false,
+  lockMovementX: true,
+  lockMovementY: true
+});
+
+// Send the group to the back
+canvas.add(templateGroup);
+canvas.sendToBack(templateGroup);
+
       
     }
 
