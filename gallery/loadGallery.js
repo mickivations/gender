@@ -84,10 +84,14 @@ fetch('/.netlify/functions/get-gallery')
       allCards.push({ card, tagText: lowerTagText });
 
       // Add individual tags to set
+      stringTags.split(',').map(tag => tag.trim().toLowerCase()).forEach(tag => {
+        if (tag) allTags.add(tag);
+      });
+     /* 
       stringTags.split(/[, ]+/).forEach(tag => {
         const trimmed = tag.trim().toLowerCase();
         if (trimmed) allTags.add(trimmed);
-      });
+      });*/
     });
 
     // Setup the tag search input and handlers
@@ -186,21 +190,22 @@ function setupTagSearch() {
 
   function filterCardsBySelectedTags() {
     const andMode = document.getElementById('andMode').checked;
-    console.log("refiltering");
-
+  
     if (selectedTags.size === 0) {
       allCards.forEach(({ card }) => card.style.display = '');
       return;
     }
-
+  
     allCards.forEach(({ card, tagText }) => {
+      const tagsArray = tagText.split(',').map(t => t.trim());
       const matches = andMode
-        ? Array.from(selectedTags).every(tag => tagText.includes(tag))
-        : Array.from(selectedTags).some(tag => tagText.includes(tag));
-
+        ? Array.from(selectedTags).every(tag => tagsArray.includes(tag))
+        : Array.from(selectedTags).some(tag => tagsArray.includes(tag));
+  
       card.style.display = matches ? '' : 'none';
     });
   }
+  
 
   document.getElementById('andMode').addEventListener('change', () => {
     filterCardsBySelectedTags();
