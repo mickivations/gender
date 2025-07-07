@@ -37,6 +37,12 @@ fetch('/.netlify/functions/get-gallery')
           modalImage.src = images[0].url;
           modalTitle.textContent = title;
           modalID.innerHTML = combinedID;
+          console.log(document.getElementById('modalAxis'));
+
+          //modalAxis.innerHTML = `<strong>Axis Label:</strong> ${axis}`;
+          if(axis){
+          modalAxis.textContent = "Axis Label " + axis; // "Axis Label: " + axis;
+        }
           modalDescription.innerHTML = combinedDetails;
           modalTags.textContent = "Tag(s): " + stringTags;
           modal.style.display = 'flex';
@@ -115,6 +121,7 @@ const modal = document.getElementById('modal');
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
 const modalID = document.getElementById('modalID');
+const modalAxis = document.getElementById('modalAxis');
 const modalDescription = document.getElementById('modalDescription');
 const modalTags = document.getElementById('modalTags');
 const closeModal = document.getElementById('closeModal');

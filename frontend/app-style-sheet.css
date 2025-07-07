@@ -452,7 +452,6 @@ canvas {
   .toolbar button span.material-icons,
   .toolbar-item button span.material-icons {
     font-size: 1.75rem;
-    color: red;
     line-height: 1;
     display: flex;
     align-items: center;
@@ -557,3 +556,30 @@ canvas {
   font-style: normal;
 }
 
+.tag-suggestion {
+  display: block;
+  margin: 0.25em;
+  padding: 0.4em 0.6em;
+  background: blue !important;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+
+.selected-tag {
+  display: inline-block;
+  margin: 0.25em;
+  padding: 0.4em 0.6em;
+  background: red;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.remove-tag-btn {
+  background: none;
+  border: none;
+  margin-left: 0.5em;
+  color: gray;
+  font-weight: bold;
+  cursor: pointer;
+}

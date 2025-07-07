@@ -234,6 +234,7 @@ button:hover, button:active {
 .tag-suggestion {
   padding: 0.5rem;
   cursor: pointer;
+  width: 100%;
 }
 
 .tag-suggestion:hover {
@@ -253,6 +254,9 @@ button:hover, button:active {
   flex: 1 1 200px;
   min-width: 150px;
 }
+#allTagsList {
+  width: 100%;
+}
 
 #showAllTagsBtn {
   padding: 0.5rem 1rem;
@@ -266,4 +270,15 @@ button:hover, button:active {
 
 #showAllTagsBtn:hover {
   background-color: #666;
+}
+
+.tag-suggestion:hover {
+  background-color: #ccc;
+}
+.remove-tag-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
 }
