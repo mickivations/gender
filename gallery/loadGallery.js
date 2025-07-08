@@ -192,7 +192,14 @@ function setupTagSearch() {
         selectedTags.delete(tag);
         updateSelectedTags();
         filterCardsBySelectedTags();
+      
+        // Show tag again in the All Tags list if it exists
+        if (window.tagElementsMap && window.tagElementsMap.has(tag)) {
+          const tagDiv = window.tagElementsMap.get(tag);
+          tagDiv.style.display = 'inline-block';
+        }
       });
+      
 
       tagElem.appendChild(removeBtn);
       selectedTagsDiv.appendChild(tagElem);
@@ -239,46 +246,61 @@ function setupTagSearch() {
 function setupShowAllTagsButton() {
   const showAllTagsBtn = document.getElementById('showAllTagsBtn');
   const allTagsList = document.getElementById('allTagsList');
+  const tagElementsMap = new Map(); // Track tag elements
 
   showAllTagsBtn.addEventListener('click', () => {
     if (allTagsList.style.display === 'none' || allTagsList.style.display === '') {
-      // Show and populate the list
-      allTagsList.style.display = 'block';
-      allTagsList.innerHTML = '';
+      allTagsList.style.display = 'flex';
 
-      // Get currently selected tags to exclude from list
-      const selectedTagsSpans = document.querySelectorAll('#selectedTags .selected-tag');
-      const selectedTags = new Set(
-        Array.from(selectedTagsSpans).map(span => span.textContent.replace('✕', '').trim().toLowerCase())
-      );
-
+      // (Re)populate or update the tag list
       Array.from(allTags).sort().forEach(tag => {
-        if (selectedTags.has(tag)) return; // skip tags already selected
+        let tagDiv;
 
-        const tagDiv = document.createElement('div');
-        tagDiv.textContent = tag;
-        tagDiv.classList.add('tag-suggestion');
-        tagDiv.style.cursor = 'pointer';
-        tagDiv.style.padding = '4px 8px';
+        // If we’ve already created it, reuse
+        if (tagElementsMap.has(tag)) {
+          tagDiv = tagElementsMap.get(tag);
+        } else {
+          // Create new tag div
+          tagDiv = document.createElement('div');
+          tagDiv.textContent = tag;
+          tagDiv.classList.add('tag');
+          tagDiv.style.cursor = 'pointer';
+          tagDiv.style.padding = '4px 8px';
 
-        tagDiv.addEventListener('click', () => {
-          window.addSelectedTag(tag);
-          allTagsList.style.display = 'none';
+          tagDiv.addEventListener('click', () => {
+            window.addSelectedTag(tag);
+            tagDiv.style.display = 'none'; // Just hide it
+            const input = document.getElementById('tagSearch');
+            input.value = '';
+            document.getElementById('tagSuggestions').innerHTML = '';
+          });
 
-          // Clear search input and suggestions for clean UX
-          const input = document.getElementById('tagSearch');
-          input.value = '';
-          document.getElementById('tagSuggestions').innerHTML = '';
-        });
+          tagElementsMap.set(tag, tagDiv);
+        }
 
-        allTagsList.appendChild(tagDiv);
+        // Add to DOM if not already present
+        if (!allTagsList.contains(tagDiv)) {
+          allTagsList.appendChild(tagDiv);
+        }
+
+        // Show or hide based on whether it’s already selected
+        const selectedTagsSpans = document.querySelectorAll('#selectedTags .selected-tag');
+        const selectedTags = new Set(
+          Array.from(selectedTagsSpans).map(span => span.textContent.replace('✕', '').trim().toLowerCase())
+        );
+
+        tagDiv.style.display = selectedTags.has(tag) ? 'none' : 'inline-block';
       });
+
     } else {
-      // Hide the list
       allTagsList.style.display = 'none';
     }
   });
+
+  // Make the tagElementsMap accessible for re-showing on unselect
+  window.tagElementsMap = tagElementsMap;
 }
+
 
 document.getElementById('toggleTagFiltersBtn').addEventListener('click', () => {
   const container = document.getElementById('tagFilterContainer');

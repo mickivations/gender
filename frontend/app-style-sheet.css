@@ -559,14 +559,32 @@ canvas {
   font-style: normal;
 }
 
+#tagFilterContainer {
+  position: relative; /* So suggestions can be placed relative to this */
+}
+
+#tagSuggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  background-color: #000;
+  border-top: none;
+  max-height: 150px !important;
+  overflow-y: auto;
+  z-index: 10;
+}
+
 .tag-suggestion {
   display: block;
   margin: 0.25em;
   padding: 0.4em 0.6em;
-  background: blue !important;
+  background: red !important;
   border-radius: 6px;
   cursor: pointer;
   color: white;
+  font-size: 1rem;
 }
 
 .selected-tag {

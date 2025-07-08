@@ -934,7 +934,7 @@ function setupTagSearchForForm() {
     if (!query) return;
 
     const matching = Array.from(allTags).filter(tag =>
-      tag.includes(query) && !selectedTags.has(tag)
+      tag.startsWith(query) && !selectedTags.has(tag)
     );
 
     matching.forEach(tag => {
@@ -1096,7 +1096,7 @@ function setupTagSearchForForm() {
     if (!query) return;
 
     const matching = Array.from(allTags).filter(tag =>
-      tag.includes(query) && !selectedTags.has(tag)
+      tag.startsWith(query) && !selectedTags.has(tag)
     );
 
     matching.forEach(tag => {
