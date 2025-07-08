@@ -663,6 +663,7 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
   const title = document.getElementById('title').value;
   const name = document.getElementById('name').value;
   const altText = document.getElementById('altText').value;
+  const description = document.getElementById('description').value;
   const axis3 = document.getElementById('axis3').value;
   const pronouns = document.getElementById('pronouns').value;
   const base64 = canvas.toDataURL('image/png');
@@ -684,7 +685,7 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
 
 
   toggleSubmitMenu();
-
+console.log(description);
   const payload = {
     title,
     name,
@@ -693,6 +694,7 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
     altText,
     ax3: axis3,
     tags: Array.from(selectedTags).join(', '), // comma-separated string
+    description,
   };
   
 const res = await fetch('/.netlify/functions/submit', {
@@ -1022,8 +1024,10 @@ function renderAllTagsList() {
     allTagsList.appendChild(div);
   });
 }
-/*
+
 function setupShowAllTagsButtonForForm() {
+  renderAllTagsList();
+  /*
   const showAllTagsBtn = document.getElementById('showAllTagsBtn');
   const allTagsList = document.getElementById('allTagsList');
   const input = document.getElementById('tagSearch');
@@ -1065,8 +1069,8 @@ function setupShowAllTagsButtonForForm() {
       allTagsList.style.display = 'none';
     }
       
-  }); 
-}*/
+  }); */
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch('/.netlify/functions/get-tags')
