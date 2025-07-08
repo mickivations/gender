@@ -293,6 +293,7 @@ canvas {
   left: 0;
   width: 100vw;
   height: 100vh;
+  margin: 0px;
   background-color: rgba(0, 0, 0, 0.8); /* Darker dimmed background */
   color: #fff;
   z-index: 1000; /* On top of everything */
@@ -306,9 +307,9 @@ canvas {
   background: rgba(20, 20, 20, 0.95);
   color: #FFFFFF;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 0rem;
   max-width: 800px;
-  width: 90vw;
+  width: 100vw;
   box-sizing: border-box;
   font-size: 1.2rem;
   gap: 1rem;
@@ -326,7 +327,8 @@ canvas {
   border: 1.5px solid #888;
   background-color: #222;
   color: #fff;
-  width: 100%;
+  width: 95%;
+  margin: auto;
   box-sizing: border-box;
   resize: vertical;
   transition: border-color 0.3s ease;
@@ -340,7 +342,8 @@ canvas {
   border: 1.5px solid #888;
   background-color: #222;
   color: #fff;
-  width: 100%;
+  width: 95%;
+  margin: auto;
   box-sizing: border-box;
   resize: vertical;
   height: auto;        /* ✅ Ensure height is not forced */
