@@ -160,14 +160,6 @@ function getDistance(touches) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-// Listen for touchstart
-htmlCanvas.addEventListener('touchstart', function(event) {
-  alert('Pinch start');
-  if (event.touches.length === 2) {
-    initialDistance = getDistance(event.touches);
-    initialZoom = canvas.getZoom();
-  }
-});
 
 // Add event listener to the slider
 document.getElementById('opacitySlider').addEventListener('input', (event) => {
@@ -209,22 +201,39 @@ canvas.getObjects().forEach((obj) => {
 });
 
 
-// Listen for touchmove
+function getDistance(touches) {
+  const dx = touches[0].pageX - touches[1].pageX;
+  const dy = touches[0].pageY - touches[1].pageY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+htmlCanvas.addEventListener('touchstart', function(event) {
+  if (event.touches.length === 2) {
+    initialDistance = getDistance(event.touches);
+    initialZoom = canvas.getZoom();
+  }
+});
+
 htmlCanvas.addEventListener('touchmove', function(event) {
-  alert("touch move");
   if (event.touches.length === 2 && initialDistance) {
-    event.preventDefault(); // Important! Prevent page zoom
+    event.preventDefault(); // stop page zoom
     const newDistance = getDistance(event.touches);
     const zoomFactor = newDistance / initialDistance;
-    canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, initialZoom * zoomFactor);
-  }
-}, { passive: false }); // passive: false lets you call preventDefault()
 
-// Listen for touchend
+    // Get midpoint of the gesture
+    const midX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
+    const midY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
+    const rect = canvas.upperCanvasEl.getBoundingClientRect();
+    const point = new fabric.Point(midX - rect.left, midY - rect.top);
+
+    canvas.zoomToPoint(point, initialZoom * zoomFactor);
+  }
+}, { passive: false });
+
 htmlCanvas.addEventListener('touchend', function() {
-  alert('touch end');
   initialDistance = null;
 });
+ 
 
 function toggleSliderMenu() {
   const menu = document.getElementById('sliderMenu');
@@ -265,6 +274,38 @@ let y1;
 let x2; 
 let y2;
 
+let isDragging = false;
+let lastPosX, lastPosY;
+
+canvas.on('mouse:down', function(opt) {
+  if (!canvas.isDrawingMode) {
+    isDragging = true;
+    canvas.selection = false;
+    const evt = opt.e;
+    lastPosX = evt.clientX;
+    lastPosY = evt.clientY;
+  }
+});
+
+canvas.on('mouse:move', function(opt) {
+  if (isDragging && !canvas.isDrawingMode) {
+    const e = opt.e;
+    const vpt = canvas.viewportTransform;
+    vpt[4] += e.clientX - lastPosX;
+    vpt[5] += e.clientY - lastPosY;
+    canvas.requestRenderAll();
+    lastPosX = e.clientX;
+    lastPosY = e.clientY;
+  }
+});
+
+canvas.on('mouse:up', function(opt) {
+  isDragging = false;
+  canvas.selection = false;
+});
+
+
+/*
 canvas.on('mouse:down', function(event) {
     if (!pendingShapeType) return;  // If no shape is pending, do nothing
   
@@ -283,13 +324,13 @@ canvas.on('mouse:down', function(event) {
     
 
 
-  });
+  });*/
 
-
+/*
   canvas.on('mouse:up', function(event) {
 
     if (!pendingShapeType) return;  // If no shape is pending, do nothing
-/*
+/  - *
     // Check if an object was clicked
     if (event.target) {
       // An object was clicked, select it
@@ -297,7 +338,7 @@ canvas.on('mouse:down', function(event) {
       console.log('Clicked on an object:', event.target.type);
       return; // Don't add a new shape
     }
-*/
+* -/
     const pointer = canvas.getPointer(event.e);
     x2 = pointer.x;
     y2 = pointer.y;
@@ -352,7 +393,7 @@ canvas.on('mouse:down', function(event) {
     canvas.add(shape);
     canvas.setActiveObject(shape);
     canvas.renderAll();
-  });
+  }); */
 
 let radiiLines = []; // To keep track of lines so we can remove them
 
@@ -530,6 +571,7 @@ function resizeCanvas() {
     
       // Create labels
       const label1 = new fabric.Text('3', {
+        fontFamily: 'Arial, sans-serif',
         left: centerX - 25,
         top: centerY - maxRadius - 25,
         fontSize: 24,
@@ -539,6 +581,7 @@ function resizeCanvas() {
       });
     
       const label2 = new fabric.Text('B', {
+        fontFamily: 'Arial, sans-serif',
         left: centerX - maxRadius,
         top: centerY + maxRadius / 2,
         fontSize: 24,
@@ -548,7 +591,8 @@ function resizeCanvas() {
       });
     
       const label3 = new fabric.Text('G', {
-        left: centerX + maxRadius,
+        fontFamily: 'Arial, sans-serif',
+        left: centerX + maxRadius *.95,
         top: centerY + maxRadius / 2,
         fontSize: 24,
         fill: '#AAAAAA',

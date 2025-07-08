@@ -141,7 +141,6 @@ a:link, a:visited {
   border-radius: 5px;
   font-size: 1.2rem;
 
-
 }
 
 a:hover, a:active {
@@ -276,9 +275,6 @@ button:hover, button:active {
   background-color: #666;
 }
 
-.tag-suggestion:hover {
-  background-color: #ccc;
-}
 .remove-tag-btn {
   background: none;
   border: none;
