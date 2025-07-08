@@ -8,7 +8,7 @@ exports.handler = async function (event, context) {
     };
   }
 
-  const { title, name, pronouns, imageBase64, altText, ax3, tags } = JSON.parse(event.body);
+  const { title, name, pronouns, imageBase64, altText, ax3, tags, description } = JSON.parse(event.body);
 
   const imgBBKey = process.env.IMGBB_API_KEY;
   const airtableKey = process.env.AIRTABLE_API_KEY;
@@ -44,7 +44,7 @@ if (!uploadData.success || !uploadData.data || !uploadData.data.url) {
 const imageUrl = uploadData.data.url;
 
     // Send to Airtable
-    console.log("Before Airtable update");
+    console.log("Before Airtable update", description);
 
     const airtableRes = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
       method: 'POST',
@@ -61,12 +61,13 @@ const imageUrl = uploadData.data.url;
           AxisLabel: ax3,
           StringTags: tags,
           Image: [{ url: imageUrl }],
+          Description: description,
         },
       }),
     });
-
     const data = await airtableRes.json();
-    console.log("After Airtable update, status:", airtableRes.status);
+console.log("Airtable response:", data);
+console.log("After Airtable update, status:", airtableRes.status);
 
     return {
       statusCode: 200,

@@ -580,19 +580,19 @@ canvas {
   display: block;
   margin: 0.25em;
   padding: 0.4em 0.6em;
-  background: red !important;
+  background: green !important;
   border-radius: 6px;
   cursor: pointer;
   color: white;
-  font-size: 1rem;
+  font-size: .9rem;
 }
 
 .selected-tag {
   display: inline-block;
   margin: 0.25em;
   padding: 0.4em 0.6em;
-  background: red;
-  color: #fff;
+  background: gray;
+  color: black;
   border-radius: 6px;
 }
 

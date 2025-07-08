@@ -270,6 +270,7 @@ button:hover, button:active {
 #allTagsList {
   display: none;
   flex-wrap: wrap;
+  max-height: 20%;
   gap: 0.5rem;
   justify-content: flex-start;
   height: auto; /*200px; /*25vh;               /* or try height: 200px */
