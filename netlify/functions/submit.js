@@ -9,6 +9,9 @@ exports.handler = async function (event, context) {
   }
 
   const { title, name, pronouns, imageBase64, altText, ax3, tags, description } = JSON.parse(event.body);
+  console.log("Base64 length:", imageBase64.length);
+console.log("Base64 preview:", imageBase64.slice(0, 100));
+
 
   const imgBBKey = process.env.IMGBB_API_KEY;
   const airtableKey = process.env.AIRTABLE_API_KEY;
@@ -17,15 +20,31 @@ exports.handler = async function (event, context) {
   
   try {
     // Upload image to ImgBB
-    const formData = new URLSearchParams();
-    formData.append('image', imageBase64.split(',')[1]);
     console.log("Before ImgBB upload");
-    console.log("ImgBB API Key:", imgBBKey ? "Present" : "Missing or empty");
+console.log("ImgBB API Key:", imgBBKey ? "Present" : "Missing or empty");
 
-    const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
-      method: 'POST',
-      body: formData,
-    });
+// Handle base64 string carefully
+if (!imageBase64 || typeof imageBase64 !== 'string') {
+  throw new Error("No imageBase64 string provided.");
+}
+
+const parts = imageBase64.split(',');
+if (parts.length < 2 || !parts[1]) {
+  throw new Error("Base64 string is malformed or missing image data.");
+}
+
+console.log("Base64 length:", imageBase64.length);
+console.log("Base64 preview:", imageBase64.slice(0, 100));
+
+const base64Body = parts[1];
+const formData = new URLSearchParams();
+formData.append('image', base64Body);
+
+const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
+  method: 'POST',
+  body: formData,
+});
+
 
     console.log("After ImgBB upload, status:", uploadRes.status);
 
