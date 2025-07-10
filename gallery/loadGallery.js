@@ -27,33 +27,42 @@ fetch('/.netlify/functions/get-gallery')
       const combinedDetails = `${altText}<br><br>${description}`;
       const combinedID = `${name}<br>${pronouns}`;
 
+      const img = document.createElement('img');
+      img.alt = title;
+      img.style.cursor = 'pointer';
+      
       if (images && images.length > 0) {
-        const img = document.createElement('img');
         img.src = images[0].url;
-        img.alt = title;
-        img.style.cursor = 'pointer';
-
-        img.addEventListener('click', () => {
-          modalImage.src = images[0].url;
-          modalTitle.textContent = title;
-          modalID.innerHTML = combinedID;
-          console.log(document.getElementById('modalAxis'));
-
-          //modalAxis.innerHTML = `<strong>Axis Label:</strong> ${axis}`;
-          if(axis){
-          modalAxis.textContent = "3rd Axis Label: " + axis; // "Axis Label: " + axis;
-        }
-        else{
-          modalAxis.textContent = ""; // "Axis Label: " + axis;
-
-        }
-          modalDescription.innerHTML = combinedDetails;
-          modalTags.textContent = "Tag(s): " + stringTags;
-          modal.style.display = 'flex';
-        });
-
-        card.appendChild(img);
+      } else if (record.fields['ImageBase64']) {
+        img.src = record.fields['ImageBase64'];
+      } else {
+        img.src = ''; // or a placeholder image URL if you want
       }
+      
+      img.addEventListener('click', () => {
+        if (images && images.length > 0) {
+          modalImage.src = images[0].url;
+        } else if (record.fields['ImageBase64']) {
+          modalImage.src = record.fields['ImageBase64'];
+        } else {
+          modalImage.src = ''; // or placeholder
+        }
+      
+        modalTitle.textContent = title;
+        modalID.innerHTML = combinedID;
+      
+        if(axis){
+          modalAxis.textContent = "3rd Axis Label: " + axis;
+        } else {
+          modalAxis.textContent = "";
+        }
+        modalDescription.innerHTML = combinedDetails;
+        modalTags.textContent = "Tag(s): " + stringTags;
+        modal.style.display = 'flex';
+      });
+      
+      card.appendChild(img);
+      
 
       if (title) {
         const h3 = document.createElement('h3');
