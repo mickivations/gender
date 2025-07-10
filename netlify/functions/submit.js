@@ -8,55 +8,55 @@ exports.handler = async function (event, context) {
     };
   }
 
-  const { title, name, pronouns, imageBase64, altText, ax3, tags, description } = JSON.parse(event.body);
-
-  console.log("Base64 length:", imageBase64.length);
-  console.log("Base64 preview:", imageBase64.slice(0, 100));
-
-  const imgBBKey = process.env.IMGBB_API_KEY;
-  const airtableKey = process.env.AIRTABLE_API_KEY;
-  const baseId = process.env.AIRTABLE_BASE_ID;
-  const tableName = process.env.AIRTABLE_TABLE_NAME;
-
-  let imageUrl = null;
-  let fallbackUsed = false;
-
   try {
-    const formData = new URLSearchParams();
-    formData.append('image', imageBase64.split(',')[1]);
+    const { title, name, pronouns, imageBase64, altText, ax3, tags, description } = JSON.parse(event.body);
 
-    console.log("Before ImgBB upload");
-    console.log("ImgBB API Key:", imgBBKey ? "Present" : "Missing or empty");
-    console.log("Sending these fields to Airtable:", fields);
+    console.log("Base64 length:", imageBase64.length);
+    console.log("Base64 preview:", imageBase64.slice(0, 100));
 
+    const imgBBKey = process.env.IMGBB_API_KEY;
+    const airtableKey = process.env.AIRTABLE_API_KEY;
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const tableName = process.env.AIRTABLE_TABLE_NAME;
 
-    const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
-      method: 'POST',
-      body: formData,
-    });
+    let imageUrl = null;
+    let fallbackUsed = false;
 
-    console.log("After ImgBB upload, status:", uploadRes.status);
-    const text = await uploadRes.text();
-
-    let uploadData;
+    // Try uploading to ImgBB
     try {
-      uploadData = JSON.parse(text);
+      const formData = new URLSearchParams();
+      formData.append('image', imageBase64.split(',')[1]);
+
+      console.log("Before ImgBB upload");
+      console.log("ImgBB API Key:", imgBBKey ? "Present" : "Missing or empty");
+
+      const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log("After ImgBB upload, status:", uploadRes.status);
+
+      const text = await uploadRes.text();
+
+      let uploadData;
+      try {
+        uploadData = JSON.parse(text);
+      } catch (err) {
+        throw new Error("Failed to parse ImgBB response as JSON: " + text);
+      }
+
+      if (!uploadData.success || !uploadData.data || !uploadData.data.url) {
+        throw new Error("ImgBB upload failed: " + JSON.stringify(uploadData));
+      }
+
+      imageUrl = uploadData.data.url;
     } catch (err) {
-      throw new Error("Failed to parse ImgBB response as JSON: " + text);
+      console.error("ImgBB upload failed, falling back to base64. Reason:", err.message);
+      fallbackUsed = true;
     }
 
-    if (!uploadData.success || !uploadData.data || !uploadData.data.url) {
-      throw new Error("ImgBB upload failed: " + JSON.stringify(uploadData));
-    }
-
-    imageUrl = uploadData.data.url;
-
-  } catch (err) {
-    console.error("ImgBB upload failed, falling back to base64. Reason:", err.message);
-    fallbackUsed = true;
-  }
-
-  try {
+    // Prepare Airtable fields
     const fields = {
       Title: title,
       Name: name,
@@ -68,11 +68,14 @@ exports.handler = async function (event, context) {
     };
 
     if (fallbackUsed) {
-      fields.ImageBase64 = imageBase64; // your new Airtable field
+      fields.ImageBase64 = imageBase64; // Airtable Long Text field for fallback
     } else {
-      fields.Image = [{ url: imageUrl }];
+      fields.Image = [{ url: imageUrl }]; // Airtable Attachment field
     }
 
+    console.log("Sending these fields to Airtable:", fields);
+
+    // Send to Airtable
     const airtableRes = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
       method: 'POST',
       headers: {
@@ -89,9 +92,8 @@ exports.handler = async function (event, context) {
       statusCode: 200,
       body: JSON.stringify({ success: true, fallback: fallbackUsed, data }),
     };
-
   } catch (err) {
-    console.error("Airtable error:", err.message);
+    console.error("Function error:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),
