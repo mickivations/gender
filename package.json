@@ -19,5 +19,8 @@
   "description": "",
   "devDependencies": {
     "dotenv": "^17.0.1"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.0.4"
   }
 }
