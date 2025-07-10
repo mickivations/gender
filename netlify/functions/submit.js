@@ -87,6 +87,8 @@ console.log("After Airtable update, status:", airtableRes.status);
       body: JSON.stringify({ success: true, data }),
     };
   } catch (err) {
+    console.error("Function error:", err);
+
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),
