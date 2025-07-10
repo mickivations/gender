@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { blobs } = require('@netlify/blobs');
+const { blobs } = await import('@netlify/blobs');
 
 exports.handler = async function (event, context) {
   if (event.httpMethod !== 'POST') {
