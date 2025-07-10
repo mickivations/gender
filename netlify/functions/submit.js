@@ -32,8 +32,21 @@ exports.handler = async function (event, context) {
    // const uploadData = await uploadRes.json();
    // const imageUrl = uploadData.data.url;
 // debug version 
-const uploadData = await uploadRes.json();
+
+console.log("ImgBB upload response status:", uploadRes.status);
+const text = await uploadRes.text();  // Safely read raw response
+console.log("ImgBB raw response body:", text);
+
+let uploadData;
+try {
+  uploadData = JSON.parse(text);
+} catch (err) {
+  throw new Error("Failed to parse ImgBB response as JSON: " + text);
+}
+
+
 console.log("ImgBB response:", uploadData);
+
 
 if (!uploadData.success || !uploadData.data || !uploadData.data.url) {
   throw new Error(

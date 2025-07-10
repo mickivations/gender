@@ -530,7 +530,7 @@ function resizeCanvas() {
         top: centerY - maxRadius,
         radius: maxRadius,
         stroke: '#AAAAAA',
-        strokeWidth: 2,
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -541,7 +541,7 @@ function resizeCanvas() {
         top: centerY - maxRadius * 0.75,
         radius: maxRadius * 0.75,
         stroke: '#AAAAAA',
-        strokeWidth: 2,
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -552,7 +552,7 @@ function resizeCanvas() {
         top: centerY - maxRadius * 0.5,
         radius: maxRadius * 0.5,
         stroke: '#AAAAAA',
-        strokeWidth: 2,
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -563,7 +563,7 @@ function resizeCanvas() {
         top: centerY - maxRadius * 0.25,
         radius: maxRadius * 0.25,
         stroke: '#AAAAAA',
-        strokeWidth: 2,
+        strokeWidth: 3,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -610,7 +610,7 @@ function resizeCanvas() {
     
         const line = new fabric.Line([centerX, centerY, x, y], {
           stroke: '#DDDDDD',
-          strokeWidth: 3,
+          strokeWidth: 5,
           selectable: false,
           evented: false
         });
@@ -682,10 +682,11 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
     .map(str => str.trim())
     .filter(str => str.length > 0);
     const tagsString = allChoices.join(", "); // e.g., "Option 1, Custom input"
-
+    const combinedTags = Array.from(new Set([...allChoices, ...selectedTags])).join(', ');
+    
+    
 
   toggleSubmitMenu();
-console.log(description);
   const payload = {
     title,
     name,
@@ -693,9 +694,11 @@ console.log(description);
     imageBase64: base64,
     altText,
     ax3: axis3,
-    tags: Array.from(selectedTags).join(', '), // comma-separated string
+    tags: combinedTags, // comma-separated string
     description,
   };
+  
+  console.log('Payload:', payload);
   
 const res = await fetch('/.netlify/functions/submit', {
   method: 'POST',
