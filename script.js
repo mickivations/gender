@@ -530,7 +530,7 @@ function resizeCanvas() {
         top: centerY - maxRadius,
         radius: maxRadius,
         stroke: '#AAAAAA',
-        strokeWidth: 3,
+        strokeWidth: 2,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -541,7 +541,7 @@ function resizeCanvas() {
         top: centerY - maxRadius * 0.75,
         radius: maxRadius * 0.75,
         stroke: '#AAAAAA',
-        strokeWidth: 3,
+        strokeWidth: 2,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -552,7 +552,7 @@ function resizeCanvas() {
         top: centerY - maxRadius * 0.5,
         radius: maxRadius * 0.5,
         stroke: '#AAAAAA',
-        strokeWidth: 3,
+        strokeWidth: 2,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -563,7 +563,7 @@ function resizeCanvas() {
         top: centerY - maxRadius * 0.25,
         radius: maxRadius * 0.25,
         stroke: '#AAAAAA',
-        strokeWidth: 3,
+        strokeWidth: 2,
         fill: 'transparent',
         selectable: false,
         evented: false
@@ -610,7 +610,7 @@ function resizeCanvas() {
     
         const line = new fabric.Line([centerX, centerY, x, y], {
           stroke: '#DDDDDD',
-          strokeWidth: 5,
+          strokeWidth: 3,
           selectable: false,
           evented: false
         });
