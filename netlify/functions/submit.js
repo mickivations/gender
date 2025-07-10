@@ -27,6 +27,8 @@ exports.handler = async function (event, context) {
 
     console.log("Before ImgBB upload");
     console.log("ImgBB API Key:", imgBBKey ? "Present" : "Missing or empty");
+    console.log("Sending these fields to Airtable:", fields);
+
 
     const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgBBKey}`, {
       method: 'POST',
