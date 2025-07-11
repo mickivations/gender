@@ -1213,3 +1213,7 @@ function renderAllTagsList() {
   });
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+  const picker = document.getElementById('colorPicker');
+  picker.value = '#ffff00'; // or whatever color you prefer
+});
