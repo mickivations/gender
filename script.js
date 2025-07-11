@@ -25,7 +25,7 @@ function scaleCanvasObjectsToFit(newWidth, newHeight) {
 }
 
 
-let currentColor = '#ffff00';  // Default color is yelow
+let currentColor = '#ffff00';  // Default color is yellow
 
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
@@ -278,31 +278,38 @@ let isDragging = false;
 let lastPosX, lastPosY;
 
 canvas.on('mouse:down', function(opt) {
-  if (!canvas.isDrawingMode) {
+  const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
+  if (!canvas.getActiveObject() && !canvas.isDrawingMode) {
     isDragging = true;
     canvas.selection = false;
-    const evt = opt.e;
     lastPosX = evt.clientX;
     lastPosY = evt.clientY;
   }
 });
 
 canvas.on('mouse:move', function(opt) {
-  if (isDragging && !canvas.isDrawingMode) {
-    const e = opt.e;
+  if (isDragging) {
+    
+    const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
+    const deltaX = evt.clientX - lastPosX;
+    const deltaY = evt.clientY - lastPosY;
+
     const vpt = canvas.viewportTransform;
-    vpt[4] += e.clientX - lastPosX;
-    vpt[5] += e.clientY - lastPosY;
+    vpt[4] += deltaX;
+    vpt[5] += deltaY;
+
     canvas.requestRenderAll();
-    lastPosX = e.clientX;
-    lastPosY = e.clientY;
+
+    lastPosX = evt.clientX;
+    lastPosY = evt.clientY;
   }
 });
 
-canvas.on('mouse:up', function(opt) {
+canvas.on('mouse:up', function() {
   isDragging = false;
-  canvas.selection = false;
+  canvas.selection = true;
 });
+
 
 
 /*
