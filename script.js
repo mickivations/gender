@@ -9,7 +9,7 @@ let currentColor = '#ffff00';  // Default color
 const preview = document.getElementById('colorInput');
 
 document.addEventListener('DOMContentLoaded', () => {
-  const colorPicker = new iro.ColorPicker('#colorPickerContainer', {
+  const colorPicker = new iro.ColorPicker('#iroContainer', {
     color: '#ffff00'
   });
 
@@ -31,7 +31,7 @@ preview.style.backgroundColor = currentColor;
     colorPickerContainer.style.top = (rect.bottom + window.scrollY + 5) + 'px';
     colorPickerContainer.style.left = (rect.left + window.scrollX) + 'px';*/
 
-    colorPickerContainer.style.display = 'block';
+    colorPickerContainer.style.display = 'flex';
   } else {
     colorPickerContainer.style.display = 'none';
   }
@@ -41,7 +41,7 @@ preview.style.backgroundColor = currentColor;
 // Optional: hide picker if clicking outside
 document.addEventListener('click', (e) => {
   if (!preview.contains(e.target) && !colorPickerContainer.contains(e.target)) {
-    colorPickerContainer.style.display = 'none';
+    closeColorPicker();
   }
 });
 
