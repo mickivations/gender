@@ -604,3 +604,20 @@ canvas {
   font-weight: bold;
   cursor: pointer;
 }
+
+.color-preview {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  background-color: #ffff00;
+  cursor: pointer;
+  padding: 0;
+}
+
+.color-preview:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
