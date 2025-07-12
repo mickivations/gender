@@ -16,6 +16,30 @@ html, body {
   overflow: hidden; /* prevent body scroll */
 }
 
+#colorPickerContainer {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  z-index: 1000 !important;
+  align-items: center;
+}
+
+
+.close_colors {
+  display: block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
 
 body {
   font-family: "Nunito", sans-serif;
@@ -270,7 +294,7 @@ canvas {
 }
 
 /* Fullscreen overlay background */
-#shapesSubMenu, #colorPickerContainer {
+#shapesSubMenu{
   display: none; /* Start hidden */
   position: fixed; /* or absolute */
   bottom: 5%;
