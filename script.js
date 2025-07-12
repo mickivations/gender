@@ -5,6 +5,22 @@
 const selectedTags = new Set();
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
+let currentColor = '#ffff00';  // Default color
+
+document.addEventListener('DOMContentLoaded', () => {
+  const colorPicker = new iro.ColorPicker('#colorPickerContainer', {
+    color: '#ffff00'
+  });
+
+  colorPicker.on('color:change', function(color) {
+    currentColor = color.hexString;
+    console.log('Color changed to:', color.hexString);
+    updateDrawingColor();
+  });
+});
+
+
+
 function scaleCanvasObjectsToFit(newWidth, newHeight) {
   const prevWidth = canvas.getWidth();
   const prevHeight = canvas.getHeight();
@@ -25,7 +41,7 @@ function scaleCanvasObjectsToFit(newWidth, newHeight) {
 }
 
 
-let currentColor = '#ffff00';  // Default color is yellow
+//let currentColor = '#ffff00';  // Default color is yellow
 
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
@@ -441,7 +457,7 @@ function resizeCanvas() {
 
     // Update the drawing color when the user picks a color
     function updateDrawingColor() {
-  currentColor = document.getElementById('colorPicker').value;
+  //currentColor = document.getElementById('colorPicker').value;
   console.log('Current color selected:', currentColor);
 
   const selectedObject = canvas.getActiveObject();
