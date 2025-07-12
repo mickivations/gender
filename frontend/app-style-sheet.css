@@ -273,7 +273,7 @@ canvas {
 #shapesSubMenu, #colorPickerContainer {
   display: none; /* Start hidden */
   position: fixed; /* or absolute */
-  top: 50%;
+  bottom: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
