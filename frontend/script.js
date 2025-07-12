@@ -45,6 +45,10 @@ document.addEventListener('click', (e) => {
   }
 });
 
+function closeColorPicker(){
+  colorPickerContainer.style.display = 'none';
+}
+
 
 function scaleCanvasObjectsToFit(newWidth, newHeight) {
   const prevWidth = canvas.getWidth();
@@ -71,7 +75,7 @@ function scaleCanvasObjectsToFit(newWidth, newHeight) {
 // Set up the default opacity to 0.8
 let opacityValue = 0.8;
 let pendingShapeType = null;
-let brushWidth = 7;
+let brushWidth = 5;
 
 let maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
 let newRadiiCount = 3;
