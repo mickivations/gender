@@ -21,6 +21,7 @@
     "dotenv": "^17.0.1"
   },
   "dependencies": {
+    "@jaames/iro": "^5.5.2",
     "@netlify/blobs": "^10.0.4"
   }
 }

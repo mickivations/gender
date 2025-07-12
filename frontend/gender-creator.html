@@ -16,10 +16,16 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.js"></script> 
-
   <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.js"></script>
-  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+  <!--<script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5.5.3/dist/iro.min.js"></script>-->
+  <script>
+    console.log('iro object:', window.iro);
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.js" defer></script>
+  <script src="https://unpkg.com/konva@9/konva.min.js" defer></script>
 </head>
 <body>
   <div id="main-content">
@@ -57,7 +63,9 @@
   </div>
     <!-- Color Picker -->
 <div class="toolbar-item">
-    <input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">
+  <div id="colorPickerContainer"></div>
+
+<!--<input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">-->
   </div>
     <div class="button-pair">
     <button onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
@@ -145,6 +153,6 @@
   </div>
   
   
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
