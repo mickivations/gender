@@ -41,7 +41,7 @@ preview.style.backgroundColor = currentColor;
 // Optional: hide picker if clicking outside
 document.addEventListener('click', (e) => {
   if (!preview.contains(e.target) && !colorPickerContainer.contains(e.target)) {
-    closeColorPicker();
+    colorPickerContainer.style.display = 'none';
   }
 });
 
