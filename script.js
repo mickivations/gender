@@ -6,19 +6,44 @@ const selectedTags = new Set();
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
 let currentColor = '#ffff00';  // Default color
+const preview = document.getElementById('colorInput');
 
 document.addEventListener('DOMContentLoaded', () => {
   const colorPicker = new iro.ColorPicker('#colorPickerContainer', {
     color: '#ffff00'
   });
 
+preview.style.backgroundColor = currentColor;
+
   colorPicker.on('color:change', function(color) {
     currentColor = color.hexString;
     console.log('Color changed to:', color.hexString);
     updateDrawingColor();
+
   });
 });
 
+ // When preview clicked, toggle picker visibility
+ preview.addEventListener('click', () => {
+  if (colorPickerContainer.style.display === 'none') {
+    // Position the picker near the preview box
+    const rect = preview.getBoundingClientRect();
+    colorPickerContainer.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+    colorPickerContainer.style.left = (rect.left + window.scrollX) + 'px';
+
+    colorPickerContainer.style.display = 'block';
+  } else {
+    colorPickerContainer.style.display = 'none';
+  }
+});
+
+
+// Optional: hide picker if clicking outside
+document.addEventListener('click', (e) => {
+  if (!preview.contains(e.target) && !colorPickerContainer.contains(e.target)) {
+    colorPickerContainer.style.display = 'none';
+  }
+});
 
 
 function scaleCanvasObjectsToFit(newWidth, newHeight) {
@@ -458,6 +483,8 @@ function resizeCanvas() {
     // Update the drawing color when the user picks a color
     function updateDrawingColor() {
   //currentColor = document.getElementById('colorPicker').value;
+  preview.style.backgroundColor = currentColor;
+
   console.log('Current color selected:', currentColor);
 
   const selectedObject = canvas.getActiveObject();
@@ -1228,8 +1255,8 @@ function renderAllTagsList() {
     allTagsList.appendChild(div);
   });
 }
-
+/*
 window.addEventListener('DOMContentLoaded', () => {
   const picker = document.getElementById('colorPicker');
   picker.value = '#ffff00'; // or whatever color you prefer
-});
+});*/
