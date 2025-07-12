@@ -27,9 +27,9 @@ preview.style.backgroundColor = currentColor;
  preview.addEventListener('click', () => {
   if (colorPickerContainer.style.display === 'none') {
     // Position the picker near the preview box
-    const rect = preview.getBoundingClientRect();
+    /*const rect = preview.getBoundingClientRect();
     colorPickerContainer.style.top = (rect.bottom + window.scrollY + 5) + 'px';
-    colorPickerContainer.style.left = (rect.left + window.scrollX) + 'px';
+    colorPickerContainer.style.left = (rect.left + window.scrollX) + 'px';*/
 
     colorPickerContainer.style.display = 'block';
   } else {

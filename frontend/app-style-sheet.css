@@ -265,12 +265,12 @@ canvas {
 }
 
 .toolbar-item.show-sliders .slider-menu,
-.toolbar-item.show-shapes .submenu {
+.toolbar-item.show-shapes .submenu  {
   display: flex;
 }
 
 /* Fullscreen overlay background */
-#shapesSubMenu {
+#shapesSubMenu, #colorPickerContainer {
   display: none; /* Start hidden */
   position: fixed;
   top: 0;
