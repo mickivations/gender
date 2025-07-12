@@ -272,15 +272,19 @@ canvas {
 /* Fullscreen overlay background */
 #shapesSubMenu, #colorPickerContainer {
   display: none; /* Start hidden */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* On top of everything */
+  z-index: 1000 !important; /* On top of everything */
+}
+
+.IroColorPicker{
+  justify-content: center;
+  align-items: center;
 }
 
 #submitMenu {
@@ -434,7 +438,7 @@ canvas {
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-    z-index: 1000;
+    z-index: 900;
   }
 
   .button-pair {
@@ -488,7 +492,7 @@ canvas {
     overflow-y: auto;
     padding-top: 10px;
     box-sizing: border-box;
-    z-index: 1000;
+    z-index: 900;
   }
 
   .toolbar-item {
