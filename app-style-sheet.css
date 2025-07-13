@@ -466,15 +466,15 @@ canvas {
     background-color: red !important;
   }
 
-  .zoom-btn{
-    display:none !important;
-  }
 
   .button-pair {
     flex-direction: column;
     height: var(--toolbar_height);
   }
-
+  .zoom-btn{
+    display: none !important;
+  }
+  
   .button-pair button {
     flex: 1 1 50%;
     height: auto;
