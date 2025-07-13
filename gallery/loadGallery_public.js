@@ -9,8 +9,12 @@ fetch('/.netlify/functions/get-gallery')
   .then(data => {
     console.log('Fetched gallery data:', data);
     gallery.innerHTML = ''; // Clear loading message
+   // let count = 0;
+    data.records.forEach((record, index) => {
+      if (index <= data.records.length -18) 
+        return; // ⛔ skip anything after the first 10    
 
-    data.records.forEach(record => {
+
       const card = document.createElement('div');
       card.className = 'card';
 
@@ -97,7 +101,7 @@ fetch('/.netlify/functions/get-gallery')
         card.appendChild(p);
       }
 
-      gallery.appendChild(card);
+      gallery.insertBefore(card, gallery.firstChild);
 
       const searchableText = [
         title,
@@ -109,6 +113,8 @@ fetch('/.netlify/functions/get-gallery')
       ].join(' ').toLowerCase();
       
       allCards.push({ card, tagText: lowerTagText, searchableText });
+      
+      
       
 
       // Add individual tags to set

@@ -5,6 +5,8 @@
 const selectedTags = new Set();
 canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
+
+
 let currentColor = '#ffff00';  // Default color
 const preview = document.getElementById('colorInput');
 
@@ -269,32 +271,39 @@ function getDistance(touches) {
   const dy = touches[0].pageY - touches[1].pageY;
   return Math.sqrt(dx * dx + dy * dy);
 }
-
-htmlCanvas.addEventListener('touchstart', function(event) {
+htmlCanvas.addEventListener('touchstart', function (event) {
   if (event.touches.length === 2) {
     initialDistance = getDistance(event.touches);
     initialZoom = canvas.getZoom();
   }
 });
 
-htmlCanvas.addEventListener('touchmove', function(event) {
+htmlCanvas.addEventListener('touchmove', function (event) {
   if (event.touches.length === 2 && initialDistance) {
-    event.preventDefault(); // stop page zoom
+    event.preventDefault(); // Prevent native page zoom
+
     const newDistance = getDistance(event.touches);
     const zoomFactor = newDistance / initialDistance;
+    const newZoom = initialZoom * zoomFactor;
 
-    // Get midpoint of the gesture
-    const midX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
-    const midY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
+    // Limit zoom range (optional)
+    const clampedZoom = Math.max(0.3, Math.min(3, newZoom));
+
+    // Get center point of the pinch
     const rect = canvas.upperCanvasEl.getBoundingClientRect();
-    const point = new fabric.Point(midX - rect.left, midY - rect.top);
+    const midX = (event.touches[0].pageX + event.touches[1].pageX) / 2 - rect.left;
+    const midY = (event.touches[0].pageY + event.touches[1].pageY) / 2 - rect.top;
+    const zoomPoint = new fabric.Point(midX, midY);
 
-    canvas.zoomToPoint(point, initialZoom * zoomFactor);
+    canvas.zoomToPoint(zoomPoint, clampedZoom);
   }
 }, { passive: false });
 
-htmlCanvas.addEventListener('touchend', function() {
-  initialDistance = null;
+htmlCanvas.addEventListener('touchend', function (event) {
+  if (event.touches.length < 2) {
+    initialDistance = null;
+    initialZoom = canvas.getZoom(); // Update baseline zoom
+  }
 });
  
 
