@@ -84,33 +84,39 @@ function addShape(type) {
   disableDrawing();
   pendingShapeType = type;  // Save the type, wait for a click
   setActiveTool(type);
-  toggleShapesMenu();
-  
+  toggleShapesMenu();  
 }
 
 //undo / redo code 
 const undoStack = [];
 const redoStack = [];
 let isRestoringState = false;
-console.log(fabric.EraserBrush); // Should NOT be undefined
 
 
 function saveState() {
-  if (isRestoringState) return; // prevent saving during undo/redo
-  redoStack.length = 0; // clear redo stack on new action
-  undoStack.push(JSON.stringify(canvas));
+  if (isRestoringState) return;
+  redoStack.length = 0;
+
+  const nonTemplateObjects = canvas.getObjects().filter(obj => !obj.templateElement);
+  const state = JSON.stringify({
+    objects: nonTemplateObjects.map(obj => obj.toObject(['templateElement'])),
+    background: canvas.backgroundColor,
+    viewportTransform: canvas.viewportTransform
+  });
+
+  undoStack.push(state);
+  console.log("pushed state");
 }
 
+
+
 function undo() {
-  if (undoStack.length > 2) {
+  if (undoStack.length > 1) {
     isRestoringState = true;
     const current = undoStack.pop();
     redoStack.push(current);
     const previous = undoStack[undoStack.length - 1];
-    canvas.loadFromJSON(previous, () => {
-      canvas.renderAll();
-      isRestoringState = false;
-    });
+    restoreState(previous);
   }
 }
 
@@ -119,23 +125,34 @@ function redo() {
     isRestoringState = true;
     const state = redoStack.pop();
     undoStack.push(state);
-    canvas.loadFromJSON(state, () => {
-      canvas.renderAll();
-      isRestoringState = false;
-    });
+    restoreState(state);
   }
 }
 
-// Save initial blank state
-canvas.on('after:render', () => {
-  if (undoStack.length === 0) saveState();
-});
+function restoreState(state) {
+  const parsed = JSON.parse(state);
+
+  canvas.clear();
+
+  canvas.loadFromJSON({ objects: parsed.objects }, () => {
+    if (parsed.viewportTransform) {
+      canvas.setViewportTransform(parsed.viewportTransform);
+    }
+    canvas.setBackgroundColor('#000000', () => {
+      createTemplate(); // Only after background is applied
+      canvas.renderAll();
+      isRestoringState = false;
+    });
+  });
+}
+
+
 
 // Save state after changes
 ['object:added', 'object:modified', 'object:removed'].forEach(event => {
   canvas.on(event, saveState);
 });
-
+/*
 function duplicateObject() {
   const selectedObject = canvas.getActiveObject();
 
@@ -179,6 +196,7 @@ function duplicateObject() {
     console.log('Object duplicated');
   }
 }
+*/
 
 
 ///////pinch zoom start
@@ -356,97 +374,6 @@ canvas.on('mouse:up', function() {
 });
 
 
-
-/*
-canvas.on('mouse:down', function(event) {
-    if (!pendingShapeType) return;  // If no shape is pending, do nothing
-  
-    // Check if an object was clicked
-    if (event.target) {
-      // An object was clicked, select it
-      canvas.setActiveObject(event.target);
-      console.log('Clicked on an object:', event.target.type);
-      return; // Don't add a new shape
-    }
-  
-    // No object clicked, so we can add a new shape
-    const pointer = canvas.getPointer(event.e);
-    x1 = pointer.x;
-    y1 = pointer.y;
-    
-
-
-  });*/
-
-/*
-  canvas.on('mouse:up', function(event) {
-
-    if (!pendingShapeType) return;  // If no shape is pending, do nothing
-/  - *
-    // Check if an object was clicked
-    if (event.target) {
-      // An object was clicked, select it
-      canvas.setActiveObject(event.target);
-      console.log('Clicked on an object:', event.target.type);
-      return; // Don't add a new shape
-    }
-* -/
-    const pointer = canvas.getPointer(event.e);
-    x2 = pointer.x;
-    y2 = pointer.y;
-    switch (pendingShapeType) {
-      case 'rect':
-        setActiveTool('Rectangle');
-        shape = new fabric.Rect({
-          fill: currentColor,
-          left: x1,
-          top: y1,
-          width: x2- x1,
-          height: y2 - y1,
-          angle: 0,
-          opacity: opacityValue
-        });
-        break;
-      case 'circle':
-        setActiveTool('Circle');
-        shape = new fabric.Ellipse({
-          left: x1,
-          top: y1,
-          fill: currentColor,
-          //width: x2- x1,
-          rx: Math.abs(x2 - x1)/2, //Math.sqrt(((y2 - y1)/2*(y2 - y1)/2) + ((x2 - x1)/2*(x2 - x1)/2)),
-          ry: Math.abs(y2 - y1)/2,
-          opacity: opacityValue
-        });
-        break;
-      case 'line':
-        setActiveTool('Line');
-        shape = new fabric.Line([x1, y1, x2, y2], {
-          stroke: currentColor,
-          strokeWidth: brushWidth,
-          selectable: true,
-          opacity: opacityValue
-        });
-        break;
-      case 'triangle':
-        setActiveTool('Triangle');
-        shape = new fabric.Triangle({
-          left: x1,
-          top: y1,
-          width: x2- x1,
-          height: y2 - y1,
-          fill: currentColor,
-          selectable: true,
-         opacity: opacityValue
-        }); 
-        break;
-    }
-    
-    canvas.add(shape);
-    canvas.setActiveObject(shape);
-    canvas.renderAll();
-  }); */
-
 let radiiLines = []; // To keep track of lines so we can remove them
 
 // Draw radii lines from centerX, centerY outward
@@ -480,6 +407,7 @@ function resizeCanvas() {
   scaleCanvasObjectsToFit(newSize, newSize);
   maxRadius = newSize / 2.2;
   createTemplate(); // ← this updates and locks the template
+  saveState();
 }
 
     
@@ -567,61 +495,26 @@ function resizeCanvas() {
     function createTemplate() {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-    
-      canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
       maxRadius = Math.min(canvas.width, canvas.height) / 2.2;
     
-      // Remove existing template elements
+      // Remove ALL previous template objects or groups
       canvas.getObjects().forEach(obj => {
-        if (obj.templateElement) {
-          canvas.remove(obj);
-        }
+        if (obj.templateElement) canvas.remove(obj);
       });
     
-      // Create circles
-      const circle1 = new fabric.Circle({
-        left: centerX - maxRadius,
-        top: centerY - maxRadius,
-        radius: maxRadius,
-        stroke: '#AAAAAA',
-        strokeWidth: 1,
-        fill: 'transparent',
-        selectable: false,
-        evented: false
-      });
-    
-      const circle2 = new fabric.Circle({
-        left: centerX - maxRadius * 0.75,
-        top: centerY - maxRadius * 0.75,
-        radius: maxRadius * 0.75,
-        stroke: '#AAAAAA',
-        strokeWidth: 1,
-        fill: 'transparent',
-        selectable: false,
-        evented: false
-      });
-    
-      const circle3 = new fabric.Circle({
-        left: centerX - maxRadius * 0.5,
-        top: centerY - maxRadius * 0.5,
-        radius: maxRadius * 0.5,
-        stroke: '#AAAAAA',
-        strokeWidth: 1,
-        fill: 'transparent',
-        selectable: false,
-        evented: false
-      });
-    
-      const circle4 = new fabric.Circle({
-        left: centerX - maxRadius * 0.25,
-        top: centerY - maxRadius * 0.25,
-        radius: maxRadius * 0.25,
-        stroke: '#AAAAAA',
-        strokeWidth: 1,
-        fill: 'transparent',
-        selectable: false,
-        evented: false
-      });
+      // Create rings
+      const circles = [1, 0.75, 0.5, 0.25].map(factor => 
+        new fabric.Circle({
+          left: centerX - maxRadius * factor,
+          top: centerY - maxRadius * factor,
+          radius: maxRadius * factor,
+          stroke: '#AAAAAA',
+          strokeWidth: 1,
+          fill: 'transparent',
+          selectable: false,
+          evented: false
+        })
+      );
     
       // Create labels
       const label1 = new fabric.Text('3', {
@@ -646,7 +539,7 @@ function resizeCanvas() {
     
       const label3 = new fabric.Text('G', {
         fontFamily: 'Arial, sans-serif',
-        left: centerX + maxRadius *.95,
+        left: centerX + maxRadius * 0.95,
         top: centerY + maxRadius / 2,
         fontSize: 24,
         fill: '#AAAAAA',
@@ -655,29 +548,27 @@ function resizeCanvas() {
       });
     
       // Draw radii lines
-      const radiiCount = newRadiiCount; // from your global or slider input
       const radiiLines = [];
-      for (let i = 0; i < radiiCount; i++) {
-        const angle = (2 * Math.PI * i) / radiiCount - Math.PI / 2;
+      for (let i = 0; i < newRadiiCount; i++) {
+        const angle = (2 * Math.PI * i) / newRadiiCount - Math.PI / 2;
         const x = centerX + maxRadius * Math.cos(angle);
         const y = centerY + maxRadius * Math.sin(angle);
     
-        const line = new fabric.Line([centerX, centerY, x, y], {
+        radiiLines.push(new fabric.Line([centerX, centerY, x, y], {
           stroke: '#DDDDDD',
           strokeWidth: 2,
           selectable: false,
           evented: false
-        });
-    
-        radiiLines.push(line);
+        }));
       }
     
-      // Tag all template objects for easy removal later
-      const templateElements = [circle1, circle2, circle3, circle4, label1, label2, label3, ...radiiLines];
-      templateElements.forEach(obj => obj.templateElement = true);
+      const templateObjects = [...circles, label1, label2, label3, ...radiiLines];
+    
+      // Mark all with templateElement = true
+      templateObjects.forEach(obj => obj.templateElement = true);
     
       // Group and lock them
-      const templateGroup = new fabric.Group(templateElements, {
+      const templateGroup = new fabric.Group(templateObjects, {
         selectable: false,
         evented: false,
         hasControls: false,
@@ -685,10 +576,13 @@ function resizeCanvas() {
         lockMovementY: true
       });
     
-      // Add and send to back
+      // Mark group too, so it can be removed later
+      templateGroup.templateElement = true;
+    
       canvas.add(templateGroup);
       canvas.sendToBack(templateGroup);
     }
+    
     
     // Adjust canvas size when the window is resized
     window.addEventListener('resize', resizeCanvas);
@@ -709,6 +603,8 @@ document.getElementById("radii-slider").addEventListener("input", function (even
     // Initial resize
     resizeCanvas();
     enableDrawing();
+   
+
 
   
 
@@ -799,186 +695,6 @@ fetch('/.netlify/functions/get-tags')
 
   
 
-
-/*
-function handleSubmit() {
-  const imageData = canvas.toDataURL({
-    format: 'png',
-    quality: 0.9
-  });
-
-  fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/dispatches', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer YOUR_GITHUB_PAT',
-      'Accept': 'application/vnd.github.everest-preview+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      event_type: 'submit_data',
-      client_payload: {
-        imageData: imageData,
-        timestamp: new Date().toISOString()
-      }
-    })
-  })
-  .then(res => {
-    if (res.ok) {
-      alert('Submitted!');
-    } else {
-      alert('Submission failed.');
-      res.text().then(console.error);
-    }
-  });
-}*/
-
-//// form script 
-/*
-const maxCustomOptions = 20;
-  const container = document.getElementById('customOptionsContainer');
-  const addButton = document.getElementById('addCustomOption');
-
-  let customOptionCount = 0;
-*/
- /* addButton.addEventListener('click', () => {
-    if (customOptionCount < maxCustomOptions) {
-      customOptionCount++;
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = `customOption${customOptionCount}`;
-      input.placeholder = `Other ${customOptionCount}`;
-      input.maxLength = 100;
-      input.style.marginTop = '0.5rem';
-
-      container.appendChild(input);
-    }
-
-    if (customOptionCount === maxCustomOptions) {
-      addButton.disabled = true;
-      addButton.textContent = 'Limit reached';
-    }
-  });
-    
-// Function to add editable text
-function addText(event) {
-
-  // Create the editable text object
-  const text = new fabric.Textbox('Click to edit', {
-    left: 20,
-    top: 20,
-    fontSize: 30,
-    fill: currentColor,
-    editable: true,
-    hasBorders: true,
-    hasControls: true,
-    lockUniScaling: true,
-    opacity: opacityValue
-  });
-
-  // Add the text to the canvas
-  canvas.add(text);
-  canvas.setActiveObject(text); // Automatically select the new text object
-  canvas.renderAll();
-}
-
-const shapesButton = document.getElementById('shapesButton');
-const shapesSubMenu = document.getElementById('shapesSubMenu');
-
-let isDragging = false;
-let lastPosX = 0;
-let lastPosY = 0;
-
-// Enable pan on mouse or touch drag
-canvas.on('mouse:down', function(opt) {
-  const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
-
-  // Only start panning if no object is selected and not drawing
-  if (!canvas.getActiveObject() && !canvas.isDrawingMode) {
-    isDragging = true;
-    canvas.selection = false;
-    lastPosX = evt.clientX;
-    lastPosY = evt.clientY;
-  }
-});
-
-canvas.on('mouse:move', function(opt) {
-  if (isDragging) {
-    const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
-
-    const deltaX = evt.clientX - lastPosX;
-    const deltaY = evt.clientY - lastPosY;
-
-    const vpt = canvas.viewportTransform;
-    vpt[4] += deltaX;
-    vpt[5] += deltaY;
-
-    canvas.requestRenderAll();
-
-    lastPosX = evt.clientX;
-    lastPosY = evt.clientY;
-  }
-});
-
-canvas.on('mouse:up', function() {
-  isDragging = false;
-  canvas.selection = true;
-});
-
-
-/*
-// Toggle submenu on button click
-shapesButton.addEventListener('click', () => {
-  shapesSubMenu.style.display = shapesSubMenu.style.display === 'none' ? 'block' : 'none';
-});
-
-*/
-/*
-// Optional: Hide submenu when clicking outside
-document.addEventListener('click', (event) => {
-  if (!event.target.closest('.menu')) {
-    shapesSubMenu.style.display = 'none';
-  }
-});
-/*
-document.getElementById("radii-slider").addEventListener("input", function (event) {
-  const newRadiiCount = parseInt(event.target.value, 10);
-  drawRadii(radiiGroup, centerX, centerY, radius, newRadiiCount);
-});*/
-
-/*
-function createRectangle(x, y) {
-    return new fabric.Rect({
-      left: x,
-      top: y,
-      width: 1,
-      height: 1,
-      stroke: '#5BCEFA',
-      strokeWidth: 2,
-      selectable: true,
-    });
-  }
-  
-  function createCircle(x, y) {
-    return new fabric.Circle({
-      left: x,
-      top: y,
-      radius: 1,
-      fill: 'rgba(245,169,184,0.4)',
-      stroke: '#F5A9B8',
-      strokeWidth: 2,
-      selectable: true,
-    });
-  }
-  
-  function createLine(x, y) {
-    return new fabric.Line([x, y, x, y], {
-      stroke: '#5BCEFA',
-      strokeWidth: 2,
-      selectable: true,
-    });
-  }
-*/
 
 function setupTagSearchForForm() {
   const input = document.getElementById('tagSearch');
@@ -1084,49 +800,6 @@ function renderAllTagsList() {
 
 function setupShowAllTagsButtonForForm() {
   renderAllTagsList();
-  /*
-  const showAllTagsBtn = document.getElementById('showAllTagsBtn');
-  const allTagsList = document.getElementById('allTagsList');
-  const input = document.getElementById('tagSearch');
-  const suggestions = document.getElementById('tagSuggestions');
-
-  showAllTagsBtn.addEventListener('click', () => {
-    if (allTagsList.style.display === 'none' || allTagsList.style.display === '') {
-      // Show and populate the list
-      allTagsList.style.display = 'block';
-      allTagsList.innerHTML = '';
-
-      const selected = new Set(
-        Array.from(document.querySelectorAll('#selectedTags .selected-tag')).map(
-          span => span.textContent.replace('×', '').trim().toLowerCase()
-        )
-      );
-
-      Array.from(allTags).sort().forEach(tag => {
-        if (selected.has(tag)) return;
-
-        const div = document.createElement('div');
-        div.textContent = tag;
-        div.classList.add('tag-suggestion');
-        div.style.cursor = 'pointer';
-        div.style.padding = '4px 8px';
-
-        div.addEventListener('click', () => {
-          selectedTags.add(tag);
-          updateSelectedTagsUI();
-          allTagsList.style.display = 'none';
-          input.value = '';
-          suggestions.innerHTML = '';
-        });
-
-        allTagsList.appendChild(div);
-        allTagsList.style.display = 'block';
-      });
-    } else {
-      allTagsList.style.display = 'none';
-    }
-      
-  }); */
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1259,8 +932,3 @@ function renderAllTagsList() {
     allTagsList.appendChild(div);
   });
 }
-/*
-window.addEventListener('DOMContentLoaded', () => {
-  const picker = document.getElementById('colorPicker');
-  picker.value = '#ffff00'; // or whatever color you prefer
-});*/
