@@ -279,7 +279,7 @@ htmlCanvas.addEventListener('touchstart', function (event) {
 }, { passive: false });
 
 htmlCanvas.addEventListener('touchmove', function (event) {
-  if (event.touches.length === 2 && initialDistance) {
+  if (event.touches.length === 2 && initialDistance &&!isDrawingMode) {
     event.preventDefault(); // prevent page from scrolling/zooming
 
     const newDistance = getDistance(event.touches);
@@ -682,7 +682,7 @@ if (res.ok && data.success) {
 
 });
 
-let knownTags = ["stud", "transfemme", "transmasc", "xenogender", "dyke", "cis", "it", "trans"];
+let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans"];
 console.error('pre fetch');
 
 fetch('/.netlify/functions/get-tags')
