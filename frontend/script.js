@@ -203,7 +203,7 @@ function duplicateObject() {
 
 ///////pinch zoom start
 //const htmlCanvas = document.querySelector('canvas'); // Get the real <canvas> element
-const htmlCanvas = document.querySelector('canvas');
+const htmlCanvas = canvas.upperCanvasEl;
 
 
 
@@ -259,52 +259,53 @@ document.getElementById('widthSlider').addEventListener('input', (event) => {
     canvas.renderAll();
   }
 }); */
+console.log('upperCanvasEl:', canvas.upperCanvasEl);
 
+if (!canvas.upperCanvasEl) {
+  console.error('canvas.upperCanvasEl is missing!');
+} else {
+  console.log('canvas.upperCanvasEl is present and ready.');
+}
 // Set default opacity for the canvas objects
 canvas.getObjects().forEach((obj) => {
   obj.set({ opacity: defaultOpacity });
 });
 
+htmlCanvas.addEventListener('touchstart', function (event) {
+  if (event.touches.length === 2) {
+    initialDistance = getDistance(event.touches);
+    initialZoom = canvas.getZoom();
+  }
+}, { passive: false });
+
+htmlCanvas.addEventListener('touchmove', function (event) {
+  if (event.touches.length === 2 && initialDistance) {
+    event.preventDefault(); // prevent page from scrolling/zooming
+
+    const newDistance = getDistance(event.touches);
+    const zoomFactor = newDistance / initialDistance;
+
+    const midX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
+    const midY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
+    const rect = htmlCanvas.getBoundingClientRect();
+    const point = new fabric.Point(midX - rect.left, midY - rect.top);
+
+    const newZoom = initialZoom * zoomFactor;
+    canvas.zoomToPoint(point, Math.max(0.3, Math.min(3, newZoom)));
+  }
+}, { passive: false });
+
+htmlCanvas.addEventListener('touchend', function () {
+  initialDistance = null;
+  saveState();
+});
 
 function getDistance(touches) {
   const dx = touches[0].pageX - touches[1].pageX;
   const dy = touches[0].pageY - touches[1].pageY;
   return Math.sqrt(dx * dx + dy * dy);
 }
-htmlCanvas.addEventListener('touchstart', function (event) {
-  if (event.touches.length === 2) {
-    initialDistance = getDistance(event.touches);
-    initialZoom = canvas.getZoom();
-  }
-});
 
-htmlCanvas.addEventListener('touchmove', function (event) {
-  if (event.touches.length === 2 && initialDistance) {
-    event.preventDefault(); // Prevent native page zoom
-
-    const newDistance = getDistance(event.touches);
-    const zoomFactor = newDistance / initialDistance;
-    const newZoom = initialZoom * zoomFactor;
-
-    // Limit zoom range (optional)
-    const clampedZoom = Math.max(0.3, Math.min(3, newZoom));
-
-    // Get center point of the pinch
-    const rect = canvas.upperCanvasEl.getBoundingClientRect();
-    const midX = (event.touches[0].pageX + event.touches[1].pageX) / 2 - rect.left;
-    const midY = (event.touches[0].pageY + event.touches[1].pageY) / 2 - rect.top;
-    const zoomPoint = new fabric.Point(midX, midY);
-
-    canvas.zoomToPoint(zoomPoint, clampedZoom);
-  }
-}, { passive: false });
-
-htmlCanvas.addEventListener('touchend', function (event) {
-  if (event.touches.length < 2) {
-    initialDistance = null;
-    initialZoom = canvas.getZoom(); // Update baseline zoom
-  }
-});
  
 
 function toggleSliderMenu() {
