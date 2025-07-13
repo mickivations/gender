@@ -102,7 +102,7 @@ function saveState() {
 }
 
 function undo() {
-  if (undoStack.length > 1) {
+  if (undoStack.length > 2) {
     isRestoringState = true;
     const current = undoStack.pop();
     redoStack.push(current);
