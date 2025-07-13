@@ -462,7 +462,7 @@ function resizeCanvas() {
     function enableDrawing() {
       console.log(fabric.version);
       canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush.width = brushWidth;
+      canvas.freeDrawingBrush.width = brushWidth / canvas.getZoom();
       canvas.freeDrawingBrush.color = currentColor;  // Set drawing color to the selected color
       canvas.freeDrawingBrush.opacity = opacityValue;
       pendingShapeType = null;  // Clear the pending shape
