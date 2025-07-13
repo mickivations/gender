@@ -175,7 +175,6 @@ button i {
 
 /* Make canvas fill container exactly */
 canvas { 
-  touch-action: none !important;
   pointer-events: auto !important;
   -ms-touch-action: pinch-zoom; /* for older IE */
   display: block; 
