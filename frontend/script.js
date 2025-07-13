@@ -207,7 +207,7 @@ const htmlCanvas = canvas.upperCanvasEl;
 
 
 
-htmlCanvas.addEventListener('click', () => alert('Canvas clicked'));
+//htmlCanvas.addEventListener('click', () => alert('Canvas clicked'));
 
 
 let initialDistance = null;
@@ -292,6 +292,9 @@ htmlCanvas.addEventListener('touchmove', function (event) {
 
     const newZoom = initialZoom * zoomFactor;
     canvas.zoomToPoint(point, Math.max(0.3, Math.min(3, newZoom)));
+    canvas.freeDrawingBrush.width = brushWidth / canvas.getZoom();
+    console.log(canvas.freeDrawingBrush.width)
+
   }
 }, { passive: false });
 
