@@ -76,9 +76,9 @@
 
 <!--<input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">-->
   </div>
-    <div class="button-pair">
-    <button onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
-    <button onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
+    <div class="button-pair zoom-btn" >
+    <button class="zoom-btn"   onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
+    <button class="zoom-btn"  onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
   </div>
   <div class="toolbar-item">
     <button id="submitButton" onclick="toggleSubmitMenu()">
@@ -124,8 +124,8 @@
         <img id="canvasPreview" alt="Preview of artwork" style="max-width: 50%; margin-bottom: 1rem; margin: auto" />
         <input type="text" id="name" placeholder="Name (optional)"  /> 
         <input type="text" id="pronouns" placeholder="Pronouns (optional)" />
-        <input type="text" id="title" placeholder="Title"  />
-        <textarea id="altText" rows="4"  placeholder="Alt Text (required): Please describe your artwork for screen readers. Can be as simple or complicated as you wish  " rows="6" maxlength="5000" required></textarea>
+        <input type="text" id="title" placeholder="Title (optional)"  />
+        <textarea id="altText" rows="4"  placeholder="Alt Text (required): Please describe your artwork for screen readers. Can be as simple or complicated as you wish   " rows="6" maxlength="5000" required></textarea>
         <input type="text" id="axis3" placeholder="3 Axis Label (optional)" />
         <textarea id="description" rows="4" placeholder="Any more information you'd like to share?" rows="6" maxlength="5000"></textarea>
         <br>
