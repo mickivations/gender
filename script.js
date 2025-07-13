@@ -279,7 +279,7 @@ htmlCanvas.addEventListener('touchstart', function (event) {
 }, { passive: false });
 
 htmlCanvas.addEventListener('touchmove', function (event) {
-  if (event.touches.length === 2 && initialDistance &&!isDrawingMode) {
+  if (event.touches.length === 2 && isDrawingMode){ //&&!isDrawingMode) {
     event.preventDefault(); // prevent page from scrolling/zooming
 
     const newDistance = getDistance(event.touches);
