@@ -465,6 +465,10 @@ canvas {
     z-index: 900;
   }
 
+  .zoom-btn{
+    display:none;
+  }
+
   .button-pair {
     flex-direction: column;
     height: var(--toolbar_height);
