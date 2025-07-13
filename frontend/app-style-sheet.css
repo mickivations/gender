@@ -463,7 +463,7 @@ canvas {
     overflow-x: auto;
     overflow-y: hidden;
     z-index: 900;
-    background-color: red !important;
+    background-color: blue !important;
   }
 
 
@@ -474,7 +474,7 @@ canvas {
   .zoom-btn{
     display: none !important;
   }
-  
+
   .button-pair button {
     flex: 1 1 50%;
     height: auto;
