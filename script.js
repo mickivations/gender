@@ -9,45 +9,46 @@ canvas.setBackgroundColor('#000000', canvas.renderAll.bind(canvas));
 
 let currentColor = '#ffff00';  // Default color
 const preview = document.getElementById('colorInput');
+const colorPickerContainer = document.getElementById('colorPickerContainer');
+colorPickerContainer.style.display = 'none';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const colorPicker = new iro.ColorPicker('#iroContainer', {
     color: '#ffff00'
   });
 
-preview.style.backgroundColor = currentColor;
-
+  preview.style.backgroundColor = currentColor;
   colorPicker.on('color:change', function(color) {
     currentColor = color.hexString;
     console.log('Color changed to:', color.hexString);
     updateDrawingColor();
-
   });
+
 });
 
  // When preview clicked, toggle picker visibility
- preview.addEventListener('click', () => {
+ preview.addEventListener('mousedown', (e) => {
+  e.stopPropagation(); // prevent triggering canvas draw
   if (colorPickerContainer.style.display === 'none') {
-    // Position the picker near the preview box
-    /*const rect = preview.getBoundingClientRect();
-    colorPickerContainer.style.top = (rect.bottom + window.scrollY + 5) + 'px';
-    colorPickerContainer.style.left = (rect.left + window.scrollX) + 'px';*/
-    disableDrawing()
+    disableDrawing();
     colorPickerContainer.style.display = 'flex';
   } else {
-    colorPickerContainer.style.display = 'none';
-    //enableDrawing();
+    closeColorPicker();  // will handle drawing mode reset
   }
 });
 
-
-// Optional: hide picker if clicking outside
 document.addEventListener('click', (e) => {
-  if (!preview.contains(e.target) && !colorPickerContainer.contains(e.target)) {
-    colorPickerContainer.style.display = 'none';
-    //enableDrawing();
-  }
+  setTimeout(() => {
+    const isClickInsidePicker = colorPickerContainer.contains(e.target);
+    const isClickOnPreview = preview.contains(e.target);
+
+    if (!isClickInsidePicker && !isClickOnPreview && colorPickerContainer.style.display === 'flex') {
+      closeColorPicker();
+    }
+  }, 0);
 });
+
 
 function closeColorPicker(){
   colorPickerContainer.style.display = 'none';
@@ -230,6 +231,9 @@ function getDistance(touches) {
 
 
 // Add event listener to the slider
+
+
+
 document.getElementById('opacitySlider').addEventListener('input', (event) => {
   opacityValue = event.target.value;
   const selectedObject = canvas.getActiveObject();
@@ -433,24 +437,28 @@ function resizeCanvas() {
 
     // Update the drawing color when the user picks a color
     function updateDrawingColor() {
-  //currentColor = document.getElementById('colorPicker').value;
-  preview.style.backgroundColor = currentColor;
-
-  console.log('Current color selected:', currentColor);
-
-  const selectedObject = canvas.getActiveObject();
-  if (selectedObject) {
-    if (selectedObject.type === 'line') {
-      selectedObject.set('stroke', currentColor);
-    } else if (selectedObject.type === 'text') {
-      selectedObject.set('fill', currentColor);
-    } else {
-      selectedObject.set('fill', currentColor);
+      preview.style.backgroundColor = currentColor;
+      const slider = document.getElementById('opacitySlider');
+      opacityValue = slider.value;
+    
+      const selectedObject = canvas.getActiveObject();
+      if (selectedObject) {
+        if (selectedObject.type === 'line' || selectedObject.type === 'path') {
+          selectedObject.set('stroke', currentColor);
+        } else if (selectedObject.type === 'text') {
+          selectedObject.set('fill', currentColor);
+        } else {
+          selectedObject.set('fill', currentColor);
+        }
+        canvas.renderAll();
+      }
+    
+      // Only enable drawing if picker is not visible
+      if (colorPickerContainer.style.display === 'none') {
+        enableDrawing();
+      }
     }
-    canvas.renderAll();
-  }
-  enableDrawing()
-}
+    
 
     // Function to zoom in
     function zoomIn() {
@@ -504,10 +512,16 @@ function resizeCanvas() {
 */
     // Delete the selected object (turn it white and make it small)
     function deleteObject() {
-      const selectedObject = canvas.getActiveObject();
-      if (selectedObject) {
+       
+      const activeObject = canvas.getActiveObject();
+      /*if (selectedObject) {
         selectedObject.set({ fill: 'black', stroke: 'black', width: 1, height: 1,  top: -100, strokeWidth: 0});
         canvas.renderAll();
+      }*/
+      if (activeObject) {
+        canvas.remove(activeObject);
+        canvas.discardActiveObject(); // Deselect the deleted object
+        canvas.requestRenderAll();    // Redraw the canvas
       }
     }
 
@@ -689,7 +703,7 @@ if (res.ok && data.success) {
 
 });
 
-let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans"];
+let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby"];
 console.error('pre fetch');
 
 fetch('/.netlify/functions/get-tags')

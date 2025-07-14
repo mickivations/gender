@@ -15,7 +15,11 @@ html, body {
   padding: 0;
   overflow: hidden; /* prevent body scroll */
 }
-
+button {
+  font-family: "Nunito", sans-serif;
+  font-weight: 1000;
+  font-size: 1rem;
+}
 #colorPickerContainer {
   display: none;
   flex-direction: column;
@@ -39,6 +43,7 @@ html, body {
   background-color: #000000;
   color: white;
   cursor: pointer;
+  font-family: "Nunito", sans-serif !important;
 }
 
 
