@@ -36,7 +36,7 @@ preview.style.backgroundColor = currentColor;
     colorPickerContainer.style.display = 'flex';
   } else {
     colorPickerContainer.style.display = 'none';
-    enableDrawing();
+    //enableDrawing();
   }
 });
 
@@ -45,7 +45,7 @@ preview.style.backgroundColor = currentColor;
 document.addEventListener('click', (e) => {
   if (!preview.contains(e.target) && !colorPickerContainer.contains(e.target)) {
     colorPickerContainer.style.display = 'none';
-    enableDrawing();
+    //enableDrawing();
   }
 });
 
@@ -359,6 +359,7 @@ let lastPosX, lastPosY;
 
 canvas.on('mouse:down', function(opt) {
   const evt = opt.e.touches ? opt.e.touches[0] : opt.e;
+  console.log("mouse down");
   if (!canvas.getActiveObject() && !canvas.isDrawingMode) {
     isDragging = true;
     canvas.selection = false;
@@ -382,6 +383,7 @@ canvas.on('mouse:move', function(opt) {
 
     lastPosX = evt.clientX;
     lastPosY = evt.clientY;
+    console.log("dragging");
   }
 });
 
@@ -484,7 +486,8 @@ function resizeCanvas() {
     function disableDrawing() {
       canvas.isDrawingMode = false;
       pendingShapeType = null;  // Clear the pending shape
-      setActiveTool('Select/Move');
+      //setActiveTool('Select/Move');
+      console.log("drawing disabled");
     }
 /*
     // Save the canvas as an image
