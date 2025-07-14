@@ -32,10 +32,11 @@ preview.style.backgroundColor = currentColor;
     /*const rect = preview.getBoundingClientRect();
     colorPickerContainer.style.top = (rect.bottom + window.scrollY + 5) + 'px';
     colorPickerContainer.style.left = (rect.left + window.scrollX) + 'px';*/
-
+    disableDrawing()
     colorPickerContainer.style.display = 'flex';
   } else {
     colorPickerContainer.style.display = 'none';
+    enableDrawing();
   }
 });
 
@@ -44,11 +45,13 @@ preview.style.backgroundColor = currentColor;
 document.addEventListener('click', (e) => {
   if (!preview.contains(e.target) && !colorPickerContainer.contains(e.target)) {
     colorPickerContainer.style.display = 'none';
+    enableDrawing();
   }
 });
 
 function closeColorPicker(){
   colorPickerContainer.style.display = 'none';
+  enableDrawing();
 }
 
 
