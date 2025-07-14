@@ -452,6 +452,10 @@ canvas {
 }
 /* ===== Bottom toolbar for small screens (phones) ===== */
 @media (max-width: 599px) {
+  :root {
+    --toolbar_button_width: calc(100vw / 9); /* or whatever makes sense for smaller screens */
+  }
+
   .toolbar {
     flex-direction: row;
     position: fixed;
@@ -463,7 +467,7 @@ canvas {
     overflow-x: auto;
     overflow-y: hidden;
     z-index: 900;
-    background-color: green !important;
+   /* background-color: green !important; */
   }
 
 
