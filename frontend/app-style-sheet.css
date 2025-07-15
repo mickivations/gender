@@ -165,11 +165,12 @@ h1 {
   margin-bottom: 0px;
   font-family: "Rubik Bubbles", sans-serif;
 }
+
 h2 {
+  font-family: "Nunito", sans-serif;
   margin-top: 0px;
   color: #FFFFFF;
   margin-bottom: 0px;
-  font-family: "Nunito", sans-serif !important;
   font-weight: 800;
 }
 
