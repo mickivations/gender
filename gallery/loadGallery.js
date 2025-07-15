@@ -114,7 +114,6 @@ fetch('/.netlify/functions/get-gallery')
             console.error('Failed to parse frameworks:', err);
             parsedFrameworks = {};
           }
-          if(parsedFrameworks.length > 0){
           // Header line
             const intro = document.createElement('p');
             intro.className = 'frameworks-intro';
@@ -139,7 +138,7 @@ fetch('/.netlify/functions/get-gallery')
             wrapper.appendChild(defElem);
             frameworksContainer.appendChild(wrapper);
           });
-        }
+      
         }
         
                 
