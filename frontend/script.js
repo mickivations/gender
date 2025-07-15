@@ -1073,12 +1073,15 @@ function toggleHiddenInputs() {
 /////////////////////////////////////////////////
 
 const frameworkOptions = [
-  { id: 'contextual', label: 'contextual', definition: 'or situational. impacted by your environment or the people around you' }, 
-  { id: 'innate', label: 'innate', definition: 'or internal. rooted in a deep sense of self' },
-  { id: 'external', label: 'external', definition: 'expressed outwardly through presentation and impacted by perception' },
-  { id: 'spiritual', label: 'spiritual', definition: 'connected with a higher power, nature or other spiritual beliefs' },
+  { id: 'innate', label: 'innate', definition: 'or internal. gender rooted in a deep sense of self' },
+  { id: 'external', label: 'external', definition: 'gender is expressed outwardly through presentation and impacted by perception' },
+  { id: 'situational', label: 'situational', definition: 'gender is impacted by the specific environment or situation' }, 
+  { id: 'socially conditioned', label: 'socially conditioned', definition: 'gender is taught through social factors' }, 
+  { id: 'spiritual', label: 'spiritual', definition: 'gender is connected with a higher power, nature or other spiritual beliefs' },
   { id: 'none', label: 'none', definition: 'no strong gender beliefs' }
 ];
+//conditioned: how you are taught to act by social factors
+//situation: how you present based on your surroundings
 
 const selectedFrameworksMap = new Map(); // key: id or custom name, value: definition
 
