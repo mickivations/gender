@@ -750,7 +750,7 @@ canvas {
 .modal-content {
   background-color: black;
   max-width: 500px;
-  width: 90%;
+  width: 100%;
   max-height: 90vh; /* ✅ prevent it from going off the screen */
   overflow-y: auto; /* ✅ let it scroll if needed */
   padding: 1.5rem;
