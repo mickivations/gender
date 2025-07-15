@@ -400,26 +400,7 @@ canvas {
   box-sizing: border-box;
 }
 
-.modal {
-  display: none; /* Start hidden */
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  position: fixed;
-  display: block;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  margin: 0px;
-  padding: 5%;
-  margin-bottom: 5%;
-  background-color: rgba(0, 0, 0, 0.8); /* Darker dimmed background */
-  color: #fff;
-  z-index: 1000; /* On top of everything */
-  overflow-y: auto; /* Scroll if needed */
-  box-sizing: border-box;
-}
+
 
 #submitMenu form {
   display: block;
@@ -749,10 +730,31 @@ canvas {
   outline-offset: 2px;
 }
 
+.modal {
+  display: none; /* Start hidden */
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  
+  margin-bottom: 20%;
+  background-color: rgba(0, 0, 0, 0.8); /* Darker dimmed background */
+  color: #fff;
+  z-index: 1000; /* On top of everything */
+  overflow-y: auto; /* Scroll if needed */
+  box-sizing: border-box;
+}
 
 .modal-content {
   background-color: black;
-  padding: 20px;
+  padding: 5%;
+  padding-bottom: 20%;
   max-width: 500px;
   width: 90%;
   border-radius: 8px;
