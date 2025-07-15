@@ -9,7 +9,7 @@ exports.handler = async function (event, context) {
   }
 
   try {
-    const { title, name, pronouns, imageBase64, altText, ax3, tags, description } = JSON.parse(event.body);
+    const { title, name, pronouns, imageBase64, altText, ax3, axisB, axisG, tags, description, frameworks } = JSON.parse(event.body);
 
     console.log("Base64 length:", imageBase64.length);
     console.log("Base64 preview:", imageBase64.slice(0, 100));
@@ -62,9 +62,12 @@ exports.handler = async function (event, context) {
       Name: name,
       pronouns: pronouns,
       AltText: altText,
-      AxisLabel: ax3,
+      Axis3: ax3,
       StringTags: tags,
       Description: description,
+      AxisB: axisB,
+      AxisG: axisG,
+      Frameworks: frameworks,
     };
 
     if (fallbackUsed) {

@@ -3,6 +3,18 @@ const tagFilters = document.getElementById('tagFilters'); // Make sure you have 
 const allCards = []; // Store cards with tag text
 const allTags = new Set(); // Unique list of tags
 
+// Modal logic
+const modal = document.getElementById('modal');
+const modalImage = document.getElementById('modalImage');
+const modalTitle = document.getElementById('modalTitle');
+const modalID = document.getElementById('modalID');
+const modalAxis = document.getElementById('modalAxis');
+const modalDescription = document.getElementById('modalDescription');
+const modalTags = document.getElementById('modalTags');
+const modalFrameworks = document.getElementById('modalFrameworks');
+const modalAltText = document.getElementById('modalAltText');
+const closeModal = document.getElementById('closeModal');
+
 // Fetch gallery data from Netlify function
 fetch('/.netlify/functions/get-gallery')
   .then(res => res.json())
@@ -19,7 +31,11 @@ fetch('/.netlify/functions/get-gallery')
       const name = record.fields['Name'] || '';
       const pronouns = record.fields['pronouns'] || '';
       const altText = record.fields['AltText'] || '';
-      const axis = record.fields['AxisLabel'] || '';
+      const axis3 = record.fields['Axis3'] || '';
+      const axisb = record.fields['AxisB'] || '';
+      const axisg = record.fields['AxisG'] || '';
+      const frameworks = record.fields['Frameworks'] || '';
+
       const stringTags = record.fields['StringTags'] || '';
       const description = record.fields['Description'] || '';
       const lowerTagText = stringTags.toLowerCase();
@@ -40,6 +56,7 @@ fetch('/.netlify/functions/get-gallery')
       }
       
       img.addEventListener('click', () => {
+
         if (images && images.length > 0) {
           modalImage.src = images[0].url;
         } else if (record.fields['ImageBase64']) {
@@ -47,15 +64,61 @@ fetch('/.netlify/functions/get-gallery')
         } else {
           modalImage.src = ''; // or placeholder
         }
-      
+        
         modalTitle.textContent = title;
         modalID.innerHTML = combinedID;
-      
-        if(axis){
-          modalAxis.textContent = "3rd Axis Label: " + axis;
+        
+        if (axis3) {
+          modalAxis.textContent = "Axis 3 Label: " + axis3;
         } else {
           modalAxis.textContent = "";
         }
+        
+        modalDescription.innerHTML = combinedDetails;
+        modalTags.textContent = "Tag(s): " + stringTags;
+        
+        // ⬇️ Frameworks display
+        const frameworksContainer = document.getElementById('modalFrameworks');
+        frameworksContainer.innerHTML = ''; // clear previous
+        
+        if (frameworks) {
+          let parsedFrameworks;
+          try {
+            parsedFrameworks = typeof frameworks === 'string' ? JSON.parse(frameworks) : frameworks;
+          } catch (err) {
+            console.error('Failed to parse frameworks:', err);
+            parsedFrameworks = {};
+          }
+        
+          // Header line
+          const intro = document.createElement('p');
+          intro.className = 'frameworks-intro';
+          intro.textContent = 'I believe gender is:';
+          frameworksContainer.appendChild(intro);
+        
+          // Each framework
+          Object.entries(parsedFrameworks).forEach(([label, definition]) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'framework-item';
+        
+            const labelElem = document.createElement('div');
+            labelElem.className = 'framework-label';
+            labelElem.textContent = label;
+        
+            const defElem = document.createElement('div');
+            defElem.className = 'framework-definition';
+            defElem.textContent = definition || '(no definition)';
+        
+            wrapper.appendChild(labelElem);
+            wrapper.appendChild(defElem);
+            frameworksContainer.appendChild(wrapper);
+          });
+        }
+        
+                
+
+        
+        modalAltText.innerHTML = altText;
         modalDescription.innerHTML = combinedDetails;
         modalTags.textContent = "Tag(s): " + stringTags;
         modal.style.display = 'flex';
@@ -88,20 +151,25 @@ fetch('/.netlify/functions/get-gallery')
         card.appendChild(p);
       }
 
-      if (axis) {
+      if (axis3) {
         const p = document.createElement('p');
         const span = document.createElement('span');
         span.className = 'values';
-        span.textContent = axis;
-        p.append('Axis Label: ', span);
+        span.textContent = axis3;
+        p.append('Axis 3 Label: ', span);
         card.appendChild(p);
       }
+
+      
+
+
 
       gallery.appendChild(card);
 
       const searchableText = [
         title,
         name,
+        axis3, 
         pronouns,
         altText,
         description,
@@ -138,15 +206,7 @@ fetch('/.netlify/functions/get-gallery')
     console.error('Fetch error:', error);
   });
 
-// Modal logic
-const modal = document.getElementById('modal');
-const modalImage = document.getElementById('modalImage');
-const modalTitle = document.getElementById('modalTitle');
-const modalID = document.getElementById('modalID');
-const modalAxis = document.getElementById('modalAxis');
-const modalDescription = document.getElementById('modalDescription');
-const modalTags = document.getElementById('modalTags');
-const closeModal = document.getElementById('closeModal');
+
 
 closeModal.addEventListener('click', () => {
   modal.style.display = 'none';

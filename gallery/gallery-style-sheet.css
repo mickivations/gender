@@ -54,6 +54,15 @@ body {
     font-weight: 800;
   }
 
+  
+
+  #modalAltText{
+    width: 100%;
+    background-color: #ddd !important;
+    color: #000;
+    font-size: 1em;
+  }
+
   #modalDescription{
     font-family: "Nunito";
     font-weight: 600;
@@ -300,4 +309,26 @@ button:hover, button:active {
   cursor: pointer;
   font-weight: bold;
   color: #333;
+}
+
+.frameworks-intro {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.framework-item {
+  margin-bottom: 0.75em;
+}
+
+.framework-label {
+  font-size: 1.1em;
+  color: white;
+  font-weight: 600;
+}
+
+.framework-definition {
+  font-size: 0.9em;
+  color: #aaa;
+  margin-left: 1em;
 }

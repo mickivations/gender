@@ -48,11 +48,13 @@ background:rgba(0,0,0,0.8); align-items:center; z-index:999; flex-direction:colu
 <div id = "detail-holder"  style="background:black; padding:20px; max-width:600px; width:90%; border-radius:10px; position:relative;">
   <button id="closeModal" style="position:absolute; top:10px; right:10px;">X</button>
   <img id="modalImage" src="" alt="" style="max-width:100%; border-radius:6px;" />
+  <p id="modalAltText"></p>
   <h2 id="modalTitle"></h2>
   <p id="modalID"></p>
   <p id="modalAxis"></p>
   <p id="modalDescription"></p>
   <p id="modalTags"></p>
+  <p id="modalFrameworks"></p>
 </div>
 </div>
 
@@ -62,6 +64,6 @@ background:rgba(0,0,0,0.8); align-items:center; z-index:999; flex-direction:colu
 
 </div>
 </div>
-<script src="loadGallery.js"> </script>
+<script src="loadGallery.js" defer></script>
 </body>
 </html>
