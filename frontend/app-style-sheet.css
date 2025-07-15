@@ -731,7 +731,6 @@ canvas {
 }
 
 .modal {
-  display: none; /* Start hidden */
   justify-content: center;
   align-items: center;
   text-align: left;
