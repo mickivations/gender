@@ -7,7 +7,8 @@ const allTags = new Set(); // Unique list of tags
 const modal = document.getElementById('modal');
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
-const modalID = document.getElementById('modalID');
+const modalName = document.getElementById('modalName');
+const modalPronouns = document.getElementById('modalPronouns');
 const modalAxis = document.getElementById('modalAxis');
 const modalDescription = document.getElementById('modalDescription');
 const modalTags = document.getElementById('modalTags');
@@ -40,7 +41,7 @@ fetch('/.netlify/functions/get-gallery')
       const description = record.fields['Description'] || '';
       const lowerTagText = stringTags.toLowerCase();
 
-      const combinedDetails = `${altText}<br><br>${description}`;
+     // const combinedDetails = `${altText}<br><br>${description}`;
       const combinedID = `${name}<br>${pronouns}`;
 
       const img = document.createElement('img');
@@ -65,17 +66,38 @@ fetch('/.netlify/functions/get-gallery')
           modalImage.src = ''; // or placeholder
         }
         
-        modalTitle.textContent = title;
-        modalID.innerHTML = combinedID;
-        
-        if (axis3) {
-          modalAxis.textContent = "Axis 3 Label: " + axis3;
+        if (title) {
+          modalTitle.innerHTML = '<h3><span class="modal-labels"> title </span> <span class="modal-values">' + title + '</span></h3>';
         } else {
-          modalAxis.textContent = "";
+          modalName.innerHTML = '';
+        }
+        //modalTitle.textContent = title;
+        //modalID.innerHTML = combinedID;
+        //console.log(name);
+
+        if (name) {
+          modalName.innerHTML = '<h4><span class="modal-labels"> name </span> <span class="modal-values">' + name + '</span><h4>';
+        } else {
+          modalName.innerHTML = '';
         }
         
-        modalDescription.innerHTML = combinedDetails;
-        modalTags.textContent = "Tag(s): " + stringTags;
+        let axisOutput = "";
+
+        if (axisb) {
+          axisOutput += '<span class="modal-labels">Axis B Label:</span> <span class="modal-values">' + axisb + '</span><br>';
+        }
+        if (axisg) {
+          axisOutput += '<span class="modal-labels">Axis G Label:</span> <span class="modal-values">' + axisg + '</span><br>';
+        }
+        if (axis3) {
+          axisOutput += '<span class="modal-labels">Axis 3 Label:</span> <span class="modal-values">' + axis3 + '</span><br>';
+        }
+        modalAxis.innerHTML = axisOutput;
+        
+        modalDescription.innerHTML = description;
+       // modalTags.textContent = "Tag(s): " + stringTags;
+        modalTags.innerHTML = '<span class="modal-labels"> Tag(s) </span> <span class="modal-values">' + stringTags + '</span>';
+
         
         // ⬇️ Frameworks display
         const frameworksContainer = document.getElementById('modalFrameworks');
@@ -89,12 +111,13 @@ fetch('/.netlify/functions/get-gallery')
             console.error('Failed to parse frameworks:', err);
             parsedFrameworks = {};
           }
-        
+          if(parsedFrameworks.length > 0){
           // Header line
-          const intro = document.createElement('p');
-          intro.className = 'frameworks-intro';
-          intro.textContent = 'I believe gender is:';
-          frameworksContainer.appendChild(intro);
+            const intro = document.createElement('p');
+            intro.className = 'frameworks-intro';
+            intro.textContent = 'I believe gender is:';
+            frameworksContainer.appendChild(intro);
+        
         
           // Each framework
           Object.entries(parsedFrameworks).forEach(([label, definition]) => {
@@ -114,13 +137,14 @@ fetch('/.netlify/functions/get-gallery')
             frameworksContainer.appendChild(wrapper);
           });
         }
+        }
         
                 
 
         
         modalAltText.innerHTML = altText;
-        modalDescription.innerHTML = combinedDetails;
-        modalTags.textContent = "Tag(s): " + stringTags;
+        //modalDescription.innerHTML = combinedDetails;
+        //modalTags.textContent = "Tag(s): " + stringTags;
         modal.style.display = 'flex';
       });
       
@@ -156,7 +180,7 @@ fetch('/.netlify/functions/get-gallery')
         const span = document.createElement('span');
         span.className = 'values';
         span.textContent = axis3;
-        p.append('Axis 3 Label: ', span);
+        p.append('Axis 3: ', span);
         card.appendChild(p);
       }
 

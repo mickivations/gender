@@ -52,6 +52,8 @@ body {
     position:relative;
     font-family: "Nunito";
     font-weight: 800;
+    text-align: left;
+    align-items: center;
   }
 
   
@@ -117,18 +119,6 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
     font-family: "Nunito";
     font-weight: 800;
     padding: 0px;
-  }
-
-  .bebas-neue-regular {
-    font-family: "Bebas Neue", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  .oi-regular {
-    font-family: "Oi", serif;
-    font-weight: 100;
-    font-style: normal;
   }
 
 
@@ -331,4 +321,17 @@ button:hover, button:active {
   font-size: 0.9em;
   color: #aaa;
   margin-left: 1em;
+}
+
+.modal-labels {
+  font-weight: 600 !important;
+  color: pink !important; /* or any other style you want */
+  font-size: 1.25em;
+}
+
+.modal-values {
+  font-weight: 1000;
+  color: #FFF; /* or any other style you want */
+  font-size: 1.25em;
+
 }
