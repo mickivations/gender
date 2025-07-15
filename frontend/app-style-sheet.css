@@ -731,6 +731,7 @@ canvas {
 }
 
 .modal {
+  display: none; /* Start hidden */
   justify-content: center;
   align-items: center;
   text-align: left;
@@ -738,7 +739,6 @@ canvas {
   width: 100vw;
   height: 100vh;
   margin: 0px;
-  padding-top: 20%;
   margin-bottom: 20%;
   background-color: rgba(255, 0, 0, 0.8); /* Darker dimmed background */
   color: #fff;
@@ -751,7 +751,6 @@ canvas {
   background-color: black;
   margin-top: 20%;
   margin-bottom: 20%;
-  padding: 2%;
   padding-top: 20%;
   padding-bottom: 20%;
   max-width: 500px;
