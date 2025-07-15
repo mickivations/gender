@@ -739,19 +739,20 @@ canvas {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
   z-index: 1000;
   overflow-y: auto;
   box-sizing: border-box;
-  padding: 1rem; /* Prevent edge cut-off */
 }
 
 .modal-content {
   background-color: black;
   max-width: 500px;
   width: 90%;
+  max-height: 90vh; /* ✅ prevent it from going off the screen */
+  overflow-y: auto; /* ✅ let it scroll if needed */
   padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid white;
