@@ -171,7 +171,7 @@ h2 {
   margin-top: 0px;
   color: #FFFFFF;
   margin-bottom: 0px;
-  font-weight: 800;
+  font-weight: 1000;
 }
 
 div {
@@ -762,7 +762,7 @@ canvas {
 
 .framework-item-label {
   font-size: 1.5em;
-  color: red;
+  color: pink;
   display: block;
 }
 
