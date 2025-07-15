@@ -744,7 +744,7 @@ canvas {
   margin: 0px;
   margin-bottom: 20%;
   background-color: rgba(0, 0, 0, 0.8); /* Darker dimmed background */
-  color: #fff;
+  color: #ea0000;
   z-index: 1000; /* On top of everything */
   overflow-y: auto; /* Scroll if needed */
   box-sizing: border-box;
