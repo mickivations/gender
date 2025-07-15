@@ -761,7 +761,7 @@ canvas {
 
 .framework-item-label {
   font-size: 1.5em;
-  color: pink;
+  color: red;
   display: block;
 }
 
@@ -773,7 +773,7 @@ canvas {
 }
 
 #customFrameworkName {
-  width: 25% !important;
+  width: 20% !important;
 }
 
 #customFrameworkDefinition {
