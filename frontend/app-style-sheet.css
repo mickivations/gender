@@ -731,58 +731,55 @@ canvas {
 }
 
 .modal {
-  display: none; /* Start hidden */
+  display: flex; /* Was overwritten by multiple display declarations */
   justify-content: center;
   align-items: center;
   text-align: left;
   position: fixed;
-  display: block;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  margin: 0px;
-  margin-bottom: 20%;
-  background-color: rgba(0, 0, 0, 0.8); /* Darker dimmed background */
+  background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
-  z-index: 1000; /* On top of everything */
-  overflow-y: auto; /* Scroll if needed */
+  z-index: 1000;
+  overflow-y: auto;
   box-sizing: border-box;
+  padding: 1rem; /* Prevent edge cut-off */
 }
 
 .modal-content {
   background-color: black;
-  margin-top: 20%;
-  margin-bottom: 20%;
-  padding-top: 20%;
-  padding-bottom: 20%;
   max-width: 500px;
   width: 90%;
+  padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid white;
+  box-sizing: border-box;
 }
 
-.framework-item-label{
+.framework-item-label {
   font-size: 1.5em;
-  color:white;
+  color: yellow;
   display: block;
 }
 
-.framework-definition{
+.framework-definition {
   color: #CCC;
-  font-size: .9em;
+  font-size: 0.9em;
   display: inline-block;
   margin-bottom: 1rem;
 }
 
-#customFrameworkName{
+#customFrameworkName {
   width: 25% !important;
 }
-#customFrameworkDefinition{
+
+#customFrameworkDefinition {
   width: 70% !important;
 }
 
-#customFrameworkSubmit{
+#customFrameworkSubmit {
   width: 100%;
   display: inline-block;
   text-align: left;
