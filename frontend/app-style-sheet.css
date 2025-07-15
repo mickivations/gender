@@ -412,6 +412,7 @@ canvas {
   width: 100vw;
   height: 100vh;
   margin: 0px;
+  padding: 5%;
   margin-bottom: 5%;
   background-color: rgba(0, 0, 0, 0.8); /* Darker dimmed background */
   color: #fff;
