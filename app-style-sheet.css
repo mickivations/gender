@@ -168,6 +168,7 @@ h1 {
 
 h2 {
   font-family: "Nunito", sans-serif;
+  font-size: 1.5em;
   margin-top: 0px;
   color: #FFFFFF;
   margin-bottom: 0px;
@@ -761,8 +762,8 @@ canvas {
 }
 
 .framework-item-label {
-  font-size: 1.5em;
-  color: pink;
+  font-size: 1.25em;
+  color: lightblue;
   display: block;
 }
 
