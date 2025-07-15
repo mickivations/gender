@@ -76,7 +76,7 @@ fetch('/.netlify/functions/get-gallery')
         //console.log(name);
 
         if (name) {
-          modalName.innerHTML = '<h4><span class="modal-labels"> name </span> <span class="modal-values">' + name + '</span><h4>';
+          modalName.innerHTML = '<span class="modal-labels"> name </span> <span class="modal-values">' + name + '</span>';
         } else {
           modalName.innerHTML = '';
         }
@@ -84,17 +84,20 @@ fetch('/.netlify/functions/get-gallery')
         let axisOutput = "";
 
         if (axisb) {
-          axisOutput += '<span class="modal-labels">Axis B Label:</span> <span class="modal-values">' + axisb + '</span><br>';
+          axisOutput += '<span class="modal-labels">axis B</span> <span class="modal-values">' + axisb + '</span><br>';
         }
         if (axisg) {
-          axisOutput += '<span class="modal-labels">Axis G Label:</span> <span class="modal-values">' + axisg + '</span><br>';
+          axisOutput += '<span class="modal-labels">axis G</span> <span class="modal-values">' + axisg + '</span><br>';
         }
         if (axis3) {
-          axisOutput += '<span class="modal-labels">Axis 3 Label:</span> <span class="modal-values">' + axis3 + '</span><br>';
+          axisOutput += '<span class="modal-labels">axis 3</span> <span class="modal-values">' + axis3 + '</span><br>';
         }
         modalAxis.innerHTML = axisOutput;
         
-        modalDescription.innerHTML = description;
+        if(description){
+          modalDescription.innerHTML = '<span class="modal-labels">more info</span> <span class="modal-values">' + description + '</span><br>';
+        }
+
        // modalTags.textContent = "Tag(s): " + stringTags;
         modalTags.innerHTML = '<span class="modal-labels"> Tag(s) </span> <span class="modal-values">' + stringTags + '</span>';
 
