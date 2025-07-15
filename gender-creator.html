@@ -121,20 +121,103 @@
       </div>
     </div>
 
+
+    <!--Pre Questions-->
+    <div id="startupModal" class="modal">
+      <div class="modal-content">
+        <h1 style="text-align: center;">I believe gender is ... </h1>
+    
+        <div id="frameworkList" class="framework-list">
+          <!-- JavaScript will populate these -->
+        </div>
+    
+        <div id="customFramework">
+          <div>Add Your Own</div>
+          <input type="text" id="customFrameworkName" placeholder="I believe gender is...">
+          <input type="text" id="customFrameworkDefinition" placeholder="definition">
+        </div>
+    
+        <button id="closeModalBtn">Start Drawing</button>
+      </div>
+    </div>
+    
+    
+    <!--Submit Menu-->
     <div id="submitMenu">
       <form id="submissionForm">
+        <h1>Submit to the Gender Gallery</h1>
         <img id="canvasPreview" alt="Preview of artwork" style="max-width: 50%; margin-bottom: 1rem; margin: auto" />
-        <input type="text" id="name" placeholder="Name (optional)"  /> 
-        <input type="text" id="pronouns" placeholder="Pronouns (optional)" />
-        <input type="text" id="title" placeholder="Title (optional)"  />
-        <textarea id="altText" rows="4"  placeholder="Alt Text (required): Please describe your artwork for screen readers. Can be as simple or complicated as you wish   " rows="6" maxlength="5000" required></textarea>
-        <input type="text" id="axis3" placeholder="3 Axis Label (optional)" />
-        <textarea id="description" rows="4" placeholder="Any more information you'd like to share?" rows="6" maxlength="5000"></textarea>
-        <br>
+        <button type ="button" onclick="resetCanvasView()">Center Template</button>
+        <div class="form-field">
+          <label for="name">alt text 
+          <span class="label-note">
+            required </span>
+            <span class="label-description">
+            Please describe your artwork for screen readers. Can be as simple or complicated as you wish.
+          </span>
+          </label>
+        <textarea id="altText" rows="6"  placeholder="Ex: 3 blobs near the girl axis around 25%. One big dot on the other axis at around 50% and a pink shaded area between girl and boy showing boy 45% and girl 95%" rows="6" maxlength="5000" required></textarea>
+        </div>
+        <h2>all fields below are optional.<br> scroll to the end when you are ready to submit</h2>
+        <div class="form-field">
+          <label for="name">title
+          <span class="label-note">
+            optional          
+          </span>
+        </label>
+          <input type="text" id="title" placeholder="Ex: the artist's name, Just me, Transdyke"/>
+        </div>
+        <div class="form-field">
+          <label for="name">name 
+            <span class="label-note">
+              optional          
+            </span>
+          </label>
+          <input type="text" id="name" />
+        </div>
+        <div class="form-field">
+          <label for="name">pronouns
+            <span class="label-note">
+              optional          
+            </span>
+          </label>
+          <input type="text" id="pronouns" />
+        </div>
+        <p>Label the axes of your chart (optional)</p>
+        <button type ="button" onclick="toggleHiddenInputs()">Show/Hide More Axis Labels</button>
+        <div id= "hidden-inputs"> <div class="form-field">
+          <label for="name">b axis label
+            <span class="label-note" >
+              optional          
+            </span>
+          </label>
+          <input type="text" id="axisB" placeholder="B" />
+        </div>
+        <div class="form-field">
+          <label for="name">g axis label
+            <span class="label-note" >
+              optional          
+            </span>
+          </label>
+          <input type="text" id="axisG" placeholder="G"/>
+        </div>
+      </div>
+        <div class="form-field">
+          <label for="name">3 axis label
+            <span class="label-note">
+              optional          
+            </span>
+          </label>
+          <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
+        </div>
+        <p>What words do you identify with?
+        </p>
         <fieldset id="tagGroup">
           <legend>
-            What words do you identify with that you would like to include with the chart? <br>
-            <span class="secondary-line">If you would like different spelling, feel free to add the correct spelling in the more words section</span>
+            <span class="label-note">
+              choose as many as you'd like to include with your chart       
+            </span>
+            <span class="secondary-line">Feel free to add different tags or spellings using the text box</span>
           </legend>
           
           <!-- Predefined checkboxes -->
@@ -151,13 +234,34 @@
             
             <div id="allTagsList"></div>
             <input type="hidden" name="tags" id="selectedTagsInput">
+          </fieldset>
 
-          
+            <div class="form-field">
+              <label for="name">More Information/Notes
+                <span class="label-note">
+                  optional          
+                </span><span class="label-description">
+                  Any more information you'd like to share?
+                </span>
+              </label>
+              <textarea id="description" rows="4" placeholder="Ex: your thoughts on gender, what specific pieces of your chart represent, you move through you gender on a day-to-day" rows="6" maxlength="5000"></textarea>
+            </div>
+            <div id="submitFrameworks" class="form-field">
+              <label>Revisit or Add Frameworks</label>
+              <div id="frameworkSubmitList" class="framework-list"></div>
+            
+              <div id="customFrameworkSubmit">
+                <div class="label-description">Add Your Own</div>
+                <input type="text" id="customFrameworkName" placeholder="I believe gender is...">
+                <input type="text" id="customFrameworkDefinition" placeholder="definition">
+              </div>
+            </div>
+            
         </fieldset>
-        <button type="submit">Submit</button>
+        <button type="submit">Submit</button><br>
 
+        <button type = "button" onclick = "toggleSubmitMenu()">X</button>
       </form>        
-      <button onClick="toggleSubmitMenu()" style = "margin-top:3rem; height:25px; margin:auto; background-color: black; color:white;">X</button>
   </div> 
     </div>
 

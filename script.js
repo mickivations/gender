@@ -14,6 +14,17 @@ colorPickerContainer.style.display = 'none';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('startupModal');
+  const closeBtn = document.getElementById('closeModalBtn');
+
+  modal.style.display = 'flex'; // Show the modal when page loads
+
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none'; 
+    renderFrameworkSubmitList();
+
+  });
+
   const colorPicker = new iro.ColorPicker('#iroContainer', {
     color: '#ffff00'
   });
@@ -26,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
 
  // When preview clicked, toggle picker visibility
  preview.addEventListener('mousedown', (e) => {
@@ -338,6 +350,7 @@ function toggleSubmitMenu() {
 
   const menu = document.getElementById('submitMenu');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  
 }
 /////////////// Pinch zoom end ///////////////
 
@@ -542,7 +555,7 @@ function resizeCanvas() {
           left: centerX - maxRadius * factor,
           top: centerY - maxRadius * factor,
           radius: maxRadius * factor,
-          stroke: '#AAAAAA',
+          stroke: '#444',
           strokeWidth: 1,
           fill: 'transparent',
           selectable: false,
@@ -634,21 +647,77 @@ document.getElementById("radii-slider").addEventListener("input", function (even
   drawRadii(centerX, centerY, maxRadius, newRadiiCount);
 });
 
+function resetCanvasView() {
+  canvas.setZoom(initialZoom);
+  canvas.setViewportTransform([...initialViewportTransform]);
+  canvas.renderAll();
+}
+
     // Initial resize
     resizeCanvas();
+    let initialViewportTransform = [...canvas.viewportTransform]; // clone it
+
     enableDrawing();
    
+function fitCanvasToObjects() {
+  const objects = canvas.getObjects().filter(obj => !obj.templateElement); // Skip template elements
+  if (objects.length === 0) return;
 
+  // Calculate bounding box of all objects
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+  objects.forEach(obj => {
+    const bounds = obj.getBoundingRect(true); // true = include transformations
+    minX = Math.min(minX, bounds.left);
+    minY = Math.min(minY, bounds.top);
+    maxX = Math.max(maxX, bounds.left + bounds.width);
+    maxY = Math.max(maxY, bounds.top + bounds.height);
+  });
+
+  const boundsWidth = maxX - minX;
+  const boundsHeight = maxY - minY;
+
+  const padding = 40;
+  const scaleX = (canvas.getWidth() - padding * 2) / boundsWidth;
+  const scaleY = (canvas.getHeight() - padding * 2) / boundsHeight;
+  const scale = Math.min(scaleX, scaleY, 1); // Don’t zoom in more than 100%
+
+  canvas.setZoom(scale);
+
+  const vpt = canvas.viewportTransform;
+
+  // Center objects in the canvas
+  vpt[4] = canvas.getWidth() / 2 - (minX + boundsWidth / 2) * scale;
+  vpt[5] = canvas.getHeight() / 2 - (minY + boundsHeight / 2) * scale;
+
+  canvas.setViewportTransform(vpt);
+  canvas.renderAll();
+}
+
+    
+function updateCanvasPreview() {
+  const dataURL = canvas.toDataURL({
+    format: 'png',
+    quality: 1.0
+  });
+
+  const previewImg = document.getElementById('canvasPreview');
+  previewImg.src = dataURL;
+}
 
   
 
 document.getElementById('submissionForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  //fitCanvasToObjects();
+  //resetCanvasView();
   const title = document.getElementById('title').value;
   const name = document.getElementById('name').value;
   const altText = document.getElementById('altText').value;
   const description = document.getElementById('description').value;
   const axis3 = document.getElementById('axis3').value;
+  const axisB = document.getElementById('axisB').value;
+  const axisG = document.getElementById('axisG').value;
   const pronouns = document.getElementById('pronouns').value;
   const base64 = canvas.toDataURL('image/png');
 
@@ -667,8 +736,30 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
     .filter(str => str.length > 0);
     const tagsString = allChoices.join(", "); // e.g., "Option 1, Custom input"
     const combinedTags = Array.from(new Set([...allChoices, ...selectedTags])).join(', ');
-    
-    
+    //frameworks 
+    // Get selected predefined frameworks from checkboxes
+  // Clear old map
+selectedFrameworksMap.clear();
+
+// Add selected frameworks from submit list
+document.querySelectorAll('#frameworkSubmitList input[type=checkbox]:checked').forEach(cb => {
+  const id = cb.value;
+  const def = cb.nextElementSibling?.tagName === 'SMALL'
+    ? cb.nextElementSibling.textContent.trim()
+    : '';
+  selectedFrameworksMap.set(id, def);
+});
+
+// Add custom framework if entered
+const customName = document.getElementById('customFrameworkNameSubmit').value.trim();
+const customDef = document.getElementById('customFrameworkDefinitionSubmit').value.trim();
+if (customName) {
+  selectedFrameworksMap.set(customName, customDef);
+}
+
+// Now serialize
+const frameworkObj = Object.fromEntries(selectedFrameworksMap);
+const frameworksJSON = JSON.stringify(frameworkObj);
 
   toggleSubmitMenu();
   const payload = {
@@ -678,8 +769,11 @@ document.getElementById('submissionForm').addEventListener('submit', async (e) =
     imageBase64: base64,
     altText,
     ax3: axis3,
+    axisB,
+    axisG,
     tags: combinedTags, // comma-separated string
     description,
+    frameworks: frameworksJSON,
   };
   
   console.log('Payload:', payload);
@@ -703,7 +797,7 @@ if (res.ok && data.success) {
 
 });
 
-let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby"];
+let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", "amab", "afab", "two spirit"];
 console.error('pre fetch');
 
 fetch('/.netlify/functions/get-tags')
@@ -966,3 +1060,163 @@ function renderAllTagsList() {
     allTagsList.appendChild(div);
   });
 }
+function toggleHiddenInputs() {
+  const hiddenInputsDiv = document.getElementById('hidden-inputs');
+  const currentDisplay = window.getComputedStyle(hiddenInputsDiv).display;
+
+  if (currentDisplay === 'none') {
+    hiddenInputsDiv.style.display = 'block';
+  } else {
+    hiddenInputsDiv.style.display = 'none';
+  }
+}
+/////////////////////////////////////////////////
+
+const frameworkOptions = [
+  { id: 'contextual', label: 'contextual', definition: 'or situational. impacted by your environment or the people around you' }, 
+  { id: 'innate', label: 'innate', definition: 'or internal. rooted in a deep sense of self' },
+  { id: 'external', label: 'external', definition: 'expressed outwardly through presentation and impacted by perception' },
+  { id: 'spiritual', label: 'spiritual', definition: 'connected with a higher power, nature or other spiritual beliefs' },
+  { id: 'none', label: 'none', definition: 'no strong gender beliefs' }
+];
+
+const selectedFrameworksMap = new Map(); // key: id or custom name, value: definition
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderFrameworkList();
+
+  const modal = document.getElementById('startupModal');
+  modal.style.display = 'flex';
+
+  document.getElementById('closeModalBtn').addEventListener('click', () => {
+    // Collect checked frameworks from modal checkboxes
+    document.querySelectorAll('#frameworkList input[type="checkbox"]').forEach(cb => {
+      if (cb.checked) {
+        const id = cb.value;
+        const opt = frameworkOptions.find(o => o.id === id);
+        selectedFrameworksMap.set(id, opt ? opt.definition || '' : '');
+      } else {
+        selectedFrameworksMap.delete(cb.value);
+      }
+    });
+  
+    // Add custom framework
+    const customName = document.getElementById('customFrameworkName').value.trim();
+    const customDef = document.getElementById('customFrameworkDefinition').value.trim();
+    if (customName) {
+      selectedFrameworksMap.set(customName, customDef);
+    }
+  
+    // Hide modal
+    modal.style.display = 'none';
+  
+    // Now update submit list with current selections
+    renderFrameworkSubmitList();
+  });
+  
+});
+
+function renderFrameworkList() {
+  const container = document.getElementById('frameworkList');
+  container.innerHTML = ''; // Clear previous
+
+  frameworkOptions.forEach(opt => {
+    const label = document.createElement('label');
+    label.className = 'framework-item-label';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = opt.id;
+    checkbox.checked = selectedFrameworksMap.has(opt.id);
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        selectedFrameworksMap.set(opt.id, opt.definition || '');
+      } else {
+        selectedFrameworksMap.delete(opt.id);
+      }
+    });
+
+    label.appendChild(checkbox);
+
+    const labelText = document.createTextNode(' ' + opt.label + ' ');
+    label.appendChild(labelText);
+
+    if (opt.definition) {
+      const defSpan = document.createElement('small');
+      defSpan.className = 'framework-definition';
+      defSpan.textContent = opt.definition;
+      label.appendChild(defSpan);
+    }
+    container.appendChild(label);
+  });
+}
+
+function resetCanvasView() {
+  // Reset zoom
+  canvas.setZoom(1);
+
+  // Reset pan
+  canvas.viewportTransform[4] = 0; // x translation
+  canvas.viewportTransform[5] = 0; // y translation
+
+  // Re-center objects (optional but often good UX)
+  canvas.calcOffset();
+  canvas.renderAll();
+  updateCanvasPreview();
+}
+
+
+function renderFrameworkSubmitList() {
+  const container = document.getElementById('frameworkSubmitList');
+  container.innerHTML = ''; // Clear old list
+
+  // Create a Set of all default ids for quick lookup
+  const defaultIds = new Set(frameworkOptions.map(opt => opt.id));
+
+  // Render predefined frameworks
+  frameworkOptions.forEach(opt => {
+    createFrameworkCheckbox(container, opt.id, opt.label, opt.definition);
+  });
+
+  // Render custom frameworks (in selectedFrameworksMap but not in defaultIds)
+  selectedFrameworksMap.forEach((definition, key) => {
+    if (!defaultIds.has(key)) {
+      // For custom, use key as label, definition from map
+      createFrameworkCheckbox(container, key, key, definition);
+    }
+  });
+}
+
+// Helper function to create each checkbox + label and attach event listener
+function createFrameworkCheckbox(container, id, labelText, definition) {
+  const label = document.createElement('label');
+  label.className = 'framework-item-label';
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.value = id;
+  checkbox.checked = selectedFrameworksMap.has(id);
+
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      selectedFrameworksMap.set(id, definition || '');
+    } else {
+      selectedFrameworksMap.delete(id);
+    }
+  });
+
+  label.appendChild(checkbox);
+  label.appendChild(document.createTextNode(' ' + labelText + ' '));
+
+  if (definition) {
+    const defSpan = document.createElement('small');
+    defSpan.className = 'framework-definition';
+    defSpan.textContent = definition;
+    label.appendChild(defSpan);
+  }
+
+  container.appendChild(label);
+}
+
+
