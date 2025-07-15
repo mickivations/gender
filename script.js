@@ -751,8 +751,8 @@ document.querySelectorAll('#frameworkSubmitList input[type=checkbox]:checked').f
 });
 
 // Add custom framework if entered
-const customName = document.getElementById('customFrameworkNameSubmit').value.trim();
-const customDef = document.getElementById('customFrameworkDefinitionSubmit').value.trim();
+const customName = document.getElementById('customFrameworkName').value.trim();
+const customDef = document.getElementById('customFrameworkDefinition').value.trim();
 if (customName) {
   selectedFrameworksMap.set(customName, customDef);
 }
