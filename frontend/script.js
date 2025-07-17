@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('startupModal');
   const closeBtn = document.getElementById('closeModalBtn');
 
+  const floatingMenu = document.getElementById("floatingMenu");
+  if (floatingMenu) {
+    makeDraggable(floatingMenu);
+  }
+
+
  // modal.style.display = 'flex'; // Show the modal when page loads
 
   closeBtn.addEventListener('click', () => {
@@ -44,27 +50,33 @@ document.addEventListener('DOMContentLoaded', () => {
   e.stopPropagation(); // prevent triggering canvas draw
   if (colorPickerContainer.style.display === 'none') {
     disableDrawing();
+    const menu = document.getElementById('selectMenu');
+    menu.style.display = 'none';
+    const menu2 = document.getElementById('toolMenu');
+    menu2.style.display = "none";
     colorPickerContainer.style.display = 'flex';
+
   } else {
     closeColorPicker();  // will handle drawing mode reset
   }
 });
 
-document.addEventListener('click', (e) => {
-  setTimeout(() => {
-    const isClickInsidePicker = colorPickerContainer.contains(e.target);
-    const isClickOnPreview = preview.contains(e.target);
+document.addEventListener('mousedown', (e) => {
+  const isClickInsidePicker = colorPickerContainer.contains(e.target);
+  const isClickOnPreview = preview.contains(e.target);
 
-    if (!isClickInsidePicker && !isClickOnPreview && colorPickerContainer.style.display === 'flex') {
-      closeColorPicker();
-    }
-  }, 0);
+  if (!isClickInsidePicker && !isClickOnPreview && colorPickerContainer.style.display === 'flex') {
+    closeColorPicker();
+  }
 });
+
 
 
 function closeColorPicker(){
   colorPickerContainer.style.display = 'none';
   enableDrawing();
+  const menu2 = document.getElementById('toolMenu');
+    menu2.style.display = "none";
 }
 
 
@@ -349,8 +361,16 @@ function toggleShapesMenu() {
 function toggleSelectMenu() {
   const menu = document.getElementById('selectMenu');
   menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  const menu2 = document.getElementById('brushMenu');
+  menu2.style.display = menu2.style.display === 'flex' ? 'none' : 'flex'; 
 }
 
+function closeSelectMenu() {
+  const menu = document.getElementById('selectMenu');
+  menu.style.display = 'none';
+  const menu2 = document.getElementById('brushMenu');
+  menu2.style.display = "flex";
+}
 function toggleSubmitMenu() {
   const dataURL = canvas.toDataURL({
     format: 'png',
@@ -364,7 +384,7 @@ function toggleSubmitMenu() {
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   
 }
-makeDraggable(document.getElementById("selectMenu"));
+makeDraggable(document.getElementById("floatingMenu"));
 
 function makeDraggable(el) {
   let offsetX = 0, offsetY = 0, isDragging = false;
@@ -548,6 +568,8 @@ function resizeCanvas() {
       canvas.freeDrawingBrush.opacity = opacityValue;
       pendingShapeType = null;  // Clear the pending shape
       //setActiveTool('Free Draw');
+      toggleToolMenu();
+      closeSelectMenu();
 
     }
 
@@ -714,6 +736,7 @@ function resetCanvasView() {
     let initialViewportTransform = [...canvas.viewportTransform]; // clone it
 
     enableDrawing();
+    toggleToolMenu();
    
 function fitCanvasToObjects() {
   const objects = canvas.getObjects().filter(obj => !obj.templateElement); // Skip template elements
