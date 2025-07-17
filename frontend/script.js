@@ -400,7 +400,15 @@ function makeDraggable(el) {
   document.addEventListener('touchend', stopDrag);
 
   function startDrag(e) {
+    const target = e.target;
+  
+    // Don't drag if the user started on a button or input
+    if (['BUTTON'].includes(target.tagName)) {
+      return;
+    }
+  
     isDragging = true;
+  
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     const rect = el.getBoundingClientRect();
@@ -409,6 +417,7 @@ function makeDraggable(el) {
     el.style.cursor = 'move';
     if (e.touches) e.preventDefault(); // prevent scrolling while dragging
   }
+  
 
   function doDrag(e) {
     if (!isDragging) return;
