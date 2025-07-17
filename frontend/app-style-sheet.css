@@ -416,6 +416,9 @@ canvas {
   border-radius: 10px;
 }
 
+#selectMenu button {
+  touch-action: manipulation;
+}
 
 
 .IroColorPicker{
