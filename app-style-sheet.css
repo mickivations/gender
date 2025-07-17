@@ -412,7 +412,7 @@ canvas {
   z-index: 1000;
   overflow-y: auto;
   box-sizing: border-box;
-  padding:10%;
+  padding:10%, 10%;
   border-radius: 10px;
 }
 
