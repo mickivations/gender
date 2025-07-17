@@ -364,31 +364,43 @@ function toggleSubmitMenu() {
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   
 }
-
 makeDraggable(document.getElementById("selectMenu"));
 
 function makeDraggable(el) {
   let offsetX = 0, offsetY = 0, isDragging = false;
 
-  el.addEventListener('mousedown', dragStart);
-  document.addEventListener('mousemove', dragMove);
-  document.addEventListener('mouseup', dragEnd);
+  // Mouse Events
+  el.addEventListener('mousedown', startDrag);
+  document.addEventListener('mousemove', doDrag);
+  document.addEventListener('mouseup', stopDrag);
 
-  function dragStart(e) {
+  // Touch Events
+  el.addEventListener('touchstart', startDrag, { passive: false });
+  document.addEventListener('touchmove', doDrag, { passive: false });
+  document.addEventListener('touchend', stopDrag);
+
+  function startDrag(e) {
     isDragging = true;
-    offsetX = e.clientX - el.getBoundingClientRect().left;
-    offsetY = e.clientY - el.getBoundingClientRect().top;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const rect = el.getBoundingClientRect();
+    offsetX = clientX - rect.left;
+    offsetY = clientY - rect.top;
     el.style.cursor = 'move';
+    if (e.touches) e.preventDefault(); // prevent scrolling while dragging
   }
 
-  function dragMove(e) {
+  function doDrag(e) {
     if (!isDragging) return;
-    el.style.left = e.clientX - offsetX + "px";
-    el.style.top = e.clientY - offsetY + "px";
-    el.style.transform = "none"; // Disable transform when dragging
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    el.style.left = `${clientX - offsetX}px`;
+    el.style.top = `${clientY - offsetY}px`;
+    el.style.transform = 'none'; // Disable centering transform during drag
+    if (e.touches) e.preventDefault();
   }
 
-  function dragEnd() {
+  function stopDrag() {
     isDragging = false;
     el.style.cursor = 'default';
   }
