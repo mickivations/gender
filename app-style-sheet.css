@@ -1,11 +1,11 @@
 :root {
   --toolbar_height: min(calc(86vh - 100vw), 25vh); /* prevent absurd height */
-  --toolbar_button_width: calc(100vw / 10);
+  --toolbar_button_width: calc(100vw / 11);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
   --sidebar_width: calc(100vw - 90vh);
   --sidebar_button_width: calc(var(--sidebar_width) / 2);
-  --sidebar_button_height: calc(100vh / 10);
+  --sidebar_button_height: calc(100vh / 11);
 }
 
 /* Make sure html and body fill the viewport for percentage heights to work */
@@ -15,12 +15,14 @@ html, body {
   padding: 0;
   text-align: left;
   overflow: hidden; /* prevent body scroll */
+  touch-action: none;
+
 }
 
 button {
   font-family: "Nunito", sans-serif;
   font-weight: 1000;
-  font-size: 1.5rem;
+ /* font-size: 1.5rem; */
   border: 1px solid white;
   background-color: #000;
   color: white;
@@ -168,7 +170,7 @@ h1 {
 
 h2 {
   font-family: "Nunito", sans-serif;
-  font-size: 1.5em;
+ /* font-size: 1.5em; */
   margin-top: 0px;
   color: #FFFFFF;
   margin-bottom: 0px;
@@ -205,7 +207,7 @@ div {
  
 .label-description {
   font-size: 0.9rem;
-  color: #FFF;
+  color: pink;
   margin-top: 0.0rem;
   display:block;
 }
@@ -377,6 +379,38 @@ canvas {
   z-index: 1000 !important; /* On top of everything */
 }
 
+/* Fullscreen overlay background */
+#toolMenu{
+  display: none; /* Start hidden */
+  position: fixed; /* or absolute */
+  bottom: 50%;
+  left: 50%;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000 !important; /* On top of everything */
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#selectMenu {
+  display: none;
+  position: fixed;
+  top: 50%;  /* Add this line */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+  box-sizing: border-box;
+  cursor: grab; /* optional: show a grab cursor */
+}
+
+
 .IroColorPicker{
   justify-content: center;
   align-items: center;
@@ -526,7 +560,7 @@ canvas {
 /* ===== Bottom toolbar for small screens (phones) ===== */
 @media (max-width: 599px) {
   :root {
-    --toolbar_button_width: calc(100vw / 9); /* or whatever makes sense for smaller screens */
+    --toolbar_button_width: calc(100vw / 10); /* or whatever makes sense for smaller screens */
   }
 
   .toolbar {
@@ -733,7 +767,8 @@ canvas {
 }
 
 .modal {
-  display: flex; /* Was overwritten by multiple display declarations */
+  /* display: flex; Was overwritten by multiple display declarations */
+  display:none;
   justify-content: center;
   align-items: center;
   text-align: left;

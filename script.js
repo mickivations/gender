@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('startupModal');
   const closeBtn = document.getElementById('closeModalBtn');
 
-  modal.style.display = 'flex'; // Show the modal when page loads
+ // modal.style.display = 'flex'; // Show the modal when page loads
 
   closeBtn.addEventListener('click', () => {
     modal.style.display = 'none'; 
@@ -170,7 +170,7 @@ function restoreState(state) {
 ['object:added', 'object:modified', 'object:removed'].forEach(event => {
   canvas.on(event, saveState);
 });
-/*
+
 function duplicateObject() {
   const selectedObject = canvas.getActiveObject();
 
@@ -214,7 +214,7 @@ function duplicateObject() {
     console.log('Object duplicated');
   }
 }
-*/
+
 
 
 ///////pinch zoom start
@@ -329,8 +329,13 @@ function getDistance(touches) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
- 
 
+
+
+function toggleToolMenu() {
+  const menu = document.getElementById('toolMenu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
 function toggleSliderMenu() {
   const menu = document.getElementById('sliderMenu');
   menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
@@ -339,6 +344,13 @@ function toggleShapesMenu() {
   const menu = document.getElementById('shapesSubMenu');
   menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
+
+
+function toggleSelectMenu() {
+  const menu = document.getElementById('selectMenu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+
 function toggleSubmitMenu() {
   const dataURL = canvas.toDataURL({
     format: 'png',
@@ -352,6 +364,36 @@ function toggleSubmitMenu() {
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   
 }
+
+makeDraggable(document.getElementById("selectMenu"));
+
+function makeDraggable(el) {
+  let offsetX = 0, offsetY = 0, isDragging = false;
+
+  el.addEventListener('mousedown', dragStart);
+  document.addEventListener('mousemove', dragMove);
+  document.addEventListener('mouseup', dragEnd);
+
+  function dragStart(e) {
+    isDragging = true;
+    offsetX = e.clientX - el.getBoundingClientRect().left;
+    offsetY = e.clientY - el.getBoundingClientRect().top;
+    el.style.cursor = 'move';
+  }
+
+  function dragMove(e) {
+    if (!isDragging) return;
+    el.style.left = e.clientX - offsetX + "px";
+    el.style.top = e.clientY - offsetY + "px";
+    el.style.transform = "none"; // Disable transform when dragging
+  }
+
+  function dragEnd() {
+    isDragging = false;
+    el.style.cursor = 'default';
+  }
+}
+
 /////////////// Pinch zoom end ///////////////
 
 document.getElementById('shapesSubMenu').addEventListener('click', function(e) {
@@ -509,6 +551,8 @@ function resizeCanvas() {
       pendingShapeType = null;  // Clear the pending shape
       //setActiveTool('Select/Move');
       console.log("drawing disabled");
+      toggleToolMenu();
+      toggleSelectMenu();
     }
 /*
     // Save the canvas as an image
@@ -1089,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFrameworkList();
 
   const modal = document.getElementById('startupModal');
-  modal.style.display = 'flex';
+  //modal.style.display = 'flex';
 
   document.getElementById('closeModalBtn').addEventListener('click', () => {
     // Collect checked frameworks from modal checkboxes

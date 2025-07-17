@@ -46,6 +46,23 @@
     <canvas id="c"></canvas></div>
   <!--<div id="activeTool" style="margin-top: 10px; font-weight: bold; float:left">Active Tool: Free Draw</div> -->
   </div>
+  <div id="toolMenu">
+    <button onclick="disableDrawing()"><span class="material-icons">touch_app</span></button>
+    <button onclick="enableDrawing()"><span class="material-icons">brush</span></button>
+  </div>
+
+  <div id="selectMenu">
+    <button onclick="deleteObject()">
+      <span class="material-icons">delete</span> 
+    </button>
+    <button onclick="duplicateObject()">
+      <span class="material-icons">content_copy</span> 
+    </button>
+    <button onclick="resetCanvasView()">
+      <span class="material-icons">center_focus_strong</span> 
+    </button>
+   <!--<button id="colorInput" class="color-preview"></button>--> 
+  </div>
 
   <div class="toolbar">
 
@@ -67,7 +84,7 @@
         <span class="material-icons">format_shapes</span>
       </button></div>-->
   <div class="toolbar-item">
-    <button onclick="enableDrawing()"><span class="material-icons">brush</span></button>
+    <button onclick="toggleToolMenu()">toggle tools</button>
   </div>
     <!-- Color Picker -->
   <div class="toolbar-item">
@@ -87,14 +104,25 @@
       Submit to Gallery
     </button> </div>
 
+    <div class="button-pair">
+      <button onclick="deleteObject()">
+        <span class="material-icons">delete</span> 
+      </button>
+      <button onclick="duplicateObject()">
+        <span class="material-icons">content_copy</span> 
+      </button>
+    </div>
+
 <!--
 <div class="button-pair">
   <button onclick="toggleSliderMenu()"><span class="material-icons">tune</span></button>
     <button onclick="saveImage()"><span class="material-icons">upload</span></button>
 
 </div> -->
+     <!-- New Menus -->
     
-  
+
+
     <!-- Sliders Menu (Deprecated) -->
     <div class="toolbar-item" id="sliderGroup">
       <div class="slider-menu" id="sliderMenu">
@@ -149,7 +177,7 @@
         <img id="canvasPreview" alt="Preview of artwork" style="max-width: 50%; margin-bottom: 1rem; margin: auto" />
         <button type ="button" onclick="resetCanvasView()">Center Template</button>
         <div class="form-field">
-          <label for="name">alt text 
+          <label for="name"> alt text 
           <span class="label-note">
             required </span>
             <span class="label-description">
