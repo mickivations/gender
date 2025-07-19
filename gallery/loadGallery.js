@@ -118,7 +118,9 @@ fetch('/.netlify/functions/get-gallery')
             const intro = document.createElement('p');
             intro.className = 'frameworks-intro';
             intro.textContent = 'I believe gender is:';
+          if(parsedFrameworks != null && Object.keys(parsedFrameworks).length !== 0){
             frameworksContainer.appendChild(intro);
+          }
         
         
           // Each framework
@@ -145,6 +147,8 @@ fetch('/.netlify/functions/get-gallery')
 
         
         modalAltText.innerHTML = altText;
+        modalAltText.style.whiteSpace = 'pre-line';
+
         //modalDescription.innerHTML = combinedDetails;
         //modalTags.textContent = "Tag(s): " + stringTags;
         modal.style.display = 'flex';
@@ -393,7 +397,7 @@ function setupShowAllTagsButton() {
       allTagsList.style.display = 'flex';
 
       // (Re)populate or update the tag list
-      Array.from(allTags).sort().forEach(tag => {
+      Array.from(allTags).forEach(tag => {
         let tagDiv;
 
         // If we’ve already created it, reuse

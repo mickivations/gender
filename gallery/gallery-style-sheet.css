@@ -63,16 +63,19 @@ body {
     background-color: #ddd !important;
     color: #000;
     font-size: 1em;
+    white-space: pre-line
   }
 
   #modalDescription{
     font-family: "Nunito";
     font-weight: 600;
+    white-space: pre-line
   }
 
   #modalTags{
     font-family: "Nunito";
     font-weight: 800;
+    white-space: pre-line
   }
 
   #gallery {
@@ -131,7 +134,7 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
 .nunito-semi> {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 1000;
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -336,8 +339,8 @@ button:hover, button:active {
 }
 
 .modal-values {
-  font-weight: 1000;
+  font-weight: 900;
   color: #FFF; /* or any other style you want */
   font-size: 1.25em;
-
+  white-space: pre-line
 }

@@ -34,19 +34,24 @@ exports.handler = async function (event, context) {
     const data = await res.json();
     console.log(`Fetched ${data.records.length} records`);
 
-    const tagsSet = new Set();
+    const tagCounts = {};
 
     data.records.forEach(record => {
       const tagString = record.fields?.StringTags || '';
       tagString.split(',')
         .map(tag => tag.trim().toLowerCase())
         .forEach(tag => {
-          if (tag) tagsSet.add(tag);
+          if (tag) {
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+          }
         });
     });
 
-    const tagsArray = Array.from(tagsSet).sort();
-    console.log("Extracted tags:", tagsArray);
+    const tagsArray = Object.entries(tagCounts)
+      .sort((a, b) => b[1] - a[1]) // Sort by count, descending
+      .map(([tag]) => tag);        // Extract only tag names
+
+    console.log("Sorted tags by frequency:", tagsArray);
 
     return {
       statusCode: 200,
