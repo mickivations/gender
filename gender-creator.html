@@ -31,11 +31,13 @@
 </head>
 <body>
   <div id="main-content">
-  <h1>Visualizing Gender</h1>
+  <div  id = "top-content">
+    
+    <h1>Visualizing Gender</h1>
   
-  <a href="../gallery/gallery.html"> View Gender Gallery </a>
-  <a href="../index.html"> Instructions </a>
-  
+    <a href="../gallery/gallery.html"> View Gender Gallery </a>
+    <a href="../index.html"> Instructions </a>
+  </div>
   <p id="status"></p>
   <div id="colorPickerContainer">   <div id="iroContainer"></div> <!-- iro.js will render here -->
   <!--<label for="opacitySlider">Opacity</label>
@@ -48,13 +50,13 @@
   <!--<div id="activeTool" style="margin-top: 10px; font-weight: bold; float:left">Active Tool: Free Draw</div> -->
   </div>
   <div id="toolMenu">
-    modes
+    <p>modes</p> 
     <button onclick="disableDrawing()"><span class="material-icons">touch_app</span></button>
     <button onclick="enableDrawing()"><span class="material-icons">brush</span></button>
   </div>
   <div id ="floatingMenu">
   <div id="selectMenu">
-    tools
+    tools <br>
     <button onclick="deleteObject()">
       <span class="material-icons">delete</span> 
     </button>
@@ -64,9 +66,7 @@
     <button onclick="resetCanvasView()">
       <span class="material-icons">center_focus_strong</span> 
     </button>
-    <button onclick="alert('Clicked delete!')">
-      <span class="material-icons">delete</span>
-    </button>
+   
   </div>
 
 
@@ -96,7 +96,7 @@
         <span class="material-icons">format_shapes</span>
       </button></div>-->
   <div class="toolbar-item">
-    <button onclick="toggleToolMenu()">toggle tools</button>
+    <button id = "toolBtn" onclick="toggleToolMenu()">toggle tools</button>
   </div>
 
  <!-- <div id="colorInput" style="width: 100%; height: 100%; border: 1px solid #ccc; cursor: pointer; border-radius: 4px;"></div>
@@ -239,6 +239,12 @@
           </label>
           <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
         </div>
+        My chart represents my gender...
+        <input type="text" id="tagSearch" placeholder="add">
+        <div id="sentenceFragmentsList"></div>
+        <div id="selectedFragments"></div>
+        <p id="sentencePreview" style="margin-top: 1em; font-style: italic;"></p>
+
         <p>What words do you identify with?
         </p>
         <fieldset id="tagGroup">
@@ -254,7 +260,7 @@
 
               <div id="selectedTags"></div>
 
-              <input type="text" id="tagSearch" placeholder="Search or add tag">
+              <input type="text" id="tagSearch" placeholder="Search or add tag" ><button type="button" onclick="addTagButton()">+</button>
               <div id="tagSuggestions"></div>
 
               
@@ -275,7 +281,7 @@
               </label>
               <textarea id="description" rows="4" placeholder="Ex: your thoughts on gender, what specific pieces of your chart represent, you move through you gender on a day-to-day" rows="6" maxlength="5000"></textarea>
             </div>
-            <div id="submitFrameworks" class="form-field">
+            <!--<div id="submitFrameworks" class="form-field">
               <label>I beleive gender is...</label>
               <div id="frameworkSubmitList" class="framework-list"></div>
             
@@ -284,7 +290,7 @@
                 <input type="text" id="customFrameworkName" placeholder="I believe gender is...">
                 <input type="text" id="customFrameworkDefinition" placeholder="definition">
               </div>
-            </div>
+            </div>-->
             
         </fieldset>
         <button type="submit">Submit</button><br>
@@ -297,6 +303,7 @@
   </div>
   
   
-  <script src="script.js" defer></script>
+  <script type="module" src="./ui-logic.js"></script>
+
 </body>
 </html>

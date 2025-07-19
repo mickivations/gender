@@ -346,7 +346,7 @@ function getDistance(touches) {
 
 function toggleToolMenu() {
   const menu = document.getElementById('toolMenu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 function toggleSliderMenu() {
   const menu = document.getElementById('sliderMenu');
@@ -360,7 +360,7 @@ function toggleShapesMenu() {
 
 function toggleSelectMenu() {
   const menu = document.getElementById('selectMenu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   const menu2 = document.getElementById('brushMenu');
   menu2.style.display = menu2.style.display === 'flex' ? 'none' : 'flex'; 
 }
@@ -885,14 +885,14 @@ if (res.ok && data.success) {
 
 });
 
-let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", "amab", "afab", "two spirit"];
+let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", "t boy", "two spirit", "transneutral"];
 console.error('pre fetch');
 
 fetch('/.netlify/functions/get-tags')
   .then(res => res.json())
   .then(data => {
     console.error('in  tagging');
-    const combined = [...new Set(knownTags.concat(data.tags))].sort();
+    const combined = [...new Set(data.tags.concat(knownTags))]; // fetched tags first
     knownTags = combined;
     console.log('Loaded tags from Airtable:', knownTags); // ← move your log here
     setupTagSearchForForm();
@@ -993,7 +993,7 @@ function renderAllTagsList() {
     )
   );
 
-  Array.from(allTags).sort().forEach(tag => {
+  Array.from(allTags).forEach(tag => {
     if (selected.has(tag)) return;
 
     const div = document.createElement('div');
@@ -1022,7 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('/.netlify/functions/get-tags')
     .then(res => res.json())
     .then(data => {
-      const combined = [...new Set(knownTags.concat(data.tags))].sort();
+      const combined = [...new Set(knownTags.concat(data.tags))]; //.sort();
       combined.forEach(tag => allTags.add(tag.toLowerCase()));
       setupTagSearchForForm();
       renderAllTagsList(); // show immediately
@@ -1124,7 +1124,7 @@ function renderAllTagsList() {
 
   const selected = new Set(selectedTags);
 
-  Array.from(allTags).sort().forEach(tag => {
+  Array.from(allTags).forEach(tag => {
     if (selected.has(tag)) return;
 
     const div = document.createElement('div');
