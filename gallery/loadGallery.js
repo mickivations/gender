@@ -16,6 +16,7 @@ const modalTags = document.getElementById('modalTags');
 const modalFrameworks = document.getElementById('modalFrameworks');
 const modalAltText = document.getElementById('modalAltText');
 const closeModal = document.getElementById('closeModal');
+let menuOpen = false;
 
 
 // Fetch gallery data from Netlify function
@@ -160,7 +161,10 @@ fetch('/.netlify/functions/get-gallery')
             wrapper.appendChild(defElem);
             frameworksContainer.appendChild(wrapper);
           });
-      
+
+
+
+              
         }
         
                 
@@ -173,7 +177,8 @@ fetch('/.netlify/functions/get-gallery')
         //modalTags.textContent = "Tag(s): " + stringTags;
         modal.style.display = 'flex';
       });
-      
+      history.pushState({ menuOpen: true }, '');
+      menuOpen = true;
       card.appendChild(img);
       
 
@@ -260,7 +265,16 @@ fetch('/.netlify/functions/get-gallery')
 
 closeModal.addEventListener('click', () => {
   modal.style.display = 'none';
+  menuOpen = false;
 });
+
+// Listen to back/forward navigation
+window.addEventListener('popstate', (event) => {
+  console.log("reverse");
+  if (menuOpen) {
+    modal.style.display = 'none';
+   } 
+}); 
 
 modal.addEventListener('click', (e) => {
   if (e.target === modal) {
