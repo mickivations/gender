@@ -1,6 +1,6 @@
 :root {
   --toolbar_height: min(calc(86vh - 100vw), 25vh); /* prevent absurd height */
-  --toolbar_button_width: calc(100vw / 11);
+  --toolbar_button_width: calc(100vw / 6);
   --toolbar_button_height: calc(var(--toolbar_height)/2);
   --canvas_height: calc(88vh - var(--toolbar_height));
   --sidebar_width: calc(100vw - 90vh);
@@ -291,7 +291,7 @@ canvas {
   align-items: stretch;
   height: var(--toolbar_height); /* fills leftover vertical space */
   width: 100vw; /* full width */
-  overflow: hidden;
+  overflow: auto;
   background-color: transparent !important;
   backdrop-filter: none !important; /* remove any blur just in case */
 }
@@ -312,10 +312,9 @@ canvas {
   color: white;
   border: 1px solid white;
   border-radius: 5px;
-  background-color: transparent !important;
+  background-color: transparent;
   backdrop-filter: none !important; /* remove any blur just in case */
   box-sizing: border-box;
-
 
 }
 
@@ -416,11 +415,39 @@ canvas {
   background-color: gray;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  align-items: center;
   z-index: 1000;
   overflow-y: auto;
   box-sizing: border-box;
   padding:10%;
   border-radius: 10px;
+}
+
+#toolsTitle {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+#buttonRow {
+  display: flex;
+  gap: 10px;
+}
+
+#floatingMenu button {
+  min-width: 50px;
+  min-height: 50px;
+  margin: 5px;
+}
+
+#toolMenu button {
+  min-width: 50px;
+  min-height: 50px;
+  margin: 5px;
+}
+.material-icons {
+  font-size: 24px;
 }
 
 #selectMenu button {
@@ -576,9 +603,10 @@ canvas {
 }
 /* ===== Bottom toolbar for small screens (phones) ===== */
 @media (max-width: 599px) {
-  :root {
-    --toolbar_button_width: calc(100vw / 10); /* or whatever makes sense for smaller screens */
-  }
+
+ /* :root {
+    --toolbar_button_width: calc(100vw / 10); /* or whatever makes sense for smaller screens 
+  }*/
 
   .toolbar {
     flex-direction: row;
@@ -600,9 +628,13 @@ canvas {
     height: var(--toolbar_height);
   }
 
-  .zoom-btn{
-    display: none !important;
+  .button-pair #toolBtn, #submitButton{
+    background-color: #000 ;
   }
+
+ /* .zoom-btn{
+    display: none !important;
+  }*/
 
   .button-pair button {
     flex: 1 1 50%;
@@ -622,7 +654,7 @@ canvas {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 50%;
+    height: 100%;
     margin: 0;
     padding: 0;
   }
@@ -768,14 +800,16 @@ canvas {
 }
 
 .color-preview {
-  width: 32px;
-  height: 32px;
+  /*width: 32px;
+  height: 32px;*/
+  align-items: center;
+  text-align: center;
   border-radius: 4px;
   border: none;
   outline: none;
   background-color: #ffff00;
   cursor: pointer;
-  padding: 0;
+  padding: 5px 5px;
 }
 
 .color-preview:focus {
@@ -841,5 +875,3 @@ canvas {
   display: inline-block;
   text-align: left;
 }
-
-

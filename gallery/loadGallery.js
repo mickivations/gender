@@ -69,11 +69,17 @@ fetch('/.netlify/functions/get-gallery')
         if (title) {
           modalTitle.innerHTML = '<h3><span class="modal-labels"> title </span> <span class="modal-values">' + title + '</span></h3>';
         } else {
-          modalName.innerHTML = '';
+          modalTitle.innerHTML = '';
         }
         //modalTitle.textContent = title;
         //modalID.innerHTML = combinedID;
         //console.log(name);
+
+        if (pronouns) {
+          modalPronouns.innerHTML = '<h3><span class="modal-labels"> pronouns </span> <span class="modal-values">' + pronouns + '</span></h3>';
+        } else {
+          modalPronouns.innerHTML = '';
+        }
 
         if (name) {
           modalName.innerHTML = '<span class="modal-labels"> name </span> <span class="modal-values">' + name + '</span>';
@@ -97,11 +103,16 @@ fetch('/.netlify/functions/get-gallery')
         if(description){
           modalDescription.innerHTML = '<span class="modal-labels">more info</span> <span class="modal-values">' + description + '</span><br>';
         }
+        else
+        modalDescription.innerHTML = '';
+
 
        // modalTags.textContent = "Tag(s): " + stringTags;
+       if(stringTags)
         modalTags.innerHTML = '<span class="modal-labels"> Tag(s) </span> <span class="modal-values">' + stringTags + '</span>';
+       else
+       modalTags.innerHTML = '';
 
-        
         // ⬇️ Frameworks display
         const frameworksContainer = document.getElementById('modalFrameworks');
         frameworksContainer.innerHTML = ''; // clear previous

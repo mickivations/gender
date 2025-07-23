@@ -44,7 +44,7 @@ import {
 let allTags = new Set();
 let selectedTags = [];
 let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", "t boy", "two spirit", "transneutral"];
-
+let toolstate ="select";
   // === UI and DOM Logic ===
   
   document.addEventListener('DOMContentLoaded', () => {
@@ -71,8 +71,9 @@ let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", 
     });
   
     updatePreview(getCurrentColor());
-    enterDrawing();
-    closeToolMenu();
+    //enterDrawing();
+    //closeToolMenu();
+    
     colorPicker.on('color:change', function(color) {
       setCurrentColor(color.hexString);
       updatePreview(getCurrentColor());
@@ -87,8 +88,8 @@ let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", 
         disableDrawing();
         const menu = document.getElementById('selectMenu');
         menu.style.display = 'none';
-        const menu2 = document.getElementById('toolMenu');
-        menu2.style.display = "none";
+       // const menu2 = document.getElementById('toolMenu');
+        //menu2.style.display = "none";
         colorPickerContainer.style.display = 'flex';
     
         } else {
@@ -99,6 +100,8 @@ let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", 
     document.getElementById('undoBtn')?.addEventListener('click', undo);
     document.getElementById('redoBtn')?.addEventListener('click', redo);
     document.getElementById('clearCanvasBtn')?.addEventListener('click', clearCanvas);
+
+    toggleToolMenu();
     
     //createTemplate();
     initializeSubmissionHandling();
@@ -110,22 +113,26 @@ let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", 
   function enterDrawing()
   {
     console.log("starting to draw")
-   document.getElementById('toolBtn').innerHTML = '<span class="material-icons">brush</span>';
+    document.getElementById('toolBtn').innerHTML = '<span class="material-symbols-outlined">edit_off</span>';
+    document.getElementById('toolBtn').style.color = '#ffffff';
    enableDrawing();
+   toolstate = "draw";
   }
   
   function leaveDrawing()
   {
-    console.log("starting to draw")
-   document.getElementById('toolBtn').innerHTML = '<span class="material-icons">touch_app</span>';
-   disableDrawing();
+    //console.log("starting to draw")
+    document.getElementById('toolBtn').innerHTML = '<span class="material-icons">brush</span>';
+    document.getElementById('toolBtn').style.color = getCurrentColor();
+    disableDrawing();
+   toolstate = "select";
   }
 
   function closeColorPicker(){
     colorPickerContainer.style.display = 'none';
     enterDrawing();
-    const menu2 = document.getElementById('toolMenu');
-      menu2.style.display = "none";
+   // const menu2 = document.getElementById('toolMenu');
+     // menu2.style.display = "none";
   }
 
 function makeDraggable(el) {
@@ -182,8 +189,41 @@ function closeToolMenu() {
     }
 
 function toggleToolMenu() {
-const menu = document.getElementById('toolMenu');
-menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    if(toolstate === "draw")
+    {
+        leaveDrawing();
+          
+        const buttons = document.querySelectorAll('.paint-btn');
+        buttons.forEach(btn => {
+            btn.style.display = 'none';
+        });
+        const buttons2 = document.querySelectorAll('.select-btn');
+        buttons2.forEach(btn => {
+            btn.style.display = 'flex';
+        });
+
+        
+        document.getElementById('colorInput').style.display = 'none';
+        document.getElementById('resetBtn').style.display = 'flex';
+    }
+    else
+    {
+        enterDrawing();
+        
+        const buttons2 = document.querySelectorAll('.select-btn');
+        buttons2.forEach(btn => {
+            btn.style.display = 'none';
+        });
+        const buttons = document.querySelectorAll('.paint-btn');
+        buttons.forEach(btn => {
+            btn.style.display = 'flex';
+        });
+        document.getElementById('resetBtn').style.display = 'none';
+        document.getElementById('colorInput').style.display = 'flex';
+        
+    }
+    //const menu = document.getElementById('toolMenu');
+   // menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 function toggleSliderMenu() {
 const menu = document.getElementById('sliderMenu');
@@ -196,17 +236,17 @@ menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 
 
 function toggleSelectMenu() {
-const menu = document.getElementById('selectMenu');
-menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-const menu2 = document.getElementById('brushMenu');
-menu2.style.display = menu2.style.display === 'flex' ? 'none' : 'flex'; 
+//const menu = document.getElementById('selectMenu');
+//menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+/*const menu2 = document.getElementById('brushMenu');
+menu2.style.display = menu2.style.display === 'flex' ? 'none' : 'flex'; */
 }
 
 function closeSelectMenu() {
     const menu = document.getElementById('selectMenu');
     menu.style.display = 'none';
-    const menu2 = document.getElementById('brushMenu');
-    menu2.style.display = "flex";
+    /*const menu2 = document.getElementById('brushMenu');
+    menu2.style.display = "flex";*/
 }
 
 function toggleSubmitMenu() {
@@ -611,7 +651,19 @@ function updateSentencePreview() {
     preview.textContent = selectedFragments.join(' ') + (selectedFragments.length ? '.' : '');
   }
 
+  function resetCanvasView() {
+    // Reset zoom
+    canvas.setZoom(1);
   
+    // Reset pan
+    canvas.viewportTransform[4] = 0; // x translation
+    canvas.viewportTransform[5] = 0; // y translation
+  
+    // Re-center objects (optional but often good UX)
+    canvas.calcOffset();
+    canvas.renderAll();
+    updateCanvasPreview();
+  }
 
 window.toggleToolMenu = toggleToolMenu;
 window.toggleSliderMenu = toggleSliderMenu;
@@ -630,19 +682,7 @@ window.zoomIn = zoomIn;
 window.zoomOut = zoomOut;
 window.closeColorPicker = closeColorPicker;
 
-function resetCanvasView() {
-    // Reset zoom
-    canvas.setZoom(1);
-  
-    // Reset pan
-    canvas.viewportTransform[4] = 0; // x translation
-    canvas.viewportTransform[5] = 0; // y translation
-  
-    // Re-center objects (optional but often good UX)
-    canvas.calcOffset();
-    canvas.renderAll();
-    updateCanvasPreview();
-  }
+
 
   
 window.resetCanvasView = resetCanvasView;

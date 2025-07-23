@@ -199,7 +199,7 @@ function disableDrawing() {
    //pendingShapeType = null;  // Clear the pending shape
     //setActiveTool('Select/Move');
     console.log("drawing disabled");
-    toggleToolMenu();
+    //toggleToolMenu();
     toggleSelectMenu();
 }
 
@@ -212,7 +212,7 @@ function enableDrawing() {
     canvas.freeDrawingBrush.opacity = opacityValue;
     //pendingShapeType = null;  // Clear the pending shape
     //setActiveTool('Free Draw');
-    toggleToolMenu();
+    //toggleToolMenu();
     closeSelectMenu();
 
 }
