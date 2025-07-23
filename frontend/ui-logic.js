@@ -40,7 +40,8 @@ import {
   ];
   
   let selectedFragments = [];
-  
+
+let menuOpen = false;
 let allTags = new Set();
 let selectedTags = [];
 let knownTags = ["stud", "transfeminine", "doll", "cis", "it", "trans", "enby", "t boy", "two spirit", "transneutral"];
@@ -247,19 +248,38 @@ function closeSelectMenu() {
     menu2.style.display = "flex";*/
 }
 
-function toggleSubmitMenu() {
-const dataURL = canvas.toDataURL({
+function openSubmitMenu(){
+  const dataURL = canvas.toDataURL({
     format: 'png',
     quality: 1.0
-});
+  });
 
-const img = document.getElementById('canvasPreview');
-img.src = dataURL;
+  const img = document.getElementById('canvasPreview');
+  img.src = dataURL;
 
-const menu = document.getElementById('submitMenu');
-menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  const menu = document.getElementById('submitMenu');
+  menu.style.display = 'block';
+
+  history.pushState({ menuOpen: true }, '');
+  menuOpen = true;
+
+
 
 }
+
+function closeSubmitMenu() {
+  const menu = document.getElementById('submitMenu');
+  menu.style.display =  'none';
+  menuOpen = false;
+
+}
+
+// Listen to back/forward navigation
+window.addEventListener('popstate', (event) => {
+  if (menuOpen) {
+    closeSubmitMenu(); // close the menu instead of navigating away
+  } 
+}); 
 
 function toggleHiddenInputs() {
     const hiddenInputsDiv = document.getElementById('hidden-inputs');
@@ -340,7 +360,6 @@ function updateCanvasPreview() {
 function initializeSubmissionHandling() {
     document.getElementById('submissionForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      toggleSubmitMenu();
       const payload = getFormData();
   
       const res = await fetch('/.netlify/functions/submit', {
@@ -373,6 +392,8 @@ function initializeSubmissionHandling() {
         setupShowAllTagsButtonForForm();
         renderAllTagsList();
       });
+
+      closeSubmitMenu();
   }
 
 
@@ -671,7 +692,8 @@ window.toggleSliderMenu = toggleSliderMenu;
 window.toggleShapesMenu = toggleShapesMenu;
 window.toggleSelectMenu = toggleSelectMenu;
 window.closeSelectMenu = closeSelectMenu;
-window.toggleSubmitMenu = toggleSubmitMenu;
+window.openSubmitMenu = openSubmitMenu;
+window.closeSubmitMenu = closeSubmitMenu;
 window.enableDrawing = enterDrawing;
 window.disableDrawing = leaveDrawing;
 window.deleteObject = deleteObject;
