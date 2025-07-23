@@ -82,7 +82,7 @@ resizeCanvas(); // initial call
 
 function updatePreview(color) {
   const preview = document.getElementById('colorInput');
-  if (preview) preview.style.backgroundColor = color;
+  if (preview) preview.style.color = color;
 }
 
 // === Tool State ===

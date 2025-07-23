@@ -101,13 +101,16 @@
 
   <!--tool button + 1 menu specific button-->
   <div class="button-pair" >
-    <button id = "toolBtn" onclick="toggleToolMenu()">toggle tools</button>
-    <button id="colorInput" class="color-preview paint-btn" style = "color: #000; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; /* multiple shadows */">
-      change color
-    </button>
     <button onclick="resetCanvasView()" id = "resetBtn" class ="select-btn">
-      <span class="material-icons">center_focus_strong</span> 
-    </button>    
+      <span class="material-symbols-outlined material-icons">
+        crop_free
+        </span> <div class = "btn-label">reset view</div>
+    </button> 
+    <button id = "toolBtn" onclick="toggleToolMenu()">toggle tools</button>
+    <button id="colorInput" class="color-preview paint-btn">
+      <span class="material-icons">brush</span>
+    </button>
+       
   </div>
   <!--zooms for drawing-->
   <div class="button-pair paint-btn" >

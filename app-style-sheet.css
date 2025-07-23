@@ -22,8 +22,8 @@ html, body {
 button {
   font-family: "Nunito", sans-serif;
   font-weight: 1000;
- /* font-size: 1.5rem; */
-  border: 1px solid white;
+  font-size: 1.5rem; 
+  /*border: 1px solid white;*/
   background-color: #000;
   color: white;
   margin: 20px auto;
@@ -310,12 +310,24 @@ canvas {
   flex: 1 1 var(--toolbar_button_width); /* share the pair’s width equally */
   height: var(--toolbar_button_height);
   color: white;
-  border: 1px solid white;
-  border-radius: 5px;
+  border: 1px solid #666; 
+  border-radius: 0px;
   background-color: transparent;
   backdrop-filter: none !important; /* remove any blur just in case */
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 0px; /* space between icon and text */
+  padding: 10px; /* optional */
 
+}
+
+button .btn-label
+{
+  font-size: 0.5em;
 }
 
 
@@ -346,7 +358,8 @@ canvas {
   margin: 0px;
   background-color: transparent;
   color: white;
-  border: 1px solid white;
+  border: 1px solid #666; 
+  border-radius: 0px;
   border-radius: 5px;
   font-size: large;
   font-family: "Nunito";
@@ -802,8 +815,11 @@ canvas {
 .color-preview {
   /*width: 32px;
   height: 32px;*/
+  display: flex;
+  justify-content: center; 
   align-items: center;
   text-align: center;
+  margin: auto;
   border-radius: 4px;
   border: none;
   outline: none;
@@ -811,6 +827,17 @@ canvas {
   cursor: pointer;
   padding: 5px 5px;
 }
+
+/*
+#colorInput {
+  color: #666;
+  font-weight: 400;
+  text-shadow: 
+    -1px -1px 0 #ddd,
+     1px -1px 0 #ddd,
+    -1px  1px 0 #ddd,
+     1px  1px 0 #ddd; /* multiple shadows 
+} */
 
 .color-preview:focus {
   outline: 2px solid #fff;
