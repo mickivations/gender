@@ -71,8 +71,6 @@ let toolstate ="select";
     });
   
     updatePreview(getCurrentColor());
-    //enterDrawing();
-    //closeToolMenu();
     
     colorPicker.on('color:change', function(color) {
       setCurrentColor(color.hexString);
@@ -113,7 +111,7 @@ let toolstate ="select";
   function enterDrawing()
   {
     console.log("starting to draw")
-    document.getElementById('toolBtn').innerHTML = '<span class="material-symbols-outlined">edit_off</span>';
+    document.getElementById('toolBtn').innerHTML = '<span class="material-symbols-outlined material-icons">edit_off</span>';
     document.getElementById('toolBtn').style.color = '#ffffff';
    enableDrawing();
    toolstate = "draw";
@@ -317,6 +315,8 @@ function updateCanvasPreview() {
     const customName = getVal('customFrameworkName');
     const customDef = getVal('customFrameworkDefinition');
     if (customName) selectedFrameworksMap.set(customName, customDef);
+    console.log(selectedFragments);
+    const fragmentsString = selectedFragments.join(" ");
   
     return {
       title: getVal('title'),
@@ -329,6 +329,7 @@ function updateCanvasPreview() {
       axisG: getVal('axisG'),
       tags: combinedTags,
       description: getVal('description'),
+      sentences: fragmentsString,
       frameworks: JSON.stringify(Object.fromEntries(selectedFrameworksMap))
     };
   }

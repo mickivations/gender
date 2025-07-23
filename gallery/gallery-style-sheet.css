@@ -60,10 +60,11 @@ body {
 
   #modalAltText{
     width: 100%;
-    background-color: #ddd !important;
-    color: #000;
+    /*background-color: #f1f3f7 !important;
+    color: #000;  */
     font-size: 1em;
-    white-space: pre-line
+    white-space: pre-line;
+    font-weight: 600;
   }
 
   #modalDescription{
@@ -110,11 +111,14 @@ background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
     aspect-ratio: 1 / 1;         /* This forces a square shape */
   object-fit: cover; 
   }
-  .card h3 {
-    margin: 10px 0 5px;
+  h3 {
+   /* margin: 10px 0 5px; */
+    margin-bottom: 0px;
     color: #fff;
     font-family: "Rubik Bubbles", sans-serif;
     font-size: 1.1em;
+    font-weight: 700;
+
   }
 
   .card p {

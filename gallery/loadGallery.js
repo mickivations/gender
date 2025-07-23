@@ -11,10 +11,12 @@ const modalName = document.getElementById('modalName');
 const modalPronouns = document.getElementById('modalPronouns');
 const modalAxis = document.getElementById('modalAxis');
 const modalDescription = document.getElementById('modalDescription');
+const modalContext = document.getElementById('modalContext');
 const modalTags = document.getElementById('modalTags');
 const modalFrameworks = document.getElementById('modalFrameworks');
 const modalAltText = document.getElementById('modalAltText');
 const closeModal = document.getElementById('closeModal');
+
 
 // Fetch gallery data from Netlify function
 fetch('/.netlify/functions/get-gallery')
@@ -36,7 +38,7 @@ fetch('/.netlify/functions/get-gallery')
       const axisb = record.fields['AxisB'] || '';
       const axisg = record.fields['AxisG'] || '';
       const frameworks = record.fields['Frameworks'] || '';
-
+      const context = record.fields['Context'] || '';
       const stringTags = record.fields['StringTags'] || '';
       const description = record.fields['Description'] || '';
       const lowerTagText = stringTags.toLowerCase();
@@ -76,7 +78,7 @@ fetch('/.netlify/functions/get-gallery')
         //console.log(name);
 
         if (pronouns) {
-          modalPronouns.innerHTML = '<h3><span class="modal-labels"> pronouns </span> <span class="modal-values">' + pronouns + '</span></h3>';
+          modalPronouns.innerHTML = '<span class="modal-labels"> pronouns </span> <span class="modal-values">' + pronouns + '</span>';
         } else {
           modalPronouns.innerHTML = '';
         }
@@ -96,15 +98,22 @@ fetch('/.netlify/functions/get-gallery')
           axisOutput += '<span class="modal-labels">axis G</span> <span class="modal-values">' + axisg + '</span><br>';
         }
         if (axis3) {
-          axisOutput += '<span class="modal-labels">axis 3</span> <span class="modal-values">' + axis3 + '</span><br>';
+          axisOutput += '<span class="modal-labels">axis 3 </span> <span class="modal-values">' + axis3 + '</span><br>';
         }
         modalAxis.innerHTML = axisOutput;
         
         if(description){
-          modalDescription.innerHTML = '<span class="modal-labels">more info</span> <span class="modal-values">' + description + '</span><br>';
+          modalDescription.innerHTML = '<span class="modal-labels">more info </span> <span class="modal-values">' + description + '</span><br>';
         }
         else
         modalDescription.innerHTML = '';
+
+        if(context)
+          modalContext.innerHTML = '<span class="modal-labels">context </span><span class="modal-values">' + context + '</span>';
+        else
+          modalContext.innerHTML = '';
+
+        
 
 
        // modalTags.textContent = "Tag(s): " + stringTags;
@@ -157,7 +166,7 @@ fetch('/.netlify/functions/get-gallery')
                 
 
         
-        modalAltText.innerHTML = altText;
+        modalAltText.innerHTML = "alt text: "+altText;
         modalAltText.style.whiteSpace = 'pre-line';
 
         //modalDescription.innerHTML = combinedDetails;
