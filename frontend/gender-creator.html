@@ -271,17 +271,26 @@
           </label>
           <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
         </div>
+        <h2> Chart Context </h2>
         <div id="sentenceBuilder">
-          <div id="possessiveSelector"></div>
-          <div>
-            <div id="modifierSelector" class="drag-zone"></div>
-          </div>
-          <div>
-            <div id="descriptorSelector" class="drag-zone"></div>
-          </div>
-        </div>
+          This chart represents 
+        <button type="button" class = "sentence" onclick="toggleDropdown('possessiveDropdown')">my</button>
+        <div id="possessiveDropdown" class="dropdown hidden"></div>
+        <button type="button" class = "sentence" onclick="toggleDropdown('modifierDropdown')">_____</button>
+        <div id="modifierDropdown" class="dropdown hidden"></div>
+          gender that
+        <!-- Identity Descriptor -->
+        <button type="button" class="sentence" onclick="toggleDropdown('identityDescriptorDropdown')">_____</button>
+        <div id="identityDescriptorDropdown" class="dropdown hidden"></div>
+
+<!-- Context Descriptor -->
+<button type="button" class="sentence" onclick="toggleDropdown('contextDescriptorDropdown')">_____</button>
+<div id="contextDescriptorDropdown" class="dropdown hidden"></div>
+
+      
         
-        <textarea id="sentencePreview" rows="3" style="width: 100%; margin-top: 10px;"></textarea>
+        <textarea id="sentencePreview" rows="2" style="width: 100%; margin-top: 10px;"></textarea>
+      </div>
         
 <!--
         My chart represents my gender...

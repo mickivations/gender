@@ -20,29 +20,18 @@ import {
     zoomIn,
     zoomOut
   } from './canvas-setup.js';
-
-  let sentenceFragments = [
-    "in transition",
-    "in homeostasis",
-
-    "I want",
-    "I am",
-    "Right now",
-    "Over time",
-    "I move between",
-    "Gender I'm perceived",
-    "The gender I'm fine with",
-    "Like",
-    "Don't like",
-    "In community",
-    "With"
-  ];
   
 const possessiveOptions = ["my", "the"];
 const modifierOptions = ["innate", "external", "situational"];
-const descriptorOptions = [
-  "I am", "shifting", "in transition", "I play with", "I move between", "I am percieved as", "in community"
+const identityDescriptors = [
+  "I am", "I'm perceived as", "I shift between"
 ];
+const contextDescriptors = [
+  "in community", "right now", "always", "consistently"
+];
+
+let selectedIdentityDescriptors = [];
+let selectedContextDescriptors = [];
 
 // === Selected State ===
 let selectedPossessive = "my";
@@ -588,103 +577,69 @@ function addTag(tag) {
     renderAllTagsList();  // if you use this to update other UI
   }
 }
- /*
-function renderSentenceFragmentsList() {
-    const container = document.getElementById('sentenceFragmentsList');
-    console.log(container);
-    container.innerHTML = '';
-  
-    sentenceFragments.forEach(fragment => {
-      if (selectedFragments.includes(fragment)) return;
-  
-      const div = document.createElement('div');
-      div.textContent = fragment;
-      div.classList.add('tag-suggestion');
-      div.style.cursor = 'pointer';
-      div.style.padding = '4px 8px';
-      div.style.margin = '4px';
-      div.style.display = 'inline-block';
-      div.style.background = '#eee';
-      div.style.borderRadius = '10px';
-  
-      div.addEventListener('click', () => {
-        selectedFragments.push(fragment);
-        updateSelectedFragmentsUI();
-        renderSentenceFragmentsList();
-        updateSentencePreview();
-      });
-  
-      container.appendChild(div);
-    });
-  }
 
-function updateSelectedFragmentsUI() {
-    const container = document.getElementById('selectedFragments');
-    container.innerHTML = '';
-  
-    selectedFragments.forEach((fragment, index) => {
-      const tagElem = document.createElement('span');
-      tagElem.className = 'selected-tag';
-      tagElem.textContent = fragment;
-      tagElem.draggable = true;
-  
-      tagElem.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', index);
-        tagElem.style.opacity = '0.5';
-      });
-      tagElem.addEventListener('dragend', () => {
-        tagElem.style.opacity = '1';
-      });
-      tagElem.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        tagElem.style.border = '2px dashed #666';
-      });
-      tagElem.addEventListener('dragleave', () => {
-        tagElem.style.border = '';
-      });
-      tagElem.addEventListener('drop', (e) => {
-        e.preventDefault();
-        tagElem.style.border = '';
-        const draggedIndex = e.dataTransfer.getData('text/plain');
-        const targetIndex = index;
-        if (draggedIndex == null) return;
-  
-        const moved = selectedFragments.splice(draggedIndex, 1)[0];
-        selectedFragments.splice(targetIndex, 0, moved);
-        updateSelectedFragmentsUI();
-        updateSentencePreview();
-      });
-  
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = '×';
-      removeBtn.className = 'remove-tag-btn';
-      removeBtn.style.marginLeft = '6px';
-      removeBtn.addEventListener('click', () => {
-        selectedFragments.splice(index, 1);
-        updateSelectedFragmentsUI();
-        renderSentenceFragmentsList();
-        updateSentencePreview();
-      });
-  
-      tagElem.appendChild(removeBtn);
-  
-      tagElem.style.marginRight = '8px';
-      tagElem.style.display = 'inline-block';
-      tagElem.style.padding = '4px 8px';
-      tagElem.style.background = '#ddd';
-      tagElem.style.borderRadius = '12px';
-      tagElem.style.cursor = 'move';
-  
-      container.appendChild(tagElem);
-    });
-  }
 
- 
-function updateSentencePreview() {
-    const preview = document.getElementById('sentencePreview');
-    preview.textContent = selectedFragments.join(' ') + (selectedFragments.length ? '.' : '');
-  }*/
+    function toggleDropdown(id) {
+      const dropdown = document.getElementById(id);
+      const isHidden = dropdown.classList.contains('hidden');
+    
+      // Hide all dropdowns first
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+    
+      if (isHidden) {
+        const button = document.querySelector(`[onclick*="${id}"]`);
+        const rect = button.getBoundingClientRect();
+    
+        // Offset positioning relative to the page
+        dropdown.style.position = 'absolute';
+        dropdown.style.top = `${button.offsetTop + button.offsetHeight}px`;
+        dropdown.style.left = `${button.offsetLeft}px`;
+    
+        dropdown.classList.remove('hidden');
+      }
+    }
+    
+    
+    function renderSelectableDropdown(containerId, options, selectedList, updateCallback) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+    
+      
+    
+      options.forEach(opt => {
+        const div = document.createElement('div');
+        div.textContent = opt;
+        div.className = 'dropdown-option';
+        if (selectedList.includes(opt)) {
+          div.classList.add('selected');
+        }
+    
+        div.onclick = () => {
+          const idx = selectedList.indexOf(opt);
+          if (idx === -1) {
+            selectedList.push(opt);
+          } else {
+            selectedList.splice(idx, 1);
+          }
+          updateCallback();
+        };
+    
+        container.appendChild(div);
+      });
 
+      // Close button
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '✕ Close';
+      closeBtn.className = 'dropdown-close';
+      closeBtn.type = "button";
+      closeBtn.onclick = () => {
+        container.classList.add('hidden');
+      };
+      container.appendChild(closeBtn);
+    }
+    
+    
+    
   function resetCanvasView() {
     // Reset zoom
     canvas.setZoom(1);
@@ -700,112 +655,115 @@ function updateSentencePreview() {
   }
 
   
+  
   // === Possessive Selector ===
-  function renderPossessiveSelector() {
-    const container = document.getElementById("possessiveSelector");
-    container.innerHTML = 'This chart represents ';
-    possessiveOptions.forEach(option => {
-      const btn = document.createElement('button');
-      btn.textContent = option;
-      btn.className = option === selectedPossessive ? 'selected' : '';
-      btn.addEventListener('click', () => {
-        selectedPossessive = option;
-        renderPossessiveSelector();
-        updateSentencePreview();
+  function renderRadioDropdown(containerId, options, selectedValue, updateCallback) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+
+    options.forEach(opt => {
+      const label = document.createElement('label');
+      label.className = 'dropdown-option';
+
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = containerId; // ensures only one is selected
+      radio.value = opt;
+      radio.checked = opt === selectedValue;
+  
+      radio.addEventListener('change', () => {
+        updateCallback(opt);
       });
-      container.appendChild(btn);
+  
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(' ' + opt));
+      container.appendChild(label);
+      
+    });
+          // Close button
+          const closeBtn = document.createElement('button');
+          closeBtn.textContent = '✕ Close';
+          closeBtn.className = 'dropdown-close';
+          closeBtn.type = "button";
+          closeBtn.onclick = () => {
+            container.classList.add('hidden');
+          };
+          container.appendChild(closeBtn);
+  }
+  
+  
+  // === Modifier/Descriptor Selector with Drag ===
+  function renderMultiSelect(selectId, options, selectedList, updateCallback) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '';
+  
+    options.forEach(opt => {
+      const option = document.createElement('option');
+      option.value = opt;
+      option.textContent = opt;
+      if (selectedList.includes(opt)) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+  
+    select.addEventListener('change', () => {
+      const selected = Array.from(select.selectedOptions).map(o => o.value);
+      selectedList.length = 0;
+      selectedList.push(...selected);
+      updateCallback();
     });
   }
   
-  // === Modifier/Descriptor Selector with Drag ===
-  function renderDragList(containerId, options, selectedList, updateCallback) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    selectedList.forEach((item, index) => {
-      const span = document.createElement('span');
-      span.textContent = item;
-      span.className = 'draggable-chip';
-      span.draggable = true;
-      span.dataset.index = index;
-  
-      span.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', index);
-        span.style.opacity = '0.5';
-      });
-  
-      span.addEventListener('dragend', () => {
-        span.style.opacity = '1';
-      });
-  
-      span.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        span.style.border = '2px dashed #666';
-      });
-  
-      span.addEventListener('dragleave', () => {
-        span.style.border = '';
-      });
-  
-      span.addEventListener('drop', (e) => {
-        e.preventDefault();
-        span.style.border = '';
-        const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
-        const toIndex = parseInt(span.dataset.index);
-  
-        const moved = selectedList.splice(fromIndex, 1)[0];
-        selectedList.splice(toIndex, 0, moved);
-        updateCallback(); // re-render
-      });
-  
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = '×';
-      removeBtn.className = 'remove-tag-btn';
-      removeBtn.onclick = () => {
-        selectedList.splice(index, 1);
-        updateCallback();
-      };
-      span.appendChild(removeBtn);
-      container.appendChild(span);
-    });
-  
-    // Add suggestion buttons underneath
-    options.forEach(opt => {
-      if (!selectedList.includes(opt)) {
-        const btn = document.createElement('button');
-        btn.textContent = opt;
-        btn.className = 'add-btn';
-        btn.onclick = () => {
-          selectedList.push(opt);
-          updateCallback();
-        };
-        container.appendChild(btn);
-      }
-    });
+  function oxfordJoin(arr) {
+    if (arr.length === 0) return '';
+    if (arr.length === 1) return arr[0];
+    if (arr.length === 2) return arr[0] + ' and ' + arr[1];
+    return arr.slice(0, -1).join(', ') + ', and ' + arr[arr.length - 1];
   }
   
   // === Sentence Preview (textarea) ===
   function updateSentencePreview() {
     const textarea = document.getElementById("sentencePreview");
   
-    const modifiersStr = selectedModifiers.join(' / ');
-    let descriptorsStr = '';
-    if (selectedDescriptors.length === 1) {
-      descriptorsStr = selectedDescriptors[0];
-    } else if (selectedDescriptors.length > 1) {
-      descriptorsStr = selectedDescriptors.slice(0, -1).join(', ') + ' and ' + selectedDescriptors.slice(-1);
+    const modifiersStr = oxfordJoin(selectedModifiers);
+  const identityStr = oxfordJoin(selectedIdentityDescriptors);
+  const contextStr = oxfordJoin(selectedContextDescriptors);
+
+
+    let sentence = `This chart represents ${selectedPossessive}` 
+    if(modifiersStr) 
+      sentence += ` ${modifiersStr} gender`;
+    else
+      sentence += ` gender`;
+    if (identityStr) {
+      sentence += ` that ${identityStr}`;
     }
-  
-    const sentence = `This chart represents ${selectedPossessive} ${modifiersStr} gender${descriptorsStr ? ' ' + descriptorsStr : ''}.`;
+    if(contextStr)
+      sentence += ` ${contextStr}.`;
+    else
+    sentence += `.`;
+
     textarea.value = sentence;
   }
   
+  
   // === Rendering Everything ===
   function renderAll() {
-    renderPossessiveSelector();
-    renderDragList('modifierSelector', modifierOptions, selectedModifiers, renderAll);
-    renderDragList('descriptorSelector', descriptorOptions, selectedDescriptors, renderAll);
+    renderRadioDropdown('possessiveDropdown', possessiveOptions, selectedPossessive, (newVal) => {
+      selectedPossessive = newVal;
+      renderAll();
+    });
+  
+    renderSelectableDropdown('modifierDropdown', modifierOptions, selectedModifiers, renderAll);
+    renderSelectableDropdown('identityDescriptorDropdown', identityDescriptors, selectedIdentityDescriptors, renderAll);
+    renderSelectableDropdown('contextDescriptorDropdown', contextDescriptors, selectedContextDescriptors, renderAll);
+  
     updateSentencePreview();
   }
+  
+  
+  
   
   renderAll();
   
@@ -827,6 +785,7 @@ window.toggleHiddenInputs = toggleHiddenInputs;
 window.zoomIn = zoomIn;
 window.zoomOut = zoomOut;
 window.closeColorPicker = closeColorPicker;
+window.toggleDropdown = toggleDropdown;
 
 
 

@@ -916,3 +916,74 @@ button .btn-label
   display: inline-block;
   text-align: left;
 }
+/* Container must be relatively positioned for absolute dropdowns inside */
+#sentenceBuilder {
+  position: relative;
+  border: 1px solid white;
+  padding: 0.5em;
+  display: block;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Dropdown appears over the layout */
+.dropdown {
+  position: absolute;
+  z-index: 100;
+  background-color: black;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.5em;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Hide when not active */
+.hidden {
+  display: none;
+}
+
+.dropdown-option {
+  display: block;
+  padding: 0.3em 0;
+  font-size: 1em;
+  color: white;
+}
+
+/* Buttons styled inline with sentence */
+.sentence {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: underline dotted;
+}
+
+/* Optional: buttons look less like UI controls */
+.sentence:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.dropdown-option.selected {
+  background-color: #666; /* or any gray */
+}
+
+.dropdown-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-close:hover {
+  color: #ccc;
+}
+
+input[type="radio"] {
+  display: none; /* hide actual radio */
+}
