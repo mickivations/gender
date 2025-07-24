@@ -38,7 +38,7 @@ import {
     "With"
   ];
   
-  const possessiveOptions = ["my", "the"];
+const possessiveOptions = ["my", "the"];
 const modifierOptions = ["innate", "external", "situational"];
 const descriptorOptions = [
   "I am", "shifting", "in transition", "I play with", "I move between", "I am percieved as", "in community"
