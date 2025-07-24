@@ -98,29 +98,19 @@ body {
     70px 100px,
     30px 0,
     50px 100px; */
- background-image:
-    radial-gradient(pink, rgba(239, 174, 255, 0.417) 2px, transparent 40px),
-    radial-gradient(lightblue, #91ffda26 1px, transparent 30px),
-    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-    radial-gradient(white, rgba(255, 114, 246, 0.233) 2px, transparent 20px),
-    
-    radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
- background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px, 75px 95px; 
- /*  background-image:
-  radial-gradient(circle at 10vw 20vh, pink 2px, transparent 3px),
-  radial-gradient(circle at 80vw 10vh, lightblue 2px, transparent 3px),
-  radial-gradient(circle at 50vw 50vh, white 2px, transparent 3px),
-  radial-gradient(circle at 20vw 70vh, rgba(255,255,255,.3) 2px, transparent 3px),
-  radial-gradient(circle at 75vw 90vh, rgba(255,255,255,.2) 2px, transparent 3px);
-background-repeat: no-repeat;
-  background-size: cover; */
-background-position:
-  42vw 69vh,
-  80vw 70vh,
-  10vw 30vh,
-  65vw 10vh,
-  25vw 85vh;
-
+  background-image:
+    radial-gradient(pink, rgba(255, 191, 255, 0.22) 2px, transparent 40px),
+    radial-gradient(lightblue, rgba(145, 172, 220, 0.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(229, 197, 233, 0.1) 2px, transparent 40px),
+    radial-gradient(white, rgba(226, 201, 201, 0.1) 2px, transparent 40px),
+    radial-gradient(rgba(255, 215, 250, 0.771), rgba(255,255,255,.1) 2px, transparent 30px);
+  background-size: 420px 550px, 350px 420px, 169px 190px, 150px 150px, 69px 75px; 
+  background-position:
+  23px 87px,
+  -69px 120px,
+  187px -63px,
+  75.5px 222px,
+  -420px 69px;
   overflow: hidden; /* keep no scroll */
   display: block;
 }

@@ -5,26 +5,18 @@ body {
   overflow-y: auto;
   font-size: 1.25rem; /* base 16px */
   background-image:
-    radial-gradient(white, rgba(255,255,255,0.2) 1.5px, transparent 20px),
-    radial-gradient(white, rgba(255,255,255,0.15) 1px, transparent 15px),
-    radial-gradient(white, rgba(255,255,255,0.1) 1.5px, transparent 25px),
-    radial-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1) 1.5px, transparent 20px),
-    radial-gradient(white, rgba(255,255,255,0.2) 1px, transparent 10px),
-    radial-gradient(white, rgba(255,255,255,0.1) 1px, transparent 10px);
-  background-size:
-    300px 300px,
-    200px 200px,
-    150px 150px,
-    100px 100px,
-    80px 80px,
-    60px 60px;
+    radial-gradient(pink, rgba(255, 191, 255, 0.1) 2px, transparent 40px),
+    radial-gradient(lightblue, rgba(145, 172, 220, 0.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(229, 197, 233, 0.15) 2px, transparent 40px),
+    radial-gradient(white, rgba(226, 201, 201, 0.1) 2px, transparent 40px),
+    radial-gradient(rgba(255, 215, 250, 0.71), rgba(255,255,255,.1) 2px, transparent 30px);
+  background-size: 420px 550px, 350px 420px, 169px 190px, 150px 150px, 69px 75px; 
   background-position:
-    0 0,
-    40px 60px,
-    130px 270px,
-    70px 100px,
-    30px 0,
-    50px 1000px;
+  23px 87px,
+  -69px 120px,
+  187px -63px,
+  75.5px 222px,
+  -420px 69px;
 }
 
 .nunito-semi> {

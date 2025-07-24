@@ -24,8 +24,7 @@ import {
   let sentenceFragments = [
     "in transition",
     "in homeostasis",
-    "innate",
-    "external",
+
     "I want",
     "I am",
     "Right now",
@@ -39,7 +38,18 @@ import {
     "With"
   ];
   
-  let selectedFragments = [];
+  const possessiveOptions = ["my", "the"];
+const modifierOptions = ["innate", "external", "situational"];
+const descriptorOptions = [
+  "I am", "shifting", "in transition", "I play with", "I move between", "I am percieved as", "in community"
+];
+
+// === Selected State ===
+let selectedPossessive = "my";
+let selectedModifiers = [];
+let selectedDescriptors = [];
+
+ // let selectedFragments = ["this chart represents", "my", "gender"];
 
 let menuOpen = false;
 let allTags = new Set();
@@ -104,8 +114,6 @@ let toolstate ="select";
     
     //createTemplate();
     initializeSubmissionHandling();
-    renderSentenceFragmentsList();
-    updateSentencePreview();
 
   });
    
@@ -331,12 +339,15 @@ function updateCanvasPreview() {
         : '';
       selectedFrameworksMap.set(id, def);
     });
+
+    
   
     const customName = getVal('customFrameworkName');
     const customDef = getVal('customFrameworkDefinition');
     if (customName) selectedFrameworksMap.set(customName, customDef);
-    console.log(selectedFragments);
-    const fragmentsString = selectedFragments.join(" ");
+    //console.log(selectedFragments);
+    const sentence = document.getElementById("sentencePreview").value;
+    //const fragmentsString = selectedFragments.join(" ");
   
     return {
       title: getVal('title'),
@@ -349,13 +360,14 @@ function updateCanvasPreview() {
       axisG: getVal('axisG'),
       tags: combinedTags,
       description: getVal('description'),
-      sentences: fragmentsString,
+      sentences: sentence,
       frameworks: JSON.stringify(Object.fromEntries(selectedFrameworksMap))
     };
   }
   
   // ========== Submit Listener ==========
   ///////
+
 
 function initializeSubmissionHandling() {
     document.getElementById('submissionForm')?.addEventListener('submit', async (e) => {
@@ -576,7 +588,7 @@ function addTag(tag) {
     renderAllTagsList();  // if you use this to update other UI
   }
 }
-
+ /*
 function renderSentenceFragmentsList() {
     const container = document.getElementById('sentenceFragmentsList');
     console.log(container);
@@ -667,11 +679,11 @@ function updateSelectedFragmentsUI() {
     });
   }
 
-  
+ 
 function updateSentencePreview() {
     const preview = document.getElementById('sentencePreview');
     preview.textContent = selectedFragments.join(' ') + (selectedFragments.length ? '.' : '');
-  }
+  }*/
 
   function resetCanvasView() {
     // Reset zoom
@@ -686,6 +698,117 @@ function updateSentencePreview() {
     canvas.renderAll();
     updateCanvasPreview();
   }
+
+  
+  // === Possessive Selector ===
+  function renderPossessiveSelector() {
+    const container = document.getElementById("possessiveSelector");
+    container.innerHTML = 'This chart represents ';
+    possessiveOptions.forEach(option => {
+      const btn = document.createElement('button');
+      btn.textContent = option;
+      btn.className = option === selectedPossessive ? 'selected' : '';
+      btn.addEventListener('click', () => {
+        selectedPossessive = option;
+        renderPossessiveSelector();
+        updateSentencePreview();
+      });
+      container.appendChild(btn);
+    });
+  }
+  
+  // === Modifier/Descriptor Selector with Drag ===
+  function renderDragList(containerId, options, selectedList, updateCallback) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    selectedList.forEach((item, index) => {
+      const span = document.createElement('span');
+      span.textContent = item;
+      span.className = 'draggable-chip';
+      span.draggable = true;
+      span.dataset.index = index;
+  
+      span.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', index);
+        span.style.opacity = '0.5';
+      });
+  
+      span.addEventListener('dragend', () => {
+        span.style.opacity = '1';
+      });
+  
+      span.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        span.style.border = '2px dashed #666';
+      });
+  
+      span.addEventListener('dragleave', () => {
+        span.style.border = '';
+      });
+  
+      span.addEventListener('drop', (e) => {
+        e.preventDefault();
+        span.style.border = '';
+        const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+        const toIndex = parseInt(span.dataset.index);
+  
+        const moved = selectedList.splice(fromIndex, 1)[0];
+        selectedList.splice(toIndex, 0, moved);
+        updateCallback(); // re-render
+      });
+  
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = '×';
+      removeBtn.className = 'remove-tag-btn';
+      removeBtn.onclick = () => {
+        selectedList.splice(index, 1);
+        updateCallback();
+      };
+      span.appendChild(removeBtn);
+      container.appendChild(span);
+    });
+  
+    // Add suggestion buttons underneath
+    options.forEach(opt => {
+      if (!selectedList.includes(opt)) {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.className = 'add-btn';
+        btn.onclick = () => {
+          selectedList.push(opt);
+          updateCallback();
+        };
+        container.appendChild(btn);
+      }
+    });
+  }
+  
+  // === Sentence Preview (textarea) ===
+  function updateSentencePreview() {
+    const textarea = document.getElementById("sentencePreview");
+  
+    const modifiersStr = selectedModifiers.join(' / ');
+    let descriptorsStr = '';
+    if (selectedDescriptors.length === 1) {
+      descriptorsStr = selectedDescriptors[0];
+    } else if (selectedDescriptors.length > 1) {
+      descriptorsStr = selectedDescriptors.slice(0, -1).join(', ') + ' and ' + selectedDescriptors.slice(-1);
+    }
+  
+    const sentence = `This chart represents ${selectedPossessive} ${modifiersStr} gender${descriptorsStr ? ' ' + descriptorsStr : ''}.`;
+    textarea.value = sentence;
+  }
+  
+  // === Rendering Everything ===
+  function renderAll() {
+    renderPossessiveSelector();
+    renderDragList('modifierSelector', modifierOptions, selectedModifiers, renderAll);
+    renderDragList('descriptorSelector', descriptorOptions, selectedDescriptors, renderAll);
+    updateSentencePreview();
+  }
+  
+  renderAll();
+  
 
 window.toggleToolMenu = toggleToolMenu;
 window.toggleSliderMenu = toggleSliderMenu;
