@@ -110,7 +110,7 @@ body {
 }
 
 .slider-buttons button:hover {
-  background-color: #3ea5cc;
+  background-color: lightblue;
 }
 
 .slider-dots {
@@ -130,7 +130,7 @@ body {
 }
 
 .active-dot {
-  background-color: #5BCEFA;
+  background-color: lightblue;
 }
 
 .intro {
