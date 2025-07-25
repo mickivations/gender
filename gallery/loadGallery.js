@@ -42,6 +42,7 @@ fetch('/.netlify/functions/get-gallery')
       const context = record.fields['Context'] || '';
       const stringTags = record.fields['StringTags'] || '';
       const description = record.fields['Description'] || '';
+      const svgString = record.fields['SVG'] || '';; // assuming the raw string is in the 'SVG' field
       const lowerTagText = stringTags.toLowerCase();
 
      // const combinedDetails = `${altText}<br><br>${description}`;
@@ -179,8 +180,30 @@ fetch('/.netlify/functions/get-gallery')
       });
       history.pushState({ menuOpen: true }, '');
       menuOpen = true;
-      card.appendChild(img);
+ 
+      if (svgString) {
+        const svgWrapper = document.createElement('div');
+        svgWrapper.style.maxWidth = '300px';
+        svgWrapper.style.width = '100%';       // ensure it fills the div width
+        svgWrapper.style.height = 'auto';      // optional but safe
       
+        svgWrapper.innerHTML = svgString;
+      
+        // Then make sure the actual <svg> inside scales
+        const svgElement = svgWrapper.querySelector('svg');
+        if (svgElement) {
+          svgElement.style.width = '100%';
+          svgElement.style.height = 'auto';  // keep aspect ratio
+          svgElement.style.display = 'block'; // remove inline gaps if any
+        }
+      
+        card.appendChild(svgWrapper);
+      }      
+      else 
+      {
+        card.appendChild(img);
+        card.append(``)
+      }
 
       if (title) {
         const h3 = document.createElement('h3');
@@ -214,6 +237,8 @@ fetch('/.netlify/functions/get-gallery')
         p.append('Axis 3: ', span);
         card.appendChild(p);
       }
+
+
 
       
 

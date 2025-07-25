@@ -10,13 +10,19 @@ body {
     radial-gradient(white, rgba(229, 197, 233, 0.15) 2px, transparent 40px),
     radial-gradient(white, rgba(226, 201, 201, 0.1) 2px, transparent 40px),
     radial-gradient(rgba(255, 215, 250, 0.71), rgba(255,255,255,.1) 2px, transparent 30px);
-  background-size: 420px 550px, 350px 420px, 169px 190px, 150px 150px, 69px 75px; 
+    background-size:
+    300px 300px,
+    250px 250px,
+    200px 200px,
+    150px 150px,
+    100px 100px;
+  
   background-position:
-  23px 87px,
-  -69px 120px,
-  187px -63px,
-  75.5px 222px,
-  -420px 69px;
+    0 5,
+    13px 120px,
+    100px 50px,
+    0px 69px,
+    69px 25px;
 }
 
 .nunito-semi> {
