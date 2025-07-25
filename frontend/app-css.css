@@ -1,0 +1,565 @@
+:root {
+    --toolbar_height: min(calc(86vh - 100vw), 25vh); /* prevent absurd height */
+    --toolbar_button_width: calc(100vw / 6);
+    --toolbar_button_height: calc(var(--toolbar_height)/2);
+    --canvas_height: calc(88vh - var(--toolbar_height));
+    --sidebar_width: calc(100vw - 90vh);
+    --sidebar_button_width: calc(var(--sidebar_width) / 2);
+    --sidebar_button_height: calc(100vh / 11);
+  }
+  
+  /* Make sure html and body fill the viewport for percentage heights to work */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    overflow: hidden; /* prevent body scroll */
+    touch-action: none;
+  
+  }
+  
+  button {
+    font-family: "Nunito", sans-serif;
+    font-weight: 1000;
+    font-size: 1.5rem; 
+    /*border: 1px solid white;*/
+    background-color: #000;
+    color: white;
+    margin: 20px auto;
+  }
+  
+  
+  
+  #colorPickerContainer {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%); /* This moves it back by half its own width and height */
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    z-index: 1000 !important;
+    align-items: center;
+  }
+  
+  
+  
+  .close_colors {
+    display: block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+    font-family: "Nunito", sans-serif !important;
+  }
+  
+  
+  body {
+    font-family: "Nunito", sans-serif;
+    font-weight: 1000;
+    margin: 0; /* changed from 20px to 0 to avoid scroll */
+    padding: 0px;
+    text-align: center;
+    height: 100%; /* changed from 80vh to 100% */
+    background-color: #000;
+    color: #fff;
+   /* background-image:
+      radial-gradient(white, rgba(255,255,255,0.2) 1.5px, transparent 20px),
+      radial-gradient(white, rgba(255,255,255,0.15) 1px, transparent 15px),
+      radial-gradient(white, rgba(255,255,255,0.1) 1.5px, transparent 25px),
+      radial-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1) 1.5px, transparent 20px),
+      radial-gradient(white, rgba(255,255,255,0.2) 1px, transparent 10px), 
+      radial-gradient(white, rgba(255,255,255,0.1) 1px, transparent 10px);
+    background-size:
+      300px 300px,
+      200px 200px,
+      150px 150px,
+      100px 100px,
+      80px 80px, 
+      60px 60px;
+    background-position:
+      0 0,
+      40px 60px,
+      130px 270px,
+      70px 100px,
+      30px 0,
+      50px 100px; */
+    background-image:
+      radial-gradient(pink, rgba(255, 191, 255, 0.22) 2px, transparent 40px),
+      radial-gradient(lightblue, rgba(145, 172, 220, 0.15) 1px, transparent 30px),
+      radial-gradient(white, rgba(229, 197, 233, 0.1) 2px, transparent 40px),
+      radial-gradient(white, rgba(226, 201, 201, 0.1) 2px, transparent 40px),
+      radial-gradient(rgba(255, 215, 250, 0.771), rgba(255,255,255,.1) 2px, transparent 30px);
+    background-size: 420px 550px, 350px 420px, 169px 190px, 150px 150px, 69px 75px; 
+    background-position:
+    23px 87px,
+    -69px 120px,
+    187px -63px,
+    75.5px 222px,
+    -420px 69px;
+    overflow: hidden; /* keep no scroll */
+    display: block;
+  }
+  
+  p{
+    margin: 0px;
+    margin-top: 2%;
+    padding: 0px;
+  }
+  
+  a:link, a:visited {
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: transparent !important;
+    font-family: "Nunito";
+  }
+  
+  a:hover, a:active {
+    background-color: rgb(53, 53, 59);
+  }
+  
+  
+  h1 {
+    margin-top: 0px;
+    color: #FFFFFF;
+    margin-bottom: 0px;
+    font-family: "Rubik Bubbles", sans-serif;
+  }
+  
+  h2 {
+    font-family: "Nunito", sans-serif;
+   /* font-size: 1.5em; */
+    margin-top: 0px;
+    color: #FFFFFF;
+    margin-bottom: 0px;
+    font-weight: 1000;
+  }
+  
+  div {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1rem auto;
+    width: 95%;
+    box-sizing: border-box;
+  }
+  
+  .form-field label {
+    font-size: 1.2rem;
+    color: #FFF;
+    margin-top: 0.25rem;
+    font-family: 'Roboto', sans-serif;
+    text-align: left;
+  }
+  
+  .label-note {
+    font-size: 0.9rem;
+    color: #ccc;
+    
+  }
+   
+  .label-description {
+    font-size: 0.9rem;
+    color: pink;
+    margin-top: 0.0rem;
+    display:block;
+  }
+  
+  
+  button:hover {
+    background-color: #000000;
+  }
+  
+  button i {
+    pointer-events: none;
+  }
+  
+  #opacitySlider, #radii-slider {
+    vertical-align: middle;
+    margin-left: 5px;
+  
+  }
+  
+  .menu {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .submenu {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    background-color: #007bff;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  
+  .submenu button {
+    background-color: #0062cc;
+    margin: 2px;
+  }
+  #c {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  /* Make canvas fill container exactly */
+  canvas { 
+    pointer-events: auto !important;
+    -ms-touch-action: pinch-zoom; /* for older IE */
+    display: block; 
+    width: 100% !important;  /* fill width of container */
+    height: 100% !important; /* fill height of container */
+    margin-top: 0px; 
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  #container {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    
+    color: #fff;
+  
+   /* background-image:
+      radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+      radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+      radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+      radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; */
+    margin-top: 0px;
+    /* Take full viewport height minus toolbar */
+    height: 100vh;
+    overflow: hidden; /* prevent scroll */
+  }
+  
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* or space-between if you prefer */
+    align-items: stretch;
+    height: var(--toolbar_height); /* fills leftover vertical space */
+    width: 100vw; /* full width */
+    overflow: auto;
+    background-color: transparent !important;
+    backdrop-filter: none !important; /* remove any blur just in case */
+  }
+  
+  .button-pair {
+    display: flex;
+    flex: 1 1 var(--toolbar_button_width); /* container width = 2 button widths */
+    /*min-width: var(--toolbar_button_width);;*/
+    height: var(--toolbar_height);
+    gap: 0px;
+    background-color: transparent !important;
+    backdrop-filter: none !important; /* remove any blur just in case */
+  }
+  
+  .button-pair button {
+    flex: 1 1 var(--toolbar_button_width); /* share the pair’s width equally */
+    height: var(--toolbar_button_height);
+    color: white;
+    border: 1px solid #666; 
+    border-radius: 0px;
+    background-color: transparent;
+    backdrop-filter: none !important; /* remove any blur just in case */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 0px; /* space between icon and text */
+    padding: 10px; /* optional */
+  
+  }
+  
+  button .btn-label
+  {
+    font-size: 0.5em;
+  }
+  
+  
+  
+  .toolbar input[type="color"] {
+    width: 20vw;
+    height: 48px;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  
+  .toolbar-item {
+    flex: 0 0 calc(2 * var(--toolbar_button_width));
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .toolbar-item button,
+  .toolbar-item input[type="color"] {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #666; 
+    border-radius: 0px;
+    border-radius: 5px;
+    font-size: large;
+    font-family: "Nunito";
+    font-weight: 1000;
+  }
+  
+  .slider-menu,
+  .submenu {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background-color: #2a2a2a;
+    padding: 8px;
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+  }
+  
+  
+  
+  .material-icons {
+    font-size: 24px;
+  }
+  
+  
+  
+  
+  .IroColorPicker{
+    justify-content: center;
+    align-items: center;
+  }
+  /* ===== Bottom toolbar for small screens (phones) ===== */
+  @media (max-width: 599px) {
+  
+   /* :root {
+      --toolbar_button_width: calc(100vw / 10); /* or whatever makes sense for smaller screens 
+    }*/
+  
+    .toolbar {
+      flex-direction: row;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--toolbar_height);
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      z-index: 900;
+     /* background-color: green !important; */
+    }
+  
+  
+    .button-pair {
+      flex-direction: column;
+      height: var(--toolbar_height);
+    }
+  
+    .button-pair #toolBtn, #submitButton{
+      background-color: #000 ;
+    }
+  
+   /* .zoom-btn{
+      display: none !important;
+    }*/
+  
+    .button-pair button {
+      flex: 1 1 50%;
+      height: auto;
+      min-height: 0;
+      padding: 0;
+      margin: 0;
+      max-height: var(--toolbar_button_height) !important;
+      box-sizing: border-box;
+    }
+  
+    .toolbar button span.material-icons,
+    .toolbar-item button span.material-icons {
+      font-size: 1.75rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  
+    #container {
+      margin-bottom: var(--toolbar_height);
+      margin-right: 0;
+      width: 100vw;
+      height: 100vw;
+      max-height: var(--canvas_height);
+      overflow: hidden;
+    }
+  }
+  
+  /* ===== Sidebar toolbar for wider screens (tablets/desktops) ===== */
+  @media (min-width: 600px) {
+    .toolbar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: var(--sidebar_width);
+      height: 100vh;
+      overflow-y: auto;
+      padding-top: 10px;
+      box-sizing: border-box;
+      z-index: 900;
+    }
+  
+    .toolbar-item {
+      width: 100%;
+      flex: 1 1 var(--sidebar_button_height);
+      /*height: var(--sidebar_button_height); */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      margin: 0px;
+      padding: 0px;
+    } 
+  
+    .button-pair {
+      flex-direction: row;
+      flex: 0 0 var(--sidebar_button_height);
+      width: 100%;
+      height: var(--sidebar_button_height);
+      gap: 0px; /* force no internal spacing */
+      margin: 0px !important;
+      padding: 0px;
+  
+    }
+  
+    .button-pair button {
+      flex: 1 1 var(--sidebar_button_width);
+      height: var(--sidebar_button_height);
+      min-height: 10px;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+  
+    .toolbar button span.material-icons {
+      font-size: 3rem;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+  
+    #container {
+      margin-right: 110px;
+      margin-bottom: 0;
+      width: calc(100vw - 110px);
+      height: 100vh;
+      overflow: hidden;
+    }
+    #main-content {
+      margin-right: var(--sidebar_width); /* reserve space for sidebar */
+      text-align: center;
+      width: calc(100vw - var(--sidebar_width)); /* prevent overflow */
+      box-sizing: border-box;
+    }
+    
+  }
+  
+  
+  .nunito-semi> {
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 1000 !important;
+    font-style: normal;
+  }
+  
+  
+  .color-preview {
+    /*width: 32px;
+    height: 32px;*/
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    background-color: #ffff00;
+    cursor: pointer;
+    padding: 5px 5px;
+  }
+  
+  /*
+  #colorInput {
+    color: #666;
+    font-weight: 400;
+    text-shadow: 
+      -1px -1px 0 #ddd,
+       1px -1px 0 #ddd,
+      -1px  1px 0 #ddd,
+       1px  1px 0 #ddd; /* multiple shadows 
+  } */
+  
+  .color-preview:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  
+  .modal {
+    /* display: flex; Was overwritten by multiple display declarations */
+    display:none;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    z-index: 1000;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  

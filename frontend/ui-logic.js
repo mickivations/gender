@@ -237,7 +237,7 @@ function toggleSelectMenu() {
 /*const menu2 = document.getElementById('brushMenu');
 menu2.style.display = menu2.style.display === 'flex' ? 'none' : 'flex'; */
 }
-
+ 
 function closeSelectMenu() {
     const menu = document.getElementById('selectMenu');
     menu.style.display = 'none';
@@ -358,22 +358,38 @@ function updateCanvasPreview() {
   ///////
 
 
-function initializeSubmissionHandling() {
+  function initializeSubmissionHandling() {
     document.getElementById('submissionForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const payload = getFormData();
+      
+      const popup = document.getElementById('submittingPopup');
+      const message = document.getElementById('submissionMessage');
+      const viewBtn = document.getElementById('viewGalleryBtn');
   
-      const res = await fetch('/.netlify/functions/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      popup.style.display = 'block';
+      message.textContent = 'Submitting...';
+      viewBtn.style.display = 'none';
   
-      const data = await res.json();
-      if (res.ok && data.success) {
-        alert('Submission successful!');
-      } else {
-        alert('Submission failed: ' + (data.error || 'Unknown error'));
+      try {
+        const res = await fetch('/.netlify/functions/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+  
+        const data = await res.json();
+        if (res.ok && data.success) {
+          message.textContent = 'Submitted. Thank you!';
+          viewBtn.style.display = 'inline-block';
+        } else {
+          alert('Submission failed: ' + (data.error || 'Unknown error'));
+          popup.style.display = 'none';
+        }
+      } catch (err) {
+        alert('Submission failed: Network error');
+        console.error(err);
+        popup.style.display = 'none';
       }
     });
   
@@ -393,9 +409,11 @@ function initializeSubmissionHandling() {
         setupShowAllTagsButtonForForm();
         renderAllTagsList();
       });
-
-      closeSubmitMenu();
+  
+    closeSubmitMenu();
   }
+  
+  
 
 
 function setupTagSearchForForm() {
@@ -588,15 +606,30 @@ function addTag(tag) {
     
       if (isHidden) {
         const button = document.querySelector(`[onclick*="${id}"]`);
-        const rect = button.getBoundingClientRect();
-    
-        // Offset positioning relative to the page
+        
         dropdown.style.position = 'absolute';
         dropdown.style.top = `${button.offsetTop + button.offsetHeight}px`;
-        dropdown.style.left = `${button.offsetLeft}px`;
-    
+        
+        // Temporarily show dropdown to measure width
         dropdown.classList.remove('hidden');
+        
+        const buttonCenter = button.offsetLeft + button.offsetWidth / 2;
+        let left = buttonCenter - dropdown.offsetWidth / 2;
+        
+        const viewportWidth = window.innerWidth;
+        
+        // Prevent overflow on left side
+        if (left < 0) left = 0;
+        
+        // Prevent overflow on right side
+        if (left + dropdown.offsetWidth > viewportWidth) {
+          left = viewportWidth - dropdown.offsetWidth - 10; // 10px margin
+        }
+        
+        dropdown.style.left = `${left}px`;
       }
+      
+      
     }
     
     

@@ -14,6 +14,8 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app-style-sheet.css">
+  <link rel="stylesheet" href="app-css.css">
+  <link rel="stylesheet" href="submit-css.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.js"></script> 
@@ -50,24 +52,10 @@
     <canvas id="c"></canvas></div>
   <!--<div id="activeTool" style="margin-top: 10px; font-weight: bold; float:left">Active Tool: Free Draw</div> -->
   </div>
-  <div id="toolMenu">
-    <p>modes</p> 
-    <button onclick="disableDrawing()"><span class="material-icons">touch_app</span></button>
-    <button onclick="enableDrawing()"><span class="material-icons">brush</span></button>
-  </div>
+
   <div id ="floatingMenu">
     <div id="selectMenu">
-      <div id="toolsTitle">tools</div>
-      <div id="buttonRow">
-        <button onclick="deleteObject()">
-          <span class="material-icons">delete</span> 
-        </button>
-        <button onclick="duplicateObject()">
-          <span class="material-icons">content_copy</span> 
-        </button>
-        <button onclick="resetCanvasView()">
-          <span class="material-icons">center_focus_strong</span> 
-        </button>
+      
       </div>
     </div>
     
@@ -144,6 +132,7 @@
     <button id="submitButton" onclick="openSubmitMenu()">
       Submit to Gallery
     </button> </div>
+    
 
 
 <!--
@@ -154,20 +143,8 @@
 </div> -->
      <!-- New Menus -->
     
-
-
-    <!-- Sliders Menu (Deprecated) -->
-    <div class="toolbar-item" id="sliderGroup">
-      <div class="slider-menu" id="sliderMenu">
-        <label for="opacitySlider">Opacity</label>
-        <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8">
-
-        <label for="radii-slider">Radius</label>
-        <input type="range" id="radii-slider" min="0" max="10" step="1" value="3">
-      </div>
-    </div>
   
-    <!-- Shapes Menu (Deprecated) -->
+    <!-- Shapes Menu (Deprecated) 
     
       <div id="shapesSubMenu">
         <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
@@ -178,26 +155,23 @@
           </svg>
         </button>
         <button onclick="addShape('line')"><i class="fas fa-slash"></i></button>
-        <!--<button onclick="addText()"><i class="fas fa-font"></i><i class="fas fa-i-cursor"></i></button>-->
+        <!--<button onclick="addText()"><i class="fas fa-font"></i><i class="fas fa-i-cursor"></i></button>
       </div>
     </div>
-
+  -->
 
     <!--Pre Questions-->
     <div id="startupModal" class="modal">
       <div class="modal-content">
         <h2 style="text-align: center;">I believe gender is... </h2>
-    
         <div id="frameworkList" class="framework-list">
           <!-- JavaScript will populate these -->
         </div>
-    
         <div id="customFramework">
           <div>Add Your Own</div>
           <input type="text" id="customFrameworkName" placeholder="I believe gender is...">
           <input type="text" id="customFrameworkDefinition" placeholder="definition">
         </div>
-    
         <button id="closeModalBtn">Start Drawing</button>
       </div>
     </div>
@@ -219,9 +193,38 @@
           </label>
         <textarea id="altText" rows="6"  placeholder="Ex: 3 blobs near the girl axis around 25%. One big dot on the other axis at around 50% and a pink shaded area between girl and boy showing boy 45% and girl 95%" rows="6" maxlength="5000" required></textarea>
         </div>
-        <h2>all fields below are optional.<br> scroll to the end when you are ready to submit</h2>
+        <fieldset id ="sentences">
+          <legend>
+            Chart Context
+            <span class="secondary-line">Feel free to add different tags or spellings using the text box</span>
+          </legend>
+        <div id="sentenceBuilder">
+          This chart represents 
+        <button type="button" class = "sentence" onclick="toggleDropdown('possessiveDropdown')">my</button>
+        <div id="possessiveDropdown" class="dropdown hidden"></div>
+        <button type="button" class = "sentence" onclick="toggleDropdown('modifierDropdown')">_____</button>
+        <div id="modifierDropdown" class="dropdown hidden"></div>
+          gender that
+        <!-- Identity Descriptor -->
+        <button type="button" class="sentence" onclick="toggleDropdown('identityDescriptorDropdown')">_____</button>
+        <div id="identityDescriptorDropdown" class="dropdown hidden"></div>
+
+<!-- Context Descriptor -->
+<button type="button" class="sentence" onclick="toggleDropdown('contextDescriptorDropdown')">_____</button>
+<div id="contextDescriptorDropdown" class="dropdown hidden"></div>
+</div>
+<div>
+  <br>
+<label for="sentencePreview" style ="text-align: left;">Confirm / Edit your sentence
+</label>
+        <textarea id="sentencePreview" rows="1" style="width: 100%; margin-top: 10px;"></textarea>
+      </div>
+    </fieldset>
+    <div class = "form-field">
+        <h2>all fields below are optional.</h2> scroll to the end when you are ready to submit
+      </div>
         <div class="form-field">
-          <label for="name">title
+          <label for="title">title
           <span class="label-note">
             optional          
           </span>
@@ -271,26 +274,7 @@
           </label>
           <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
         </div>
-        <h2> Chart Context </h2>
-        <div id="sentenceBuilder">
-          This chart represents 
-        <button type="button" class = "sentence" onclick="toggleDropdown('possessiveDropdown')">my</button>
-        <div id="possessiveDropdown" class="dropdown hidden"></div>
-        <button type="button" class = "sentence" onclick="toggleDropdown('modifierDropdown')">_____</button>
-        <div id="modifierDropdown" class="dropdown hidden"></div>
-          gender that
-        <!-- Identity Descriptor -->
-        <button type="button" class="sentence" onclick="toggleDropdown('identityDescriptorDropdown')">_____</button>
-        <div id="identityDescriptorDropdown" class="dropdown hidden"></div>
 
-<!-- Context Descriptor -->
-<button type="button" class="sentence" onclick="toggleDropdown('contextDescriptorDropdown')">_____</button>
-<div id="contextDescriptorDropdown" class="dropdown hidden"></div>
-
-      
-        
-        <textarea id="sentencePreview" rows="2" style="width: 100%; margin-top: 10px;"></textarea>
-      </div>
         
 <!--
         My chart represents my gender...
@@ -319,7 +303,7 @@
 
               <div id="selectedTags"></div>
 
-              <input type="text" id="tagSearch" placeholder="Search or add tag" ><button type="button" onclick="addTagButton()">+</button>
+              <input type="text" id="tagSearch" placeholder="Add tag" ><button type="button" onclick="addTagButton()">+</button>
               <div id="tagSuggestions"></div>
 
               
@@ -351,7 +335,6 @@
               </div>
             </div>-->
             
-        </fieldset>
         <button type="submit">Submit</button><br>
 
         <button type = "button" onclick = "closeSubmitMenu()">X</button>
@@ -363,6 +346,38 @@
   
   
   <script type="module" src="./ui-logic.js"></script>
+ <!-- Submitting Popup -->
+<!-- Submitting Popup -->
+<div id="submittingPopup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1.5em 2em;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.2em;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  z-index: 9999;
+  text-align: center;
+">
+  <div id="submissionMessage">Submitting...</div>
+  <button id="viewGalleryBtn" style="
+    margin-top: 1em;
+    display: none;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    background-color: #222;
+    color: white;
+    cursor: pointer;
+  " onclick="window.location.href='../gallery/gallery.html'">
+    View Gallery
+</a>
+</div>
+
 
 </body>
 </html>
