@@ -66,7 +66,7 @@ body {
 
 .slider {
   position: relative;
-  overflow-y: auto;
+  overflow-y: none;
   height: 70vh;
   max-width: 90vw;
   max-height: 100%;
