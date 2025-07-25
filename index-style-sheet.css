@@ -66,7 +66,7 @@ body {
 
 .slider {
   position: relative;
-  overflow-y: none;
+  overflow-y: auto;
   height: 70vh;
   max-width: 90vw;
   max-height: 100%;
@@ -94,10 +94,11 @@ body {
 
 .slider-buttons {
   width: 90%;
-  min-width: 400px;
+  /*min-width: 400px;*/
   margin: auto;
   display: flex;
   justify-content: center;
+  justify-items: center;
   gap: 1rem;
   flex-wrap: nowrap;
 }
