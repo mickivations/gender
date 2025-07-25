@@ -338,7 +338,8 @@ function updateCanvasPreview() {
     //console.log(selectedFragments);
     const sentence = document.getElementById("sentencePreview").value;
     //const fragmentsString = selectedFragments.join(" ");
-  
+    const svg = canvas.toSVG();
+    
     return {
       title: getVal('title'),
       name: getVal('name'),
@@ -351,7 +352,9 @@ function updateCanvasPreview() {
       tags: combinedTags,
       description: getVal('description'),
       sentences: sentence,
-      frameworks: JSON.stringify(Object.fromEntries(selectedFrameworksMap))
+      frameworks: JSON.stringify(Object.fromEntries(selectedFrameworksMap)),
+      SVG: svg
+      
     };
   }
   
