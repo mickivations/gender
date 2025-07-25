@@ -5,7 +5,7 @@
     --canvas_height: calc(88vh - var(--toolbar_height));
     --sidebar_width: calc(100vw - 90vh);
     --sidebar_button_width: calc(var(--sidebar_width) / 2);
-    --sidebar_button_height: calc(100vh / 11);
+    --sidebar_button_height: calc(100vh / 6);
   }
   
   /* Make sure html and body fill the viewport for percentage heights to work */
