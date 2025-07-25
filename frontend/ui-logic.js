@@ -54,7 +54,8 @@ let toolstate ="select";
   
     const preview = document.getElementById('colorInput');
     const colorPickerContainer = document.getElementById('colorPickerContainer');
-    if (colorPickerContainer) colorPickerContainer.style.display = 'none';
+    if (colorPickerContainer) 
+      colorPickerContainer.style.display = 'none';
   
     const floatingMenu = document.getElementById("floatingMenu");
     if (floatingMenu) {
@@ -83,7 +84,7 @@ let toolstate ="select";
     preview.addEventListener('mousedown', (e) => {
         e.stopPropagation(); // prevent triggering canvas draw
         if (colorPickerContainer.style.display === 'none') {
-        disableDrawing();
+          disableDrawing();
         const menu = document.getElementById('selectMenu');
         menu.style.display = 'none';
        // const menu2 = document.getElementById('toolMenu');

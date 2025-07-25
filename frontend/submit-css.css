@@ -16,6 +16,7 @@
     font-family: 'Roboto', sans-serif;
     background-color: var(--dark-bg);
     color: white;
+    justify-items: left;
   }
   
   input,
@@ -67,7 +68,6 @@
     margin: 0 auto;
     overflow-y: auto;
     display: block;
-    text-align: left;
   }
   
   /*====================*/
@@ -87,7 +87,6 @@
     font-family: "Nunito", 'Roboto';
     color: var(--primary-accent);
     margin-top: 2rem;
-    border-top: 1px solid var(--border-color);
     padding-top: 1rem;
     text-align: center;
   }
@@ -445,4 +444,8 @@ textarea::-ms-input-placeholder {
 #sentences > div {
     width: 100%;
     text-align: left;
+  }
+
+  .centered{
+    justify-items: center;
   }
