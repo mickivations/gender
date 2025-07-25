@@ -29,7 +29,7 @@ body {
 @media (max-width: 600px) {
   body {
     font-size: 1.25rem; /* ~20px font size on mobile */
-    padding: 1rem;
+    padding: 0;
   }
 
     h1 {
