@@ -3,7 +3,12 @@ const canvas = new fabric.Canvas('c');
 const allTags = new Set();
 const selectedTags = new Set();
 let maxRadius = 3; 
-let brushWidth = 5;
+
+
+const brushSizeSlider = document.getElementById("brushSize");
+const brushPreviewDot = document.getElementById("brushPreviewDot");
+let brushWidth = brushSizeSlider.value;
+
 let opacityValue = 1;
 let undoStack = [];
 let redoStack = [];
@@ -207,6 +212,7 @@ function disableDrawing() {
 function enableDrawing() {
     console.log(fabric.version);
     canvas.isDrawingMode = true;
+    brushWidth = brushSizeSlider.value;
     canvas.freeDrawingBrush.width = brushWidth / canvas.getZoom();
     canvas.freeDrawingBrush.color = currentColor;  // Set drawing color to the selected color
     canvas.freeDrawingBrush.opacity = opacityValue;
@@ -216,6 +222,49 @@ function enableDrawing() {
     closeSelectMenu();
 
 }
+const sliderStyleEl = document.getElementById("sliderStyle");
+
+function updateBrushPreviewDot(size) {
+
+  // Update the thumb size using dynamic CSS
+  const css = `
+    #brushSize::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: ${size}px;
+      width: ${size}px;
+      background: ${getCurrentColor()};
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid ${getCurrentColor()};
+      transform: translate(0%, -45%); 
+
+    }
+
+    #brushSize::-moz-range-thumb {
+      height: ${size}px;
+      width: ${size}px;
+      background: ${getCurrentColor()};
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid ${getCurrentColor()};
+      transform: translate(0%, -50%);
+  `;
+  sliderStyleEl.textContent = css;
+}
+
+brushSizeSlider.addEventListener("input", (e) => {
+  const size = e.target.value;
+  updateBrushPreviewDot(size);
+  canvas.freeDrawingBrush.width = parseInt(size);
+});
+
+// Initialize on load
+updateBrushPreviewDot(brushSizeSlider.value);
+
+
+// Initialize preview dot
+updateBrushPreviewDot(brushSizeSlider.value);
+
 
 function createTemplate() {
     const centerX = canvas.width / 2;
