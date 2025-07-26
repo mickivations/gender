@@ -1,9 +1,9 @@
 :root {
-    --primary-accent: pink;
-    --dark-bg: #000;
-    --mid-bg: #111;
+    --primary-accent: #ffe8fd;
+    --dark-bg: #222;
+    --mid-bg: #000;
     --light-gray: #ccc;
-    --border-color: #444;
+    --border-color: #666;
     --label-note-size: 0.85rem;
     --form-padding: 0rem;
   }
@@ -14,7 +14,7 @@
   
   html, body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--dark-bg);
+    background-color: #040005;
     color: white;
     justify-items: left;
   }
@@ -60,7 +60,7 @@
   }
   
   #submitMenu form {
-    background: rgba(20, 20, 20, 0.95);
+    background: var(--mid-bg);
     border-radius: 12px;
     padding: var(--form-padding);
     max-width: 800px;
@@ -89,6 +89,21 @@
     margin-top: 2rem;
     padding-top: 1rem;
     text-align: center;
+    font-style: italic;
+  }
+
+  .alert{
+    background-color: #000;
+  }
+
+  form h3 {
+    font-weight: 800;
+    font-family: "Nunito", 'Roboto';
+    color: #FFF;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    text-align: left;
+    margin-bottom: 0rem;
   }
   
   /*====================*/
@@ -101,7 +116,7 @@
     padding: 1rem 1.5rem;
     border-radius: 8px;
     background-color: var(--primary-accent);
-    color: #000;
+    color: var(--dark-bg);
     border: none;
     font-weight: bold;
     font-size: 1.2rem;
@@ -113,11 +128,11 @@
     background-color: var(--primary-accent);
   }
   
-  #submitMenu > button[type="button"] {
+  #submitMenu > button[type="button"]{
     position: absolute;
     top: 1rem;
     right: 1rem;
-    font-size: 1.5rem;
+    font-size: .75rem;
     padding: 0.25rem 0.5rem;
     background: none;
     color: var(--primary-accent);
@@ -129,14 +144,26 @@
   /* Fieldsets & Grouping */
   /*====================*/
   
-  #form-field
+  .form-field
   {
     text-align: left;
+    align-items: left;
   }
+
+  .form-field button, #submissionForm button[type="button"]  {
+    display: inline-block;
+    margin: 0;
+    margin-bottom: .5rem;
+    font-size: .75rem;
+  }
+
+
+
+
   fieldset {
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    margin-top: 2rem;
+    margin-top: 0rem;
     padding: 1rem;
     background-color: var(--mid-bg);
   }
@@ -192,7 +219,7 @@
     margin: 0 auto 1rem auto;
     display: block;
     border-radius: 8px;
-    border: 1px solid #555;
+    border: 1px solid var(--border-color);
   }
   
   /*====================*/
@@ -222,9 +249,9 @@
   }
   
   button[type="button"] {
-    background-color: #222;
+    background-color: var(--dark-bg);
     color: white;
-    border: 1px solid #555;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 0.4em 0.8em;
     margin-top: 0.5rem;
@@ -237,14 +264,20 @@
   
   #tagFilterContainer {
     position: relative;
+    display:flex;
+  }
+
+  #tagFilterContainer button {
+    margin-top: 0px;
+    margin-bottom: .5rem;
   }
   
   #tagSuggestions {
     position: absolute;
     top: 100%;
     left: 0; right: 0;
-    background-color: #000;
-    border: 1px solid #ccc;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
     border-top: none;
     max-height: 150px;
     overflow-y: auto;
@@ -334,7 +367,7 @@
     position: absolute;
     z-index: 100;
     background-color: black;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 0.5em;
     max-height: 200px;
