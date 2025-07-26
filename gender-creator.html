@@ -198,7 +198,9 @@
         <fieldset id ="sentences">
           <legend>
             Chart Context
-            <span class="secondary-line">Feel free to add different tags or spellings using the text box</span>
+            <span class="label-note">
+              required </span>
+            <span class="secondary-line">Share what your chart represents. You may select multiple in each category.</span>
           </legend>
         <div id="sentenceBuilder">
           This chart represents 
@@ -222,34 +224,12 @@
         <textarea id="sentencePreview" rows="1" style="width: 100%; margin-top: 10px;"></textarea>
       </div>
     </fieldset>
-    <div class = "form-field">
+    <!--
+    <div class = "form-field alert">
         <h2>all fields below are optional.</h2> scroll to the end when you are ready to submit
-      </div>
-        <div class="form-field">
-          <label for="title">title
-          <span class="label-note">
-            optional          
-          </span>
-        </label>
-          <input type="text" id="title" placeholder="Ex: the artist's name, Just me, Transdyke"/>
-        </div>
-        <div class="form-field">
-          <label for="name">name 
-            <span class="label-note">
-              optional          
-            </span>
-          </label>
-          <input type="text" id="name" />
-        </div>
-        <div class="form-field">
-          <label for="name">pronouns
-            <span class="label-note">
-              optional          
-            </span>
-          </label>
-          <input type="text" id="pronouns" />
-        </div>
-        <p>Label the axes of your chart (optional)</p>
+      </div> -->
+      <div class = "form-field">
+        <h3>Label the axes of your chart (optional)</h3>
         <button type ="button" onclick="toggleHiddenInputs()">Show/Hide More Axis Labels</button>
         <div id= "hidden-inputs"> <div class="form-field">
           <label for="name">b axis label
@@ -268,14 +248,42 @@
           <input type="text" id="axisG" placeholder="G"/>
         </div>
       </div>
-        <div class="form-field">
           <label for="name">3 axis label
             <span class="label-note">
               optional          
             </span>
           </label>
           <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
-        </div>
+    
+      </div>
+
+      <div class="form-field">
+        <label for="title">title
+          <span class="label-note">
+          optional          
+          </span>
+        </label>
+        <input type="text" id="title" placeholder="Ex: the artist's name, Just me, Transdyke"/>
+      </div>
+
+      <div class="form-field">
+        <h3>About you: the artist</h3>
+        <label for="name">name 
+          <span class="label-note">
+            optional          
+          </span>
+        </label>
+        <input type="text" id="name" />
+      </div>
+      <div class="form-field">
+        <label for="name">pronouns
+          <span class="label-note">
+            optional          
+          </span>
+        </label>
+        <input type="text" id="pronouns" />
+      </div>
+      
 
         
 <!--
@@ -289,9 +297,9 @@
         <div id="descriptorSelector"></div>
       -->
         <p id="sentencePreview" style="margin-top: 1em; font-style: italic;"></p>
-
-        <p>What words do you identify with?
-        </p>
+        <div class ="form-field">
+        <h3>What words do you identify with?</div>
+        </h3>
         <fieldset id="tagGroup">
           <legend>
             <span class="label-note">
