@@ -80,21 +80,41 @@ let toolstate ="select";
         canvas.freeDrawingBrush.color = getCurrentColor();
       }
     });
-     // When preview clicked, toggle picker visibility
-    preview.addEventListener('mousedown', (e) => {
-        e.stopPropagation(); // prevent triggering canvas draw
-        if (colorPickerContainer.style.display === 'none') {
-          disableDrawing();
-        const menu = document.getElementById('selectMenu');
-        menu.style.display = 'none';
-       // const menu2 = document.getElementById('toolMenu');
-        //menu2.style.display = "none";
-        colorPickerContainer.style.display = 'flex';
-    
-        } else {
-        closeColorPicker();  // will handle drawing mode reset
-        }
-    });
+// Show the color picker when the preview is clicked
+preview.addEventListener('mousedown', (e) => {
+  e.stopPropagation(); // prevent triggering canvas draw
+
+  if (colorPickerContainer.style.display === 'none') {
+    disableDrawing();
+    const menu = document.getElementById('selectMenu');
+    menu.style.display = 'none';
+
+    colorPickerContainer.style.display = 'flex';
+
+    // Add document listener for outside click
+    document.addEventListener('mousedown', handleOutsideClick);
+  } else {
+    closeColorPicker();
+  }
+});
+
+function closeColorPicker() {
+  colorPickerContainer.style.display = 'none';
+  enableDrawing(); // or whatever re-enables it
+  document.removeEventListener('mousedown', handleOutsideClick);
+}
+
+function handleOutsideClick(e) {
+  // If click is outside the color picker and the preview
+  if (
+    !colorPickerContainer.contains(e.target) &&
+    !preview.contains(e.target)
+  ) {
+    closeColorPicker();
+  }
+}
+
+
   
     document.getElementById('undoBtn')?.addEventListener('click', undo);
     document.getElementById('redoBtn')?.addEventListener('click', redo);

@@ -31,6 +31,8 @@
   <script src="https://unpkg.com/konva@9/konva.min.js" defer></script>
 
   <link rel="icon" type="image/png" href="/favicon.png"/>
+  <style id="sliderStyle"></style>
+
 </head>
 <body>
   <div id="main-content">
@@ -43,8 +45,11 @@
   </div>
   <p id="status"></p>
   <div id="colorPickerContainer">   <div id="iroContainer"></div> <!-- iro.js will render here -->
-  <!--<label for="opacitySlider">Opacity</label>
-  <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8">-->
+  <div id="brushSliderContainer">
+    <label for="brushSize">Brush Size</label>
+    <input type="range" id="brushSize" min="3" max="30" value="6">
+  </div>
+  
   <button class ="close_colors" onClick= "closeColorPicker()">Select Color</button>
 </div>
 
