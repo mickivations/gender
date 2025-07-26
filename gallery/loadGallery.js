@@ -45,139 +45,125 @@ fetch('/.netlify/functions/get-gallery')
       const svgString = record.fields['SVG'] || '';; // assuming the raw string is in the 'SVG' field
       const lowerTagText = stringTags.toLowerCase();
 
+    function openModal(record) {
      // const combinedDetails = `${altText}<br><br>${description}`;
       const combinedID = `${name}<br>${pronouns}`;
 
-      const img = document.createElement('img');
-      img.alt = title;
-      img.style.cursor = 'pointer';
+
       
-      if (images && images.length > 0) {
-        img.src = images[0].url;
-      } else if (record.fields['ImageBase64']) {
-        img.src = record.fields['ImageBase64'];
+      if (title) {
+        modalTitle.innerHTML = '<h3><span class="modal-labels"> title </span> <span class="modal-values">' + title + '</span></h3>';
       } else {
-        img.src = ''; // or a placeholder image URL if you want
+        modalTitle.innerHTML = '';
+      }
+      //modalTitle.textContent = title;
+      //modalID.innerHTML = combinedID;
+      //console.log(name);
+
+      if (pronouns) {
+        modalPronouns.innerHTML = '<span class="modal-labels"> pronouns </span> <span class="modal-values">' + pronouns + '</span>';
+      } else {
+        modalPronouns.innerHTML = '';
+      }
+
+      if (name) {
+        modalName.innerHTML = '<span class="modal-labels"> name </span> <span class="modal-values">' + name + '</span>';
+      } else {
+        modalName.innerHTML = '';
       }
       
-      img.addEventListener('click', () => {
+      let axisOutput = "";
 
-        if (images && images.length > 0) {
-          modalImage.src = images[0].url;
-        } else if (record.fields['ImageBase64']) {
-          modalImage.src = record.fields['ImageBase64'];
-        } else {
-          modalImage.src = ''; // or placeholder
+      if (axisb) {
+        axisOutput += '<span class="modal-labels">axis B</span> <span class="modal-values">' + axisb + '</span><br>';
+      }
+      if (axisg) {
+        axisOutput += '<span class="modal-labels">axis G</span> <span class="modal-values">' + axisg + '</span><br>';
+      }
+      if (axis3) {
+        axisOutput += '<span class="modal-labels">axis 3 </span> <span class="modal-values">' + axis3 + '</span><br>';
+      }
+      modalAxis.innerHTML = axisOutput;
+      
+      if(description){
+        modalDescription.innerHTML = '<span class="modal-labels">more info </span> <span class="modal-values">' + description + '</span><br>';
+      }
+      else
+      modalDescription.innerHTML = '';
+
+      if(context)
+        modalContext.innerHTML = '<span class="modal-labels">context </span><span class="modal-values">' + context + '</span>';
+      else
+        modalContext.innerHTML = '';
+
+      
+
+
+     // modalTags.textContent = "Tag(s): " + stringTags;
+     if(stringTags)
+      modalTags.innerHTML = '<span class="modal-labels"> Tag(s) </span> <span class="modal-values">' + stringTags + '</span>';
+     else
+     modalTags.innerHTML = '';
+
+      // ⬇️ Frameworks display
+      const frameworksContainer = document.getElementById('modalFrameworks');
+      frameworksContainer.innerHTML = ''; // clear previous
+      
+      if (frameworks) {
+        let parsedFrameworks;
+        try {
+          parsedFrameworks = typeof frameworks === 'string' ? JSON.parse(frameworks) : frameworks;
+        } catch (err) {
+          console.error('Failed to parse frameworks:', err);
+          parsedFrameworks = {};
         }
-        
-        if (title) {
-          modalTitle.innerHTML = '<h3><span class="modal-labels"> title </span> <span class="modal-values">' + title + '</span></h3>';
-        } else {
-          modalTitle.innerHTML = '';
+        // Header line
+          const intro = document.createElement('p');
+          intro.className = 'frameworks-intro';
+          intro.textContent = 'I believe gender is:';
+        if(parsedFrameworks != null && Object.keys(parsedFrameworks).length !== 0){
+          frameworksContainer.appendChild(intro);
         }
-        //modalTitle.textContent = title;
-        //modalID.innerHTML = combinedID;
-        //console.log(name);
-
-        if (pronouns) {
-          modalPronouns.innerHTML = '<span class="modal-labels"> pronouns </span> <span class="modal-values">' + pronouns + '</span>';
-        } else {
-          modalPronouns.innerHTML = '';
-        }
-
-        if (name) {
-          modalName.innerHTML = '<span class="modal-labels"> name </span> <span class="modal-values">' + name + '</span>';
-        } else {
-          modalName.innerHTML = '';
-        }
-        
-        let axisOutput = "";
-
-        if (axisb) {
-          axisOutput += '<span class="modal-labels">axis B</span> <span class="modal-values">' + axisb + '</span><br>';
-        }
-        if (axisg) {
-          axisOutput += '<span class="modal-labels">axis G</span> <span class="modal-values">' + axisg + '</span><br>';
-        }
-        if (axis3) {
-          axisOutput += '<span class="modal-labels">axis 3 </span> <span class="modal-values">' + axis3 + '</span><br>';
-        }
-        modalAxis.innerHTML = axisOutput;
-        
-        if(description){
-          modalDescription.innerHTML = '<span class="modal-labels">more info </span> <span class="modal-values">' + description + '</span><br>';
-        }
-        else
-        modalDescription.innerHTML = '';
-
-        if(context)
-          modalContext.innerHTML = '<span class="modal-labels">context </span><span class="modal-values">' + context + '</span>';
-        else
-          modalContext.innerHTML = '';
-
-        
-
-
-       // modalTags.textContent = "Tag(s): " + stringTags;
-       if(stringTags)
-        modalTags.innerHTML = '<span class="modal-labels"> Tag(s) </span> <span class="modal-values">' + stringTags + '</span>';
-       else
-       modalTags.innerHTML = '';
-
-        // ⬇️ Frameworks display
-        const frameworksContainer = document.getElementById('modalFrameworks');
-        frameworksContainer.innerHTML = ''; // clear previous
-        
-        if (frameworks) {
-          let parsedFrameworks;
-          try {
-            parsedFrameworks = typeof frameworks === 'string' ? JSON.parse(frameworks) : frameworks;
-          } catch (err) {
-            console.error('Failed to parse frameworks:', err);
-            parsedFrameworks = {};
-          }
-          // Header line
-            const intro = document.createElement('p');
-            intro.className = 'frameworks-intro';
-            intro.textContent = 'I believe gender is:';
-          if(parsedFrameworks != null && Object.keys(parsedFrameworks).length !== 0){
-            frameworksContainer.appendChild(intro);
-          }
-        
-        
-          // Each framework
-          Object.entries(parsedFrameworks).forEach(([label, definition]) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'framework-item';
-        
-            const labelElem = document.createElement('div');
-            labelElem.className = 'framework-label';
-            labelElem.textContent = label;
-        
-            const defElem = document.createElement('div');
-            defElem.className = 'framework-definition';
-            defElem.textContent = definition || '(no definition)';
-        
-            wrapper.appendChild(labelElem);
-            wrapper.appendChild(defElem);
-            frameworksContainer.appendChild(wrapper);
-          });
+      
+      
+        // Each framework
+        Object.entries(parsedFrameworks).forEach(([label, definition]) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'framework-item';
+      
+          const labelElem = document.createElement('div');
+          labelElem.className = 'framework-label';
+          labelElem.textContent = label;
+      
+          const defElem = document.createElement('div');
+          defElem.className = 'framework-definition';
+          defElem.textContent = definition || '(no definition)';
+      
+          wrapper.appendChild(labelElem);
+          wrapper.appendChild(defElem);
+          frameworksContainer.appendChild(wrapper);
+        });
 
 
 
+            
+      }
+      
               
-        }
-        
-                
 
-        
-        modalAltText.innerHTML = "alt text: "+altText;
-        modalAltText.style.whiteSpace = 'pre-line';
+      
+      modalAltText.innerHTML = "alt text: "+altText;
+      modalAltText.style.whiteSpace = 'pre-line';
 
-        //modalDescription.innerHTML = combinedDetails;
-        //modalTags.textContent = "Tag(s): " + stringTags;
-        modal.style.display = 'flex';
-      });
+      //modalDescription.innerHTML = combinedDetails;
+      //modalTags.textContent = "Tag(s): " + stringTags;
+      modal.style.display = 'flex';
+
+    }
+      
+
+
+
       history.pushState({ menuOpen: true }, '');
       menuOpen = true;
  
@@ -196,13 +182,52 @@ fetch('/.netlify/functions/get-gallery')
           svgElement.style.height = 'auto';  // keep aspect ratio
           svgElement.style.display = 'block'; // remove inline gaps if any
         }
-      
+        modalImage.src = svgElement;
+
+        const svgDiv = document.getElementById("svgDiv");
+        svgDiv.innerHTML = svgString;
         card.appendChild(svgWrapper);
+        svgElement.addEventListener('click', () => {
+          modalImage.style.display ='none'; // you might want to clear modalImage when it's SVG
+          svgDiv.innerHTML = svgString;
+          svgDiv.style.display = "block";
+          openModal(record);
+        });
+
       }      
       else 
       {
+        const img = document.createElement('img');
+        img.alt = title;
+        img.style.cursor = 'pointer';
+      
+        if (images && images.length > 0) {
+          img.src = images[0].url;
+        } else if (record.fields['ImageBase64']) {
+          img.src = record.fields['ImageBase64'];
+        } else {
+          img.src = ''; // or fallback
+        }
+
+        if (images && images.length > 0) {
+          modalImage.src = images[0].url;
+        } else if (record.fields['ImageBase64']) {
+          modalImage.src = record.fields['ImageBase64'];
+        } else {
+          modalImage.src = ''; // or placeholder
+        }
         card.appendChild(img);
-        card.append(``)
+        img.addEventListener('click', () => {
+          svgDiv.style.display = "none";
+
+          modalImage.style.display ='block'; // you might want to clear modalImage when it's SVG
+
+          modalImage.src = img.src; // you might want to clear modalImage when it's SVG
+          svgDiv.innerHTML = "";
+          openModal(record);
+
+        });
+                card.append(``)
       }
 
       if (title) {

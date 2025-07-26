@@ -264,14 +264,30 @@
   
   #tagFilterContainer {
     position: relative;
-    display:flex;
-  }nj
+    display:block;
+  }
+
+  #selectedTags{
+    width: 100%;
+  }
 
   #tagFilterContainer button {
     margin-top: 0px;
     margin-bottom: .5rem;
   }
-  
+  #tagSearch{ 
+    margin:0 !important;
+    width:80% !important;
+    height: 100%;
+  }
+
+   #addBtn{ 
+    margin:0 !important;
+    width:10% !important;
+    padding: 0.6rem 0.8rem;
+    font-size: 1.25rem;
+  }
+
   #tagSuggestions {
     position: absolute;
     top: 100%;
