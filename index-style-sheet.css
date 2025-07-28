@@ -124,7 +124,7 @@ body {
 
 
 .slider-buttons button:hover {
-  background-color: lightblue;
+  background-color: lightblue !important;
 }
 
 .slider-dots {
