@@ -530,8 +530,15 @@ function setupShowAllTagsButton() {
   window.tagElementsMap = tagElementsMap;
 }
 
+function toggleFilters()
+{
+  
+}
 
 document.getElementById('toggleTagFiltersBtn').addEventListener('click', () => {
   const container = document.getElementById('tagFilterContainer');
+  const container2 = document.getElementById('allTagsList');
   container.style.display = container.style.display === 'none' ? 'block' : 'none';
+  console.log(container2);
+  container2.style.display = 'none';
 });

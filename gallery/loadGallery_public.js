@@ -365,4 +365,5 @@ function setupShowAllTagsButton() {
 document.getElementById('toggleTagFiltersBtn').addEventListener('click', () => {
   const container = document.getElementById('tagFilterContainer');
   container.style.display = container.style.display === 'none' ? 'block' : 'none';
+  console("display changing");
 });
