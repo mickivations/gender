@@ -347,8 +347,9 @@ function setupTagSearch() {
   
     if (!query) {
       filterCardsBySearchText('');
-      return; // ✅ exit early, so suggestions don’t get shown
+      return;
     }
+    
   
     // Show matching tag suggestions
     const matchingTags = Array.from(allTags).filter(tag =>
@@ -444,13 +445,13 @@ function setupTagSearch() {
     allCards.forEach(({ card, tagText }) => {
       const tagsArray = tagText.split(',').map(t => t.trim());
       const matches = andMode
-        ? Array.from(selectedTags).every(tag => tagsArray.includes(tag) || searchableText.includes(tag))
-        : Array.from(selectedTags).some(tag => tagsArray.includes(tag) || searchableText.includes(tag));
-
+        ? Array.from(selectedTags).every(tag => tagsArray.includes(tag))
+        : Array.from(selectedTags).some(tag => tagsArray.includes(tag));
   
       card.style.display = matches ? '' : 'none';
     });
   }
+  
   
 
   document.getElementById('andMode').addEventListener('change', () => {
