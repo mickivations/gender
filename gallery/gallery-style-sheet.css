@@ -282,7 +282,7 @@ button:hover, button:active {
   margin: 0.25em;
   padding: 0.4em 0.6em;
   height: auto;
-  background: red !important;
+  background: lightblue !important;
   border-radius: 6px;
   cursor: pointer;
   color: white;
