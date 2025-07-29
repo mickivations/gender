@@ -367,33 +367,24 @@ function setupTagSearch() {
         suggestions.innerHTML = '';
         document.getElementById('clearSearchBtn').style.display = 'none';
         updateSelectedTags();
-        filterCardsBySelectedTags();
+        filterCards();
       });
       suggestions.appendChild(div);
     });
   
-    filterCardsBySearchText(query);
-  });
+filterCards();
+ });
 
  
   document.getElementById('clearSearchBtn').addEventListener('click', () => {
     input.value = '';
     suggestions.innerHTML = '';
     document.getElementById('clearSearchBtn').style.display = 'none';
-    filterCardsBySearchText('');
+filterCards()
   });
     
   
-  function filterCardsBySearchText(query) {
-    if (!query) {
-      allCards.forEach(({ card }) => card.style.display = '');
-      return;
-    }
-  
-    allCards.forEach(({ card, searchableText }) => {
-      card.style.display = searchableText.includes(query) ? '' : 'none';
-    });
-  }
+
 
   
   input.addEventListener('keydown', (e) => {
@@ -419,7 +410,7 @@ function setupTagSearch() {
       removeBtn.addEventListener('click', () => {
         selectedTags.delete(tag);
         updateSelectedTags();
-        filterCardsBySelectedTags();
+        filterCards();
       
         // Show tag again in the All Tags list if it exists
         if (window.tagElementsMap && window.tagElementsMap.has(tag)) {
@@ -434,28 +425,29 @@ function setupTagSearch() {
     });
   }
 
-  function filterCardsBySelectedTags() {
-    const andMode = document.getElementById('andMode').checked;
   
-    if (selectedTags.size === 0) {
-      allCards.forEach(({ card }) => card.style.display = '');
-      return;
-    }
+  function filterCards() {
+    const searchQuery = document.getElementById('tagSearch').value.trim().toLowerCase();
+    const selectedTags = Array.from(document.querySelectorAll('#selectedTags .selected-tag'))
+      .map(span => span.textContent.replace('✕', '').trim().toLowerCase());
   
-    allCards.forEach(({ card, tagText }) => {
+    allCards.forEach(({ card, tagText, searchableText }) => {
       const tagsArray = tagText.split(',').map(t => t.trim());
-      const matches = andMode
-        ? Array.from(selectedTags).every(tag => tagsArray.includes(tag))
-        : Array.from(selectedTags).some(tag => tagsArray.includes(tag));
+      const tagMatch = selectedTags.length === 0
+        ? true
+        : selectedTags.every(tag => tagsArray.includes(tag));
+        
+      const searchMatch = !searchQuery || searchableText.includes(searchQuery);
   
-      card.style.display = matches ? '' : 'none';
+      card.style.display = (tagMatch && searchMatch) ? '' : 'none';
     });
   }
   
   
+  
 
   document.getElementById('andMode').addEventListener('change', () => {
-    filterCardsBySelectedTags();
+    filterCards();
   });
 
   // Expose a function to add tags from outside (for Show All Tags button)
@@ -463,7 +455,7 @@ function setupTagSearch() {
     if (!selectedTags.has(tag)) {
       selectedTags.add(tag);
       updateSelectedTags();
-      filterCardsBySelectedTags();
+      filterCards();
     }
   }
 

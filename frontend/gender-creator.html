@@ -200,6 +200,7 @@
           </label>
         <textarea id="altText" rows="6"  placeholder="Ex: 3 blobs near the girl axis around 25%. One big dot on the other axis at around 50% and a pink shaded area between girl and boy showing boy 45% and girl 95%" rows="6" maxlength="5000" required></textarea>
         </div>
+        
         <fieldset id ="sentences">
           <legend>
             Chart Context
@@ -233,6 +234,7 @@
     <div class = "form-field alert">
         <h2>all fields below are optional.</h2> scroll to the end when you are ready to submit
       </div> -->
+      
       <div class = "form-field">
         <h3>Label the axes of your chart (optional)</h3>
         <button type ="button" onclick="toggleHiddenInputs()">Show/Hide More Axis Labels</button>
@@ -261,7 +263,16 @@
           <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
     
       </div>
-
+      <div class="form-field">
+        <label for="name">More Information/Notes
+          <span class="label-note">
+            optional          
+          </span><span class="label-description">
+            Any more information you'd like to share?
+          </span>
+        </label>
+        <textarea id="description" rows="4" placeholder="Ex: your thoughts on gender, what specific pieces of your chart represent, you move through you gender on a day-to-day" rows="6" maxlength="5000"></textarea>
+      </div>
       <div class="form-field">
         <label for="title">title
           <span class="label-note">
@@ -329,16 +340,7 @@
             <input type="hidden" name="tags" id="selectedTagsInput">
           </fieldset>
 
-            <div class="form-field">
-              <label for="name">More Information/Notes
-                <span class="label-note">
-                  optional          
-                </span><span class="label-description">
-                  Any more information you'd like to share?
-                </span>
-              </label>
-              <textarea id="description" rows="4" placeholder="Ex: your thoughts on gender, what specific pieces of your chart represent, you move through you gender on a day-to-day" rows="6" maxlength="5000"></textarea>
-            </div>
+          
             <!--<div id="submitFrameworks" class="form-field">
               <label>I beleive gender is...</label>
               <div id="frameworkSubmitList" class="framework-list"></div>
