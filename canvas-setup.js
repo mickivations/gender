@@ -225,8 +225,45 @@ function enableDrawing() {
 const sliderStyleEl = document.getElementById("sliderStyle");
 
 function updateBrushPreviewDot(size) {
+  const minTouchSize = 36;
+  const border = Math.max((minTouchSize - size) / 2, 0);
+  const color = getCurrentColor();
 
+  const css = `
+    #brushSize::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: ${minTouchSize}px;
+      width: ${minTouchSize}px;
+      background: ${color};
+      border-radius: 50%;
+      cursor: pointer;
+      border: ${border}px solid black;
+      transform: translate(0%, -45%); 
+
+    }
+
+    #brushSize::-moz-range-thumb {
+      height: ${minTouchSize}px;
+      width: ${minTouchSize}px;
+      background: ${color};
+      border-radius: 50%;
+      cursor: pointer;
+      border: ${border}px solid black;
+      transform: translate(0%, -45%); 
+
+    }
+  `;
+
+  console.log('Computed border:', border);
+  sliderStyleEl.textContent = css;
+}
+
+//old version
+/*
+function updateBrushPreviewDot(size) {
+  const minTouchSize = 36; // Keeps thumb easy to tap
   // Update the thumb size using dynamic CSS
+  let border = minTouchSize - size;
   const css = `
     #brushSize::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -235,7 +272,7 @@ function updateBrushPreviewDot(size) {
       background: ${getCurrentColor()};
       border-radius: 50%;
       cursor: pointer;
-      border: 2px solid ${getCurrentColor()};
+      border: ${border} solid black;
       transform: translate(0%, -45%); 
 
     }
@@ -246,11 +283,47 @@ function updateBrushPreviewDot(size) {
       background: ${getCurrentColor()};
       border-radius: 50%;
       cursor: pointer;
-      border: 2px solid ${getCurrentColor()};
+      border: ${border} solid black;
       transform: translate(0%, -50%);
   `;
+  console.log(border);
   sliderStyleEl.textContent = css;
-}
+}*/
+
+//vibe coded + broken
+/*
+function updateBrushPreviewDot(size) {
+  const color = getCurrentColor();
+  const minTouchSize = 36; // Keeps thumb easy to tap
+
+  const css = `
+    #brushSize::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: ${minTouchSize}px;
+      width: ${minTouchSize}px;
+      background: ${color};
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 0 999px transparent, 0 0 0 0 ${color}; 
+      background-clip: padding-box;
+      box-shadow: 0 0 0 ${Math.max((minTouchSize - size) / 2, 0)}px white inset;
+    }
+
+    #brushSize::-moz-range-thumb {
+      height: ${minTouchSize}px;
+      width: ${minTouchSize}px;
+      background: ${color};
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 0 ${Math.max((minTouchSize - size) / 2, 0)}px white inset;
+    }
+  `;
+
+  sliderStyleEl.textContent = css;
+}*/
+
 
 brushSizeSlider.addEventListener("input", (e) => {
   const size = e.target.value;
