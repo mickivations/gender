@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('Trans3.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0%;
   padding: 1rem;
@@ -40,6 +47,8 @@ body {
 
     h1 {
       font-size: 1.35rem; /* ~20px font size on mobile */
+      font-family: 'MyCustomFont', sans-serif;
+
     }
 
 
@@ -51,6 +60,8 @@ body {
 
   .slide h2{
     font-size: 1.25rem;
+    font-family: 'MyCustomFont', sans-serif;
+
   }
 
   .slide p,
@@ -156,7 +167,12 @@ body {
   width: 100%;
 }
 
+h1 {
+  font-family: 'MyCustomFont', sans-serif;
+
+}
+
 h2{
-  font-family: "Nunito";
-  font-weight: 1000;
+  font-family: 'MyCustomFont', sans-serif;
+  font-weight: 300;
 }
