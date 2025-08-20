@@ -33,12 +33,7 @@ body {
     69px 25px;
 }
 
-.nunito-semi> {
-  font-family: "Nunito", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700;
-  font-style: normal;
-}
+
 /* Increase font size and spacing on small/mobile screens */
 @media (max-width: 600px) {
   body {
@@ -88,6 +83,7 @@ body {
   overflow-y: auto;
   height: 70vh;
   max-width: 90vw;
+  margin: auto;
   max-height: 100%;
   
 }
@@ -172,12 +168,21 @@ h1 {
   font-family: 'MyCustomFont', sans-serif;
   font-size: 50px;
   font-weight: 100;
+  text-align: center;
 
 
 }
 
 h2{
   font-family: 'MyCustomFont', sans-serif;
-  font-weight: 300;
-  font-size: 40px !important;
+  font-size: 25px !important;
+  text-align: center;
+
+  font-weight: 100;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }

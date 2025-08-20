@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>DRAFT Visualizing Gender Zine - Gender Creator</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app-style-sheet.css">
+  <link rel="stylesheet" href="app-css.css">
+  <link rel="stylesheet" href="submit-css.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+  <!--<script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5.5.3/dist/iro.min.js"></script>-->
+  <script>
+    console.log('iro object:', window.iro);
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.js" defer></script>
+  <script src="https://unpkg.com/konva@9/konva.min.js" defer></script>
+
+  <link rel="icon" type="image/png" href="/favicon.png"/>
+  <style id="sliderStyle"></style>
+
+</head>
+<body>
+  <div id="main-content">
+  <div  id = "top-content">
+    
+    <h1>Visualizing Gender</h1>
+  
+    <a href="../gallery/gallery.html"> View Gender Gallery </a>
+    <a href="../index.html"> Instructions </a>
+  </div>
+  <p id="status"></p>
+  <div id="colorPickerContainer">   <div id="iroContainer"></div> <!-- iro.js will render here -->
+  <div id="brushSliderContainer">
+    <label for="brushSize">Brush Size</label>
+    <input type="range" id="brushSize" min="3" max="30" value="6">
+  </div>
+  
+  <button class ="close_colors" onClick= "closeColorPicker()">Select Color</button>
+</div>
+
+  <div id="container">
+    <canvas id="c"></canvas></div>
+  <!--<div id="activeTool" style="margin-top: 10px; font-weight: bold; float:left">Active Tool: Free Draw</div> -->
+  </div>
+
+  <div id ="floatingMenu">
+    <div id="selectMenu">
+      
+      </div>
+    </div>
+    
+
+
+ <!-- <div id="brushMenu">
+    <button id="colorInput" class="color-preview" style = "color: #000; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; /* multiple shadows */
+">change color</button>
+    
+  </div>-->
+</div>
+  <div class="toolbar">
+
+    
+  <button onclick="resetCanvasView()" id = "resetBtn" class ="select-btn">
+    <span class="material-symbols-outlined material-icons">
+      crop_free
+      </span> <div class = "btn-label">reset view</div>
+  </button> 
+  <button id = "toolBtn" onclick="toggleToolMenu()">toggle tools</button>
+ <!-- will open when you selelct the brush tool now 
+   <button id="colorInput" class="color-preview paint-btn">
+    <span class="material-icons">brush</span>
+  </button> -->
+
+  <button onclick="undo()"><span class="material-icons">undo</span></button>
+  <button onclick="redo()"><span class="material-icons">redo</span></button></div>
+
+  <!--tools in select for floating menu
+  <div class="select-btn" >
+    <button onclick="deleteObject()">
+      <span class="material-icons">delete</span> 
+    </button>
+    <button onclick="duplicateObject()">
+      <span class="material-icons">content_copy</span> 
+    </button>
+  -->
+
+  <!--
+  <div class="toolbar-item">
+    <button id = "toolBtn" onclick="toggleToolMenu()">toggle tools</button>
+  </div>-->
+
+ <!-- <div id="colorInput" style="width: 100%; height: 100%; border: 1px solid #ccc; cursor: pointer; border-radius: 4px;"></div>
+  --> 
+
+<!--<input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">-->
+<button id="submitButton" onclick="openSubmitMenu()">
+  Submit to Gallery
+</button> 
+
+  <!--zooms for drawing-->
+  <button onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
+  <button onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
+    
+    
+
+
+<!--
+<div class="button-pair">
+  <button onclick="toggleSliderMenu()"><span class="material-icons">tune</span></button>
+    <button onclick="saveImage()"><span class="material-icons">upload</span></button>
+
+</div> -->
+     <!-- New Menus -->
+    
+  
+    <!--Shapes Menu (Deprecated) -->
+    
+      <div id="shapesSubMenu">
+        <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
+        <button onclick="addShape('circle')"><i class="fas fa-circle"></i></button>
+        <button onclick="addShape('triangle')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke="white" width="12" height="12">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4l8 16H4z"></path>
+          </svg>
+        </button>
+        <button onclick="addShape('line')"><i class="fas fa-slash"></i></button>
+        <button onclick="addText()"><i class="fas fa-font"></i><i class="fas fa-i-cursor"></i></button>
+      </div>
+    </div>
+  
+    
+    
+    <!--Submit Menu-->
+    <div id="submitMenu">
+      <form id="submissionForm">
+      <h1>Submit to the Gender Gallery</h1>
+    
+        <img id="canvasPreview" alt="Preview of artwork" style="max-width: 50%; margin-bottom: 1rem; margin: auto" />
+        <button type ="button" onclick="resetCanvasView()">Center Template</button>
+
+        <div class="form-field">
+          <label for="name"> alt text 
+          <span class="label-note">
+            required </span>
+            <span class="label-description">
+            Please describe your artwork for screen readers. Can be as simple or complicated as you wish.
+          </span>
+          </label>
+        <textarea id="altText" rows="6"  placeholder="Ex: 3 blobs near the girl axis around 25%. One big dot on the other axis at around 50% and a pink shaded area between girl and boy showing boy 45% and girl 95%" rows="6" maxlength="5000" required></textarea>
+        </div>
+        
+        <fieldset id ="sentences">
+          <legend>
+            Chart Context
+            <span class="label-note">
+              required </span>
+            <span class="secondary-line">Share what your chart represents. You may select multiple in each category.</span>
+          </legend>
+        <div id="sentenceBuilder">
+          This chart represents 
+        <button type="button" class = "sentence" onclick="toggleDropdown('possessiveDropdown')">my</button>
+        <div id="possessiveDropdown" class="dropdown hidden"></div>
+        <button type="button" class = "sentence" onclick="toggleDropdown('modifierDropdown')">_____</button>
+        <div id="modifierDropdown" class="dropdown hidden"></div>
+          gender that
+        <!-- Identity Descriptor -->
+        <button type="button" class="sentence" onclick="toggleDropdown('identityDescriptorDropdown')">_____</button>
+        <div id="identityDescriptorDropdown" class="dropdown hidden"></div>
+
+<!-- Context Descriptor -->
+<button type="button" class="sentence" onclick="toggleDropdown('contextDescriptorDropdown')">_____</button>
+<div id="contextDescriptorDropdown" class="dropdown hidden"></div>
+</div>
+<div>
+  <br>
+<label for="sentencePreview" style ="text-align: left;">Confirm / Edit your sentence
+</label>
+        <textarea id="sentencePreview" rows="1" style="width: 100%; margin-top: 10px;"></textarea>
+      </div>
+    </fieldset>
+    <!--
+    <div class = "form-field alert">
+        <h2>all fields below are optional.</h2> scroll to the end when you are ready to submit
+      </div> -->
+      
+      <div class = "form-field">
+        <h3>Label the axes of your chart (optional)</h3>
+        <button type ="button" onclick="toggleHiddenInputs()">Show/Hide More Axis Labels</button>
+        <div id= "hidden-inputs"> <div class="form-field">
+          <label for="name">b axis label
+            <span class="label-note" >
+              optional          
+            </span>
+          </label>
+          <input type="text" id="axisB" placeholder="B" />
+        </div>
+        <div class="form-field">
+          <label for="name">g axis label
+            <span class="label-note" >
+              optional          
+            </span>
+          </label>
+          <input type="text" id="axisG" placeholder="G"/>
+        </div>
+      </div>
+          <label for="name">3 axis label
+            <span class="label-note">
+              optional          
+            </span>
+          </label>
+          <input type="text" id="axis3" placeholder ="what word captures your 'other' or 3rd axis? " />
+    
+      </div>
+      <div class="form-field">
+        <label for="name">More Information/Notes
+          <span class="label-note">
+            optional          
+          </span><span class="label-description">
+            Any more information you'd like to share?
+          </span>
+        </label>
+        <textarea id="description" rows="4" placeholder="Ex: your thoughts on gender, what specific pieces of your chart represent, you move through you gender on a day-to-day" rows="6" maxlength="5000"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="title">title
+          <span class="label-note">
+          optional          
+          </span>
+        </label>
+        <input type="text" id="title" placeholder="Ex: the artist's name, Just me, Transdyke"/>
+      </div>
+
+      <div class="form-field">
+        <h3>About you: the artist</h3>
+        <label for="name">name 
+          <span class="label-note">
+            optional          
+          </span>
+        </label>
+        <input type="text" id="name" />
+      </div>
+      <div class="form-field">
+        <label for="name">pronouns
+          <span class="label-note">
+            optional          
+          </span>
+        </label>
+        <input type="text" id="pronouns" />
+      </div>
+      
+
+        
+<!--
+        My chart represents my gender...
+        <div id="selectedFragments"></div>
+        <input type="text" id="tagSearch" placeholder="add">
+        <div id="sentenceFragmentsList"></div>
+
+        <div id="possessiveSelector"></div>
+        <div id="modifierSelector"></div> gender that
+        <div id="descriptorSelector"></div>
+      -->
+        <p id="sentencePreview" style="margin-top: 1em; font-style: italic;"></p>
+        <div class ="form-field">
+        <h3>What labels do you identify with?</div>
+        </h3>
+        <fieldset id="tagGroup">
+          <legend>
+            <span class="label-note">
+              add as many as you'd like to include with your chart       
+            </span>
+            <span class="secondary-line">You can reorder by dragging the tags</span>
+          </legend>
+          
+          <!-- Predefined checkboxes -->
+            <div id="tagFilterContainer">
+
+              <div id="selectedTags"></div>
+
+              <input type="text" id="tagSearch" placeholder="dyke, butch, cis, genderfluid" ><button type="button" id="addBtn" onclick="addTagButton()">+</button>
+              <div id="tagSuggestions"></div>
+
+            </div>
+            
+            <!--<div id="allTagsList"></div>-->
+            <input type="hidden" name="tags" id="selectedTagsInput">
+          </fieldset>
+
+          
+            <!--<div id="submitFrameworks" class="form-field">
+              <label>I beleive gender is...</label>
+              <div id="frameworkSubmitList" class="framework-list"></div>
+            
+              <div id="customFrameworkSubmit">
+                <div class="label-description">Add Your Own</div>
+                <input type="text" id="customFrameworkName" placeholder="I believe gender is...">
+                <input type="text" id="customFrameworkDefinition" placeholder="definition">
+              </div>
+            </div>-->
+            
+        <button type="submit">Submit</button><br>
+
+        <button type = "button" onclick = "closeSubmitMenu()">X</button>
+      </form>        
+  </div> 
+    </div>
+
+  </div>
+  
+  
+  <script type="module" src="./ui-logic.js"></script>
+ <!-- Submitting Popup -->
+<!-- Submitting Popup -->
+<div id="submittingPopup">
+  <div id="submissionMessage">Submitting...</div>
+  <button id="viewGalleryBtn" onclick="window.location.href='../gallery/gallery.html'">
+    View Gallery
+</a>
+</div>
+
+
+</body>
+</html>

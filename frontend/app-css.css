@@ -16,11 +16,21 @@
     text-align: left;
     overflow: hidden; /* prevent body scroll */
     touch-action: none;
+    font-weight: 400;
+
   
   }
   
+  @font-face {
+    font-family: 'MyCustomFont';
+    src: url('Trans3.woff') format('woff');
+    font-weight: 100;
+  
+    font-style: normal;
+  }
+
   button {
-    font-family: "Nunito", sans-serif;
+    font-family: "MyCustomFont", sans-serif;
     font-weight: 1000;
     font-size: 1.5rem; 
     /*border: 1px solid white;*/
@@ -98,13 +108,12 @@
     background-color: #000000;
     color: white;
     cursor: pointer;
-    font-family: "Nunito", sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
   }
   
   
   body {
-    font-family: "Nunito", sans-serif;
-    font-weight: 1000;
+    font-family: "Poppins", sans-serif;
     margin: 0; /* changed from 20px to 0 to avoid scroll */
     padding: 0px;
     text-align: center;
@@ -164,7 +173,8 @@
     border: 1px solid white;
     border-radius: 5px;
     background-color: transparent !important;
-    font-family: "Nunito";
+    font-family: "MyCustomFont";
+
   }
   
   a:hover, a:active {
@@ -180,14 +190,16 @@
   }
   
   h2 {
-    font-family: "Nunito", sans-serif;
+    font-family: "MyCustomFont", sans-serif;
    /* font-size: 1.5em; */
     margin-top: 0px;
     color: #FFFFFF;
     margin-bottom: 0px;
     font-weight: 1000;
+    font-weight: 400;
+
   }
-  
+
   div {
     margin: 0;
     padding: 0;
@@ -374,7 +386,7 @@
     border-radius: 0px;
     border-radius: 5px;
     font-size: large;
-    font-family: "Nunito";
+    font-family: "Poppins";
     font-weight: 1000;
   }
   
@@ -395,7 +407,6 @@
   .material-icons {
     font-size: 24px;
   }
-  
   
   
   
@@ -545,14 +556,6 @@
       box-sizing: border-box;
     }
     
-  }
-  
-  
-  .nunito-semi> {
-    font-family: "Nunito", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 1000 !important;
-    font-style: normal;
   }
   
   
