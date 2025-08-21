@@ -23,15 +23,15 @@
   
   @font-face {
     font-family: 'MyCustomFont';
-    src: url('Trans3.woff') format('woff');
+    src: url('../Trans3.woff') format('woff');
     font-weight: 100;
-  
     font-style: normal;
+    padding-top: 5px;
   }
 
   button {
     font-family: "MyCustomFont", sans-serif;
-    font-weight: 1000;
+    font-weight: 100;
     font-size: 1.5rem; 
     /*border: 1px solid white;*/
     background-color: #000;
@@ -186,7 +186,9 @@
     margin-top: 0px;
     color: #FFFFFF;
     margin-bottom: 0px;
-    font-family: "Rubik Bubbles", sans-serif;
+    font-size: 50px;
+    font-weight: 100;
+    font-family: "MyCustomFont", sans-serif;
   }
   
   h2 {
@@ -195,8 +197,6 @@
     margin-top: 0px;
     color: #FFFFFF;
     margin-bottom: 0px;
-    font-weight: 1000;
-    font-weight: 400;
 
   }
 

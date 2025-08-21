@@ -94,6 +94,15 @@ body {
   align-items: center;
 }
 
+.inner_slide{
+    display: flex;
+    justify-content: center;   /* centers horizontally */
+    align-items: center;       /* centers vertically */
+    height: 100%;             /* makes the container full viewport height */
+    text-align: center;        /* keeps the text/links centered */
+  }
+  
+
 .slide img {
   border-radius: 1rem;
   max-height: 50vh;
@@ -177,12 +186,11 @@ h2{
   font-family: 'MyCustomFont', sans-serif;
   font-size: 25px !important;
   text-align: center;
-
   font-weight: 100;
 }
 
 .poppins-semibold {
   font-family: "Poppins", sans-serif;
-  font-weight: 400;
+  font-weight: 600 !important;
   font-style: normal;
 }
