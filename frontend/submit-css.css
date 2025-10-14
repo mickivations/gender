@@ -507,8 +507,8 @@ textarea::-ms-input-placeholder {
     display: none;
   position: fixed;
   align-content: center;
-  height: 90%;
-  width: 90%;
+  height: 100%;
+  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

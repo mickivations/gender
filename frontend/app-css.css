@@ -45,10 +45,11 @@
     display: none;
     flex-direction: column;
     position: fixed;
+    min-width: 90%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -45%); /* This moves it back by half its own width and height */
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, .8);
     padding: 10px;
     z-index: 1000 !important;
     align-items: center;
@@ -99,8 +100,8 @@
     transition: all 0.2s ease;
   }
   
-  .close_colors {
-    display: block;
+  .close_colors, #resetBtn, #sellectBtn {
+    display: inline-block;
     margin-top: 10px;
     padding: 5px 10px;
     border: 1px solid white;
@@ -108,7 +109,7 @@
     background-color: #000000;
     color: white;
     cursor: pointer;
-    font-family: "Poppins", sans-serif !important;
+    /*font-family: "Poppins", sans-serif !important;*/
   }
   
   
@@ -609,3 +610,15 @@
     box-sizing: border-box;
   }
   
+  /* Add this to your existing CSS file (app-css.css or wherever your styles are) */
+
+  #floatingMenu {
+    position: fixed;
+    display: none;
+    background: pink;
+    border-radius: 6px;
+    padding: 4px;
+    z-index: 1001;
+    pointer-events: auto;
+  }
+

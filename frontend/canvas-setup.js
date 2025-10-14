@@ -4,7 +4,6 @@ const allTags = new Set();
 const selectedTags = new Set();
 let maxRadius = 3; 
 
-
 const brushSizeSlider = document.getElementById("brushSize");
 const brushPreviewDot = document.getElementById("brushPreviewDot");
 let brushWidth = brushSizeSlider.value;
@@ -21,8 +20,6 @@ let lastTouchDist = 0;
 let isDraggingObject = false;
 let isRestoringState = false;
 
-
-
 canvas.setBackgroundColor('#000', canvas.renderAll.bind(canvas));
 
 let currentColor = '#ffff00'; // Default color
@@ -35,20 +32,82 @@ function setCurrentColor(newColor) {
     return currentColor;
   }
 
-  canvas.on('selection:created', (e) => {
-    //activeObject = e.selected[0];
-    canDragObject = false;
-  });
+// === FIXED FLOATING MENU IMPLEMENTATION ===
+function showFloatingMenu(selectedObject) {
+  const menu = document.getElementById('floatingMenu');
+  if (!menu || !selectedObject) return;
   
-  canvas.on('selection:updated', (e) => {
-    //activeObject = e.selected[0];
-    canDragObject = false;
-  });
+  const bounds = selectedObject.getBoundingRect();
+  const canvasRect = canvas.getElement().getBoundingClientRect();
   
-  canvas.on('selection:cleared', () => {
-    activeObject = null;
-  });
+  // Get current viewport transform for proper positioning
+  const vpt = canvas.viewportTransform;
+  const zoom = canvas.getZoom();
   
+  // Transform object coordinates to screen coordinates
+  const screenX = (bounds.left + bounds.width) * zoom + vpt[4] + canvasRect.left + 10;
+  const screenY = bounds.top * zoom + vpt[5] + canvasRect.top - 10;
+  
+  menu.style.position = 'fixed';
+  menu.style.left = screenX + 'px';
+  menu.style.top = screenY + 'px';
+  menu.style.display = 'block';
+  menu.style.zIndex = '1001'; // Ensure it's above other elements
+}
+
+function hideFloatingMenu() {
+  const menu = document.getElementById('floatingMenu');
+  if (menu) {
+    menu.style.display = 'none';
+  }
+}
+
+// Enhanced canvas event handlers
+canvas.on('selection:created', (e) => {
+  activeObject = e.selected[0];
+  if (activeObject && activeObject.hasBeenUnlocked) {
+    showFloatingMenu(activeObject);
+  }
+});
+
+canvas.on('selection:updated', (e) => {
+  activeObject = e.selected[0];
+  if (activeObject && activeObject.hasBeenUnlocked) {
+    showFloatingMenu(activeObject);
+  } else {
+    hideFloatingMenu();
+  }
+});
+
+canvas.on('selection:cleared', () => {
+  activeObject = null;
+  hideFloatingMenu();
+  // Reset hasBeenUnlocked on all objects when deselected
+  canvas.getObjects().forEach(obj => {
+    obj.hasBeenUnlocked = false;
+  });
+});
+
+// Update menu position when object moves
+canvas.on('object:moving', (e) => {
+  if (e.target === activeObject && activeObject.hasBeenUnlocked) {
+    showFloatingMenu(activeObject);
+  }
+});
+
+// Hide menu when canvas is panned or zoomed
+canvas.on('mouse:wheel', () => {
+  if (activeObject && activeObject.hasBeenUnlocked) {
+    // Small delay to update position after zoom/pan
+    setTimeout(() => {
+      if (activeObject && activeObject.hasBeenUnlocked) {
+        showFloatingMenu(activeObject);
+      }
+    }, 10);
+  }
+});
+
+// === END FLOATING MENU ===
 
 // Set the canvas internal width and height to match container size
 function resizeCanvas() {
@@ -59,7 +118,6 @@ function resizeCanvas() {
     createTemplate(); // ← this updates and locks the template
     saveState();
   }
-
 
 function scaleCanvasObjectsToFit(newWidth, newHeight) {
     const prevWidth = canvas.getWidth();
@@ -80,10 +138,8 @@ function scaleCanvasObjectsToFit(newWidth, newHeight) {
     canvas.renderAll();
   }
 
-  
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas(); // initial call
-
 
 function updatePreview(color) {
   const preview = document.getElementById('colorInput');
@@ -128,8 +184,6 @@ function addText(text, options = {}) {
   canvas.add(textbox).setActiveObject(textbox);
 }
 
-
-
 function saveState() {
     if (isRestoringState) return;
     redoStack.length = 0;
@@ -144,8 +198,6 @@ function saveState() {
     undoStack.push(state);
     console.log("pushed state");
   }
-
-
 
   function undo() {
     if (undoStack.length > 1) {
@@ -182,7 +234,6 @@ function saveState() {
       });
     });
   }
-  
 
 // Function to zoom in
 function zoomIn() {
@@ -200,28 +251,23 @@ function zoomOut() {
 function disableDrawing() {
     canvas.isDrawingMode = false;
     canvas.selection = true;
-
-   //pendingShapeType = null;  // Clear the pending shape
-    //setActiveTool('Select/Move');
     console.log("drawing disabled");
-    //toggleToolMenu();
-    toggleSelectMenu();
+   // toggleSelectMenu();
 }
 
-    // Enable free drawing mode and set the color
+// Enable free drawing mode and set the color
 function enableDrawing() {
     console.log(fabric.version);
     canvas.isDrawingMode = true;
     brushWidth = brushSizeSlider.value;
     canvas.freeDrawingBrush.width = brushWidth / canvas.getZoom();
-    canvas.freeDrawingBrush.color = currentColor;  // Set drawing color to the selected color
+    canvas.freeDrawingBrush.color = currentColor;
     canvas.freeDrawingBrush.opacity = opacityValue;
-    //pendingShapeType = null;  // Clear the pending shape
-    //setActiveTool('Free Draw');
-    //toggleToolMenu();
-    closeSelectMenu();
-
+    //closeSelectMenu();
+    // Hide floating menu when entering drawing mode
+    hideFloatingMenu();
 }
+
 const sliderStyleEl = document.getElementById("sliderStyle");
 
 function updateBrushPreviewDot(size) {
@@ -239,7 +285,6 @@ function updateBrushPreviewDot(size) {
       cursor: pointer;
       border: ${border}px solid black;
       transform: translate(0%, -45%); 
-
     }
 
     #brushSize::-moz-range-thumb {
@@ -250,80 +295,12 @@ function updateBrushPreviewDot(size) {
       cursor: pointer;
       border: ${border}px solid black;
       transform: translate(0%, -45%); 
-
     }
   `;
 
   console.log('Computed border:', border);
   sliderStyleEl.textContent = css;
 }
-
-//old version
-/*
-function updateBrushPreviewDot(size) {
-  const minTouchSize = 36; // Keeps thumb easy to tap
-  // Update the thumb size using dynamic CSS
-  let border = minTouchSize - size;
-  const css = `
-    #brushSize::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: ${size}px;
-      width: ${size}px;
-      background: ${getCurrentColor()};
-      border-radius: 50%;
-      cursor: pointer;
-      border: ${border} solid black;
-      transform: translate(0%, -45%); 
-
-    }
-
-    #brushSize::-moz-range-thumb {
-      height: ${size}px;
-      width: ${size}px;
-      background: ${getCurrentColor()};
-      border-radius: 50%;
-      cursor: pointer;
-      border: ${border} solid black;
-      transform: translate(0%, -50%);
-  `;
-  console.log(border);
-  sliderStyleEl.textContent = css;
-}*/
-
-//vibe coded + broken
-/*
-function updateBrushPreviewDot(size) {
-  const color = getCurrentColor();
-  const minTouchSize = 36; // Keeps thumb easy to tap
-
-  const css = `
-    #brushSize::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: ${minTouchSize}px;
-      width: ${minTouchSize}px;
-      background: ${color};
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 0 0 999px transparent, 0 0 0 0 ${color}; 
-      background-clip: padding-box;
-      box-shadow: 0 0 0 ${Math.max((minTouchSize - size) / 2, 0)}px white inset;
-    }
-
-    #brushSize::-moz-range-thumb {
-      height: ${minTouchSize}px;
-      width: ${minTouchSize}px;
-      background: ${color};
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 0 0 ${Math.max((minTouchSize - size) / 2, 0)}px white inset;
-    }
-  `;
-
-  sliderStyleEl.textContent = css;
-}*/
-
 
 brushSizeSlider.addEventListener("input", (e) => {
   const size = e.target.value;
@@ -333,11 +310,6 @@ brushSizeSlider.addEventListener("input", (e) => {
 
 // Initialize on load
 updateBrushPreviewDot(brushSizeSlider.value);
-
-
-// Initialize preview dot
-updateBrushPreviewDot(brushSizeSlider.value);
-
 
 function createTemplate() {
     const centerX = canvas.width / 2;
@@ -432,58 +404,55 @@ function createTemplate() {
   }
 
   function deleteObject() {
-    /*if (selectedObject) {
-      selectedObject.set({ fill: 'black', stroke: 'black', width: 1, height: 1,  top: -100, strokeWidth: 0});
-      canvas.renderAll();
-    }*/
     if (activeObject) {
       canvas.remove(activeObject);
-      canvas.discardActiveObject(); // Deselect the deleted object
-      canvas.requestRenderAll();    // Redraw the canvas
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      hideFloatingMenu();
+      activeObject = null;
+      saveState();
     }
   }
 
   function duplicateObject() {
-    const selectedObject = canvas.getActiveObject();
-  
-    if (selectedObject) {
-      let duplicatedObject;
-  
-      // If the selected object is a group, duplicate the whole group with its contents
-      if (selectedObject.type === 'group') {
-        duplicatedObject = selectedObject.clone(function(cloned) {
-          // Clone each object inside the group individually
-          cloned.getObjects().forEach(function(obj) {
-            // Ensure each object inside the group gets its own unique color reference
-            obj.set({
-              fill: obj.fill, // Keep the original fill color
-              stroke: obj.stroke, // Keep the original stroke color
-            });
+    if (!activeObject) return;
+
+    let duplicatedObject;
+
+    if (activeObject.type === 'group') {
+      duplicatedObject = activeObject.clone(function(cloned) {
+        cloned.getObjects().forEach(function(obj) {
+          obj.set({
+            fill: obj.fill,
+            stroke: obj.stroke,
           });
         });
-      } else {
-        // Clone a single object (not a group)
-        duplicatedObject = fabric.util.object.clone(selectedObject);
-        duplicatedObject.set({
-          fill: selectedObject.fill, // Explicitly set the fill color (to avoid shared reference)
-          stroke: selectedObject.stroke, // Explicitly set the stroke color
-        });
-      }
-  
-      // Offset the duplicate slightly to prevent overlap with the original
-      duplicatedObject.set({
-        left: selectedObject.left + 10,
-        top: selectedObject.top + 10,
       });
-  
-      // Add the duplicated object to the canvas
-      canvas.add(duplicatedObject);
-  
-      // Optionally, make the duplicate the active object
-      canvas.setActiveObject(duplicatedObject);
-      canvas.renderAll();
-      console.log('Object duplicated');
+    } else {
+      duplicatedObject = fabric.util.object.clone(activeObject);
+      duplicatedObject.set({
+        fill: activeObject.fill,
+        stroke: activeObject.stroke,
+      });
     }
+
+    duplicatedObject.set({
+      left: activeObject.left + 10,
+      top: activeObject.top + 10,
+    });
+
+    canvas.add(duplicatedObject);
+    canvas.setActiveObject(duplicatedObject);
+    canvas.renderAll();
+    
+    // Update activeObject reference and show menu for new duplicate
+    activeObject = duplicatedObject;
+    activeObject.hasBeenUnlocked = true;
+    activeObject.lockMovementX = false;
+    activeObject.lockMovementY = false;
+    showFloatingMenu(activeObject);
+    
+    saveState();
   }
 
 canvas.on('touch:gesture', function(opt) {
@@ -528,19 +497,13 @@ canvas.on('touch:drag', function(opt) {
   }
 });
 
-canvas.on('selection:cleared', () => {
-    // Optional: reset hasBeenUnlocked on all objects when deselected
-    canvas.getObjects().forEach(obj => {
-      obj.hasBeenUnlocked = false;
-    });
-  });
-
 canvas.on('touch:end', function(opt) {
   lastTouchDist = 0;
-  if(ifPanning) saveState();
+  if(isPanning) saveState();
   isPanning = false;
 });
 
+// Updated mouse:down handler with proper floating menu integration
 canvas.on('mouse:down', (opt) => {
   if (canvas.isDrawingMode) return;
 
@@ -550,13 +513,14 @@ canvas.on('mouse:down', (opt) => {
   if (clickedObj) {
     if (clickedObj !== activeObject) {
       // New object clicked
+      hideFloatingMenu(); // Hide menu from previous object
       activeObject = clickedObj;
       activeObject.lockMovementX = true;
       activeObject.lockMovementY = true;
       activeObject.hasBeenUnlocked = false;
       console.log('Locked new object on first click');
 
-      isPanning = true;  // Allow pan on first click
+      isPanning = true;
       lastPosX = evt.clientX || evt.touches?.[0]?.clientX;
       lastPosY = evt.clientY || evt.touches?.[0]?.clientY;
     } else {
@@ -566,14 +530,18 @@ canvas.on('mouse:down', (opt) => {
         activeObject.lockMovementY = false;
         activeObject.hasBeenUnlocked = true;
         console.log('Unlocked object on second click');
+        showFloatingMenu(activeObject);
       } else {
         console.log('Object already unlocked');
+        // Refresh menu position
+        showFloatingMenu(activeObject);
       }
-      isPanning = false;  // Object is movable now, don’t pan
+      isPanning = false;
     }
   } else {
     // Clicked empty space
     activeObject = null;
+    hideFloatingMenu();
     isPanning = true;
     lastPosX = evt.clientX || evt.touches?.[0]?.clientX;
     lastPosY = evt.clientY || evt.touches?.[0]?.clientY;
@@ -597,7 +565,6 @@ canvas.on('mouse:move', (opt) => {
 
 canvas.on('mouse:up', () => {
   isPanning = false;
-  
 });
 
 // Optional: Auto-unlock if dragging starts (if user drags instead of clicking)
@@ -638,5 +605,3 @@ export {
   zoomIn,
   zoomOut
 };
-
-

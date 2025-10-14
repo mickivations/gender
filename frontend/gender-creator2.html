@@ -47,10 +47,13 @@
   <div id="colorPickerContainer">   <div id="iroContainer"></div> <!-- iro.js will render here -->
   <div id="brushSliderContainer">
     <label for="brushSize">Brush Size</label>
-    <input type="range" id="brushSize" min="3" max="30" value="6">
+    <input type="range" id="brushSize" min="3" max="33" value="6" step ="5" >
   </div>
+  <div>
   
-  <button class ="close_colors" onClick= "closeColorPicker()">Select Color</button>
+  <button id = "sellectBtn" onclick="disableDrawing()"> <span class="material-symbols-outlined material-icons">edit_off</span> <div class = "btn-label">disable drawing</div></button>
+  <button class ="close_colors" onClick= "enableDrawing()"><span class="material-icons">brush</span><div class = "btn-label">enable drawing</div> </button>
+</div>
 </div>
 
   <div id="container">
@@ -58,10 +61,21 @@
   <!--<div id="activeTool" style="margin-top: 10px; font-weight: bold; float:left">Active Tool: Free Draw</div> -->
   </div>
 
+<!--HERE-->
   <div id ="floatingMenu">
-    <div id="selectMenu">
-      
-      </div>
+
+    hello floating menu
+      <button onclick="deleteObject()">
+        <span class="material-icons">delete</span> 
+      </button>
+      <button onclick="duplicateObject()">
+        <span class="material-icons">content_copy</span> 
+      </button>
+      <button onclick="resetCanvasView()" id = "resetBtn">
+        <span class="material-symbols-outlined material-icons">
+          crop_free
+          </span> <div class = "btn-label">reset view</div>
+      </button> 
     </div>
     
 
@@ -75,12 +89,8 @@
   <div class="toolbar">
 
     
-  <button onclick="resetCanvasView()" id = "resetBtn" class ="select-btn">
-    <span class="material-symbols-outlined material-icons">
-      crop_free
-      </span> <div class = "btn-label">reset view</div>
-  </button> 
-  <button id = "toolBtn" onclick="toggleToolMenu()">toggle tools</button>
+  
+  <button id = "toolBtn">toggle tools</button>
  <!-- will open when you selelct the brush tool now 
    <button id="colorInput" class="color-preview paint-btn">
     <span class="material-icons">brush</span>
@@ -325,7 +335,7 @@
   </div>
   
   
-  <script type="module" src="./ui-logic.js"></script>
+  <script type="module" src="./ui-logic copy.js"></script>
  <!-- Submitting Popup -->
 <!-- Submitting Popup -->
 <div id="submittingPopup">
