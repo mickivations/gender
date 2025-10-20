@@ -63,18 +63,19 @@
 
 <!--HERE-->
   <div id ="floatingMenu">
-
-    hello floating menu
       <button onclick="deleteObject()">
         <span class="material-icons">delete</span> 
-      </button>
+        <div class = "btn-label">delete</div>
+      </button> 
       <button onclick="duplicateObject()">
         <span class="material-icons">content_copy</span> 
+        <div class = "btn-label">duplicate</div>
       </button>
       <button onclick="resetCanvasView()" id = "resetBtn">
         <span class="material-symbols-outlined material-icons">
           crop_free
-          </span> <div class = "btn-label">reset view</div>
+          </span> 
+          <div class = "btn-label">reset view</div>
       </button> 
     </div>
     
@@ -90,15 +91,15 @@
 
     
   
-  <button id = "toolBtn">toggle tools</button>
+  <button id = "toolBtn" class ="toolbar-item">toggle tools</button>
  <!-- will open when you selelct the brush tool now 
    <button id="colorInput" class="color-preview paint-btn">
     <span class="material-icons">brush</span>
   </button> -->
-
+  <div class="button-pair" >
   <button onclick="undo()"><span class="material-icons">undo</span></button>
   <button onclick="redo()"><span class="material-icons">redo</span></button>
-
+ </div>
   <!--tools in select for floating menu
   <div class="select-btn" >
     <button onclick="deleteObject()">
@@ -118,14 +119,15 @@
   --> 
 
 <!--<input type="color" id="colorPicker" value="#ffff00" onchange="updateDrawingColor()">-->
-<button id="submitButton" onclick="openSubmitMenu()">
-  Submit to Gallery
-</button> 
 
+<div class="button-pair" >
   <!--zooms for drawing-->
   <button onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
   <button onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
-
+</div>
+<button id="submitButton" onclick="openSubmitMenu()" class ="toolbar-item">
+  Submit to Gallery
+</button> 
 </div> <!--toolbar close-->
     
     
