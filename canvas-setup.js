@@ -592,59 +592,75 @@ function addText(text, options = {}) {
 }
 
 
-// Save canvas state (debounced for modifications)
-function saveState() {
-  if (isRestoringState || isDrawingShape) return; // skip if drawing a shape
 
-  redoStack.length = 0;
-
-  const nonTemplateObjects = canvas.getObjects().filter(obj => !obj.templateElement);
+// Initialize undo stack with empty canvas
+function initUndo() {
   const state = JSON.stringify({
-    objects: nonTemplateObjects.map(obj => obj.toObject(['templateElement'])),
+    objects: canvas.getObjects().filter(obj => !obj.templateElement).map(obj => obj.toObject(['templateElement'])),
     background: canvas.backgroundColor,
     viewportTransform: canvas.viewportTransform
   });
-
-  undoStack.push(state);
-  console.log("Saved state:", undoStack.length);
+  undoStack = [state];
+  redoStack = [];
 }
 
-// Undo / redo
+function saveState() {
+  if (isRestoringState || isDrawingShape) return;
+
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    const state = JSON.stringify({
+      objects: canvas.getObjects().filter(obj => !obj.templateElement).map(obj => obj.toObject(['templateElement'])),
+      background: canvas.backgroundColor,
+      viewportTransform: canvas.viewportTransform
+    });
+
+    // Only push if state changed (prevent duplicates)
+    if (undoStack.length === 0 || undoStack[undoStack.length - 1] !== state) {
+      undoStack.push(state);
+      redoStack.length = 0; // clear redo
+      console.log("Saved state:", undoStack.length);
+    }
+  }, 50);
+}
+
 function undo() {
-  if (undoStack.length > 1) {
-    isRestoringState = true;
-    const current = undoStack.pop();
-    redoStack.push(current);
-    const previous = undoStack[undoStack.length - 1];
-    restoreState(previous);
-  }
+  if (undoStack.length < 2) return; // nothing to undo
+
+  isRestoringState = true;
+
+  const current = undoStack.pop();
+  redoStack.push(current);
+
+  const previous = undoStack[undoStack.length - 1];
+  restoreState(previous);
 }
 
 function redo() {
-  if (redoStack.length > 0) {
-    isRestoringState = true;
-    const state = redoStack.pop();
-    undoStack.push(state);
-    restoreState(state);
-  }
+  if (redoStack.length === 0) return;
+
+  isRestoringState = true;
+  const state = redoStack.pop();
+  undoStack.push(state);
+  restoreState(state);
 }
 
 function restoreState(state) {
   const parsed = JSON.parse(state);
 
-  canvas.clear();
-
   canvas.loadFromJSON({ objects: parsed.objects }, () => {
-    if (parsed.viewportTransform) {
-      canvas.setViewportTransform(parsed.viewportTransform);
-    }
+    if (parsed.viewportTransform) canvas.setViewportTransform(parsed.viewportTransform);
     canvas.setBackgroundColor(parsed.background || '#000000', () => {
-      createTemplate(); // ensure template exists
+      createTemplate();
       canvas.renderAll();
       isRestoringState = false;
     });
   });
 }
+
+// Call this **after canvas setup** once
+initUndo();
+
 
 // --- Event Listeners ---
 // Add debounce for object modifications
