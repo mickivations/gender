@@ -254,6 +254,7 @@
   }
   
   button[type="button"] {
+  
     background-color: var(--dark-bg);
     color: white;
     border: 1px solid var(--border-color);

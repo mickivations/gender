@@ -131,7 +131,7 @@ function handleOutsideClick(e) {
   function enterDrawing() {
     console.log("Switching to draw mode");
     document.getElementById('toolBtn').innerHTML =
-    '<span class="material-icons">brush</span>';
+    '<span class="material-symbols-outlined">brush</span>';
     document.getElementById('toolBtn').style.color = getCurrentColor();
     
     enableDrawing();
@@ -871,6 +871,28 @@ toggleBtn.addEventListener('click', () => {
 
 function addShapeButton(shapeType) {
   addShape(shapeType);
+  document.getElementById('toolBtn').style.color = getCurrentColor();
+  if(shapeType =="heart")
+    document.getElementById('toolBtn').innerHTML =
+    '<span class="material-symbols-outlined">favorite</span>';
+  if(shapeType =="star")
+    document.getElementById('toolBtn').innerHTML =
+    '<span class="material-symbols-outlined">star</span>';
+  if(shapeType =="rect")
+    document.getElementById('toolBtn').innerHTML =
+    '<i class="fas fa-square"></i>';
+  if(shapeType =="circle")
+    document.getElementById('toolBtn').innerHTML =
+    '<span class="material-symbols-outlined">circle</span></button>';
+  if(shapeType =="line")
+    document.getElementById('toolBtn').innerHTML =
+    '<i class="fas fa-slash"></i>';
+  if(shapeType =="text")
+    document.getElementById('toolBtn').innerHTML =
+    '<i class="fas fa-i-cursor"></i>';
+  if(shapeType =="triangle")
+    document.getElementById('toolBtn').innerHTML =
+    '<span class="material-symbols-outlined">change_history</span>';
   //change button icon
   closeColorPicker();
 }

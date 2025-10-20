@@ -281,52 +281,61 @@ function startDrawingShape(pointerX, pointerY) {
 function updateDrawingShape(pointerX, pointerY) {
   if (!isDrawingShape || !shapeInProgress) return;
 
-  const width = Math.abs(pointerX - startX);
-  const height = Math.abs(pointerY - startY);
-  let w;
-  let h;
+  // Calculate width and height
+  let width = pointerX - startX;
+  let height = pointerY - startY;
+
+  // Determine top-left corner
+  let left = width < 0 ? pointerX : startX;
+  let top = height < 0 ? pointerY : startY;
+
+  width = Math.abs(width);
+  height = Math.abs(height);
 
   switch (currentTool) {
     case 'heart':
-       w = Math.max(2, pointerX - startX);
-       h = Math.max(2, pointerY - startY);
-      const scaleFactor = 2; // adjust heart size
-      shapeInProgress.scaleX = (w / 100) * scaleFactor;
-      shapeInProgress.scaleY = (h / 100) * scaleFactor;
+      const scaleFactor = 2;
+      shapeInProgress.left = left;
+      shapeInProgress.top = top;
+      shapeInProgress.scaleX = (width / 100) * scaleFactor;
+      shapeInProgress.scaleY = (height / 100) * scaleFactor;
       break;
     case 'star':
-       w = Math.max(2, pointerX - startX);
-       h = Math.max(2, pointerY - startY);
-      shapeInProgress.scaleX = w / 100; // original path width
-      shapeInProgress.scaleY = h / 100; // original path height
+      shapeInProgress.left = left;
+      shapeInProgress.top = top;
+      shapeInProgress.scaleX = width / 100;
+      shapeInProgress.scaleY = height / 100;
       break;
-    case 'circle': {
-      // radius based on distance from start to current
+    case 'circle':
+      // Use max of width/height for a more uniform circle
       const radius = Math.sqrt(width * width + height * height) / 4;
+      shapeInProgress.left = left;
+      shapeInProgress.top = top;
       shapeInProgress.set({ radius });
       break;
-    }
     case 'rect':
-      shapeInProgress.set({
-        width: Math.max(2, width ),
-        height: Math.max(2, height )
-      });
-      break;
     case 'triangle':
       shapeInProgress.set({
+        left,
+        top,
         width: Math.max(2, width),
         height: Math.max(2, height)
       });
       break;
     case 'line':
-      shapeInProgress.set({ x2: pointerX, y2: pointerY });
+      shapeInProgress.set({
+        x1: startX,
+        y1: startY,
+        x2: pointerX,
+        y2: pointerY
+      });
       break;
   }
 
   shapeInProgress.setCoords();
   canvas.requestRenderAll();
-  //////////////////
 }
+
 
 
 
