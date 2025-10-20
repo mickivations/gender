@@ -871,6 +871,7 @@ toggleBtn.addEventListener('click', () => {
 
 function addShapeButton(shapeType) {
   addShape(shapeType);
+  //change button icon
   closeColorPicker();
 }
 
