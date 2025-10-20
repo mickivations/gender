@@ -353,6 +353,7 @@
   button .btn-label
   {
     font-size: 0.5em;
+    font-family: "Poppins";
   }
   
   
@@ -437,7 +438,7 @@
     }
   
   
-    .button-pair {
+    .button-pair,  .toolbar-item {
       flex-direction: column;
       height: var(--toolbar_height);
     }
@@ -502,7 +503,7 @@
     .toolbar-item {
       width: 100%;
       flex: 1 1 var(--sidebar_button_height);
-      /*height: var(--sidebar_button_height); */
+      height:100%; /* var(--sidebar_button_height); */
       display: flex;
       justify-content: center;
       align-items: center;

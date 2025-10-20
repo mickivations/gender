@@ -238,30 +238,51 @@ fetch('/.netlify/functions/get-gallery')
 
       if (name) {
         const p = document.createElement('p');
-        const span = document.createElement('span');
-        span.className = 'values';
-        span.textContent = name;
-        p.append('Name: ', span);
+      
+        const label = document.createElement('span');
+        label.className = 'modal-labels';
+        label.textContent = 'NAME: ';
+      
+        const value = document.createElement('span');
+        value.className = 'values';
+        value.textContent = name;
+      
+        p.append(label, value);
         card.appendChild(p);
       }
 
       if (pronouns) {
         const p = document.createElement('p');
-        const span = document.createElement('span');
-        span.className = 'values';
-        span.textContent = pronouns;
-        p.append('Pronouns: ', span);
+      
+        const label = document.createElement('span');
+        label.className = 'modal-labels';
+        label.textContent = 'PRONOUNS: ';
+      
+        const value = document.createElement('span');
+        value.className = 'values';
+        value.textContent = pronouns;
+      
+        p.append(label, value);
+        card.appendChild(p);
+      }
+      
+      if (axis3) {
+        const p = document.createElement('p');
+      
+        const label = document.createElement('span');
+        label.className = 'modal-labels';
+        label.textContent = 'AXIS 3: ';
+      
+        const value = document.createElement('span');
+        value.className = 'values';
+        value.textContent = axis3;
+      
+        p.append(label, value);
         card.appendChild(p);
       }
 
-      if (axis3) {
-        const p = document.createElement('p');
-        const span = document.createElement('span');
-        span.className = 'values';
-        span.textContent = axis3;
-        p.append('Axis 3: ', span);
-        card.appendChild(p);
-      }
+
+
 
 
 
