@@ -36,7 +36,7 @@
     /*border: 1px solid white;*/
     background-color: #000;
     color: white;
-    margin: 20px auto;
+    margin: 0px auto;
     padding: 5%;
   }
   
@@ -188,7 +188,7 @@
     margin-top: 0px;
     color: #FFFFFF;
     margin-bottom: 0px;
-    font-size: 50px;
+    font-size: 30px;
     font-weight: 100;
     font-family: "MyCustomFont", sans-serif;
   }
