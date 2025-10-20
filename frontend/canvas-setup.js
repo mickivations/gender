@@ -256,7 +256,7 @@ function startDrawingShape(pointerX, pointerY) {
       textbox.enterEditing();
       saveState();
       //currentTool = 'select';
-      canvas.selection = true;
+      //canvas.selection = true;
       isDrawingShape = false;
       shapeInProgress = null;
       return;
