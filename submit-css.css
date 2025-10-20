@@ -13,8 +13,8 @@
   /*====================*/
   
   html, body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #040005;
+    font-family: 'Poppins', sans-serif;
+    background-color: gray;/* #040005;*/
     color: white;
     justify-items: left;
   }
