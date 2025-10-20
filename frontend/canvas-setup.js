@@ -9,8 +9,6 @@ const brushPreviewDot = document.getElementById("brushPreviewDot");
 let brushWidth = brushSizeSlider.value;
 
 let opacityValue = 1;
-let undoStack = [];
-let redoStack = [];
 let canDragObject;
 let activeObject = null;
 let isPanning = false;
@@ -18,7 +16,21 @@ let lastPosX = 0;
 let lastPosY = 0;
 let lastTouchDist = 0;
 let isDraggingObject = false;
+// --- Undo/Redo State ---
+let undoStack = [];
+let redoStack = [];
 let isRestoringState = false;
+let saveTimeout = null;
+// === Tool State ===
+let currentTool = 'draw';
+let isDrawing = false;
+let currentPath = null;
+// === Shape Drawing Logic (mouse + touch via pointer events) ===
+let isDrawingShape = false;
+let shapeInProgress = null;
+let startX = 0;
+let startY = 0;
+
 
 canvas.setBackgroundColor('#000', canvas.renderAll.bind(canvas));
 
@@ -146,10 +158,7 @@ function updatePreview(color) {
   if (preview) preview.style.color = color;
 }
 
-// === Tool State ===
-let currentTool = 'draw';
-let isDrawing = false;
-let currentPath = null;
+
 
 // === Tool Handlers ===
 function setTool(tool) {
@@ -165,11 +174,7 @@ function setTool(tool) {
   }
 }
 
-// === Shape Drawing Logic (mouse + touch via pointer events) ===
-let isDrawingShape = false;
-let shapeInProgress = null;
-let startX = 0;
-let startY = 0;
+
 
 function addShape(shapeType) {
   currentTool = shapeType;
@@ -323,44 +328,7 @@ function updateDrawingShape(pointerX, pointerY) {
   //////////////////
 }
 
-// Finish shape
-function finishDrawingShape() {
-  if (isDrawingShape && shapeInProgress) {
-    // If the shape is too small (accidental tap), remove it
-    const MIN_SIZE = 4;
-    let remove = false;
-    if (shapeInProgress.type === 'line') {
-      const coords = shapeInProgress.coords || [shapeInProgress.x1, shapeInProgress.y1, shapeInProgress.x2, shapeInProgress.y2];
-      const dx = (shapeInProgress.x2 - shapeInProgress.x1) || 0;
-      const dy = (shapeInProgress.y2 - shapeInProgress.y1) || 0;
-      if (Math.hypot(dx, dy) < MIN_SIZE) remove = true;
-    } else {
-      const w = (shapeInProgress.width || 0) * (shapeInProgress.scaleX || 1);
-      const h = (shapeInProgress.height || 0) * (shapeInProgress.scaleY || 1);
-      if (Math.max(w, h, shapeInProgress.radius || 0) < MIN_SIZE) remove = true;
-    }
 
-    if (remove) {
-      canvas.remove(shapeInProgress);
-    } else {
-      // finalize
-      shapeInProgress.setCoords();
-      // Ensure fills/strokes consistent with currentColor at creation time
-      if (shapeInProgress.set) {
-        shapeInProgress.set({ stroke: shapeInProgress.stroke || currentColor });
-      }
-    }
-
-    shapeInProgress = null;
-  }
-
-  isDrawingShape = false;
-  // restore selection and tool
-  //currentTool = 'select';
-  //canvas.selection = true;
-  canvas.requestRenderAll();
-  saveState();
-}
 
 // Pointer event integration so mouse + touch both work naturally
 // We use pointer events on the upper canvas element
@@ -623,8 +591,11 @@ function addText(text, options = {}) {
   canvas.add(textbox).setActiveObject(textbox);
 }
 
+
+// Save canvas state (debounced for modifications)
 function saveState() {
-  if (isRestoringState) return;
+  if (isRestoringState || isDrawingShape) return; // skip if drawing a shape
+
   redoStack.length = 0;
 
   const nonTemplateObjects = canvas.getObjects().filter(obj => !obj.templateElement);
@@ -635,9 +606,10 @@ function saveState() {
   });
 
   undoStack.push(state);
-  console.log("pushed state");
+  console.log("Saved state:", undoStack.length);
 }
 
+// Undo / redo
 function undo() {
   if (undoStack.length > 1) {
     isRestoringState = true;
@@ -666,13 +638,103 @@ function restoreState(state) {
     if (parsed.viewportTransform) {
       canvas.setViewportTransform(parsed.viewportTransform);
     }
-    canvas.setBackgroundColor('#000000', () => {
-      createTemplate(); // Only after background is applied
+    canvas.setBackgroundColor(parsed.background || '#000000', () => {
+      createTemplate(); // ensure template exists
       canvas.renderAll();
       isRestoringState = false;
     });
   });
 }
+
+// --- Event Listeners ---
+// Add debounce for object modifications
+['object:added', 'object:modified', 'object:removed'].forEach(event => {
+  canvas.on(event, () => {
+    if (isDrawingShape) return; // skip while drawing shapes
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(saveState, 50); // save after 50ms of inactivity
+  });
+});
+
+// Also save after finishing shape, deleting, or duplicating
+function finishDrawingShape() {
+  if (isDrawingShape && shapeInProgress) {
+    const MIN_SIZE = 4;
+    let remove = false;
+
+    // Determine if shape is too small
+    if (shapeInProgress.type === 'line') {
+      const dx = (shapeInProgress.x2 - shapeInProgress.x1) || 0;
+      const dy = (shapeInProgress.y2 - shapeInProgress.y1) || 0;
+      if (Math.hypot(dx, dy) < MIN_SIZE) remove = true;
+    } else {
+      const w = (shapeInProgress.width || 0) * (shapeInProgress.scaleX || 1);
+      const h = (shapeInProgress.height || 0) * (shapeInProgress.scaleY || 1);
+      if (Math.max(w, h, shapeInProgress.radius || 0) < MIN_SIZE) remove = true;
+    }
+
+    if (remove) {
+      canvas.remove(shapeInProgress);
+    } else {
+      shapeInProgress.setCoords();
+      if (shapeInProgress.set) {
+        shapeInProgress.set({ stroke: shapeInProgress.stroke || currentColor });
+      }
+    }
+
+    shapeInProgress = null;
+  }
+
+  isDrawingShape = false;
+  canvas.requestRenderAll();
+  saveState(); // <-- save only once here
+}
+
+function deleteObject() {
+  if (activeObject) {
+    canvas.remove(activeObject);
+    canvas.discardActiveObject();
+    canvas.requestRenderAll();
+    hideFloatingMenu();
+    activeObject = null;
+    saveState(); // <-- save only once here
+  }
+}
+
+function duplicateObject() {
+  if (!activeObject) return;
+
+  let duplicatedObject;
+
+  if (activeObject.type === 'group') {
+    duplicatedObject = activeObject.clone(function(cloned) {
+      cloned.getObjects().forEach(obj => {
+        obj.set({ fill: obj.fill, stroke: obj.stroke });
+      });
+    });
+  } else {
+    duplicatedObject = fabric.util.object.clone(activeObject);
+    duplicatedObject.set({ fill: activeObject.fill, stroke: activeObject.stroke });
+  }
+
+  duplicatedObject.set({ left: activeObject.left + 10, top: activeObject.top + 10 });
+  canvas.add(duplicatedObject);
+  canvas.setActiveObject(duplicatedObject);
+  canvas.renderAll();
+
+  // Update references
+  activeObject = duplicatedObject;
+  activeObject.hasBeenUnlocked = true;
+  activeObject.lockMovementX = false;
+  activeObject.lockMovementY = false;
+  showFloatingMenu(activeObject);
+
+  saveState(); // <-- save only once here
+}
+
+// Initial save
+saveState();
+
 
 // Function to zoom in
 function zoomIn() {
@@ -841,57 +903,6 @@ function createTemplate() {
   canvas.sendToBack(templateGroup);
 }
 
-function deleteObject() {
-  if (activeObject) {
-    canvas.remove(activeObject);
-    canvas.discardActiveObject();
-    canvas.requestRenderAll();
-    hideFloatingMenu();
-    activeObject = null;
-    saveState();
-  }
-}
-
-function duplicateObject() {
-  if (!activeObject) return;
-
-  let duplicatedObject;
-
-  if (activeObject.type === 'group') {
-    duplicatedObject = activeObject.clone(function(cloned) {
-      cloned.getObjects().forEach(function(obj) {
-        obj.set({
-          fill: obj.fill,
-          stroke: obj.stroke,
-        });
-      });
-    });
-  } else {
-    duplicatedObject = fabric.util.object.clone(activeObject);
-    duplicatedObject.set({
-      fill: activeObject.fill,
-      stroke: activeObject.stroke,
-    });
-  }
-
-  duplicatedObject.set({
-    left: activeObject.left + 10,
-    top: activeObject.top + 10,
-  });
-
-  canvas.add(duplicatedObject);
-  canvas.setActiveObject(duplicatedObject);
-  canvas.renderAll();
-  
-  // Update activeObject reference and show menu for new duplicate
-  activeObject = duplicatedObject;
-  activeObject.hasBeenUnlocked = true;
-  activeObject.lockMovementX = false;
-  activeObject.lockMovementY = false;
-  showFloatingMenu(activeObject);
-  
-  saveState();
-}
 
  // Save state after changes
 ['object:added', 'object:modified', 'object:removed'].forEach(event => {
