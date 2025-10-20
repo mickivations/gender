@@ -65,7 +65,7 @@ function hideFloatingMenu() {
 // Enhanced canvas event handlers
 canvas.on('selection:created', (e) => {
   activeObject = e.selected[0];
-  if (activeObject && activeObject.hasBeenUnlocked) {
+  if (currentTool == "select" && activeObject && activeObject.hasBeenUnlocked) {
     showFloatingMenu(activeObject);
   }
 });
