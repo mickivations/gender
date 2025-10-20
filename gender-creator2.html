@@ -59,36 +59,37 @@
     <label for="brushSize">Brush Size</label>
     <input type="range" id="brushSize" min="3" max="33" value="6" step ="5" >
   </div>
-  <div>
-    <button onclick="resetCanvasView()" id = "resetBtn">
+
+  <div class = "btn-containter">
+    <button onclick="resetCanvasView()" class ="pallete-btn">
       <span class="material-symbols-outlined material-icons">
         crop_free
         </span> 
         <div class = "btn-label">reset view</div>
     </button> 
     
-  <button id = "sellectBtn" onclick="disableDrawing()"> <span class="material-symbols-outlined">
+  <button  onclick="disableDrawing()"class ="pallete-btn"> <span class="material-symbols-outlined">
     design_services
     </span><div class = "btn-label">edit canvas</div></button>
-  <button class ="close_colors" onClick= "enableDrawing()"><span class="material-icons">brush</span><div class = "btn-label">draw</div> </button>
+  <button onClick= "enableDrawing()" class ="pallete-btn"><span class="material-icons">brush</span><div class = "btn-label">draw</div> </button>
   
   <div id ="shapesMenu">
-    <button onclick="addShape('rect')"><i class="fas fa-square"></i></button>
-      <button onclick="addShape('circle')"><i class="fas fa-circle"></i></button>
-      <button onclick="addShape('heart')"><span class="material-symbols-outlined">
+    <button onclick="addShape('rect')" class ="pallete-btn"><i class="fas fa-square"></i></button>
+      <button onclick="addShape('circle')"class ="pallete-btn"><i class="fas fa-circle"></i></button>
+      <button onclick="addShape('heart')"class ="pallete-btn"><span class="material-symbols-outlined">
         favorite
         </span></button>
-        <button onclick="addShape('star')"><span class="material-symbols-outlined">
+        <button onclick="addShape('star')" class ="pallete-btn"><span class="material-symbols-outlined">
           star
           </span></button>
 
-      <button onclick="addShape('triangle')">
+      <button onclick="addShape('triangle')" class ="pallete-btn">
         <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke="white" width="12" height="12">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4l8 16H4z"></path>
         </svg>
       </button>
-      <button onclick="addShape('line')"><i class="fas fa-slash"></i></button>
-      <button onclick="addShape('text')"><i class="fas fa-i-cursor"></i></button> 
+      <button onclick="addShape('line')" class ="pallete-btn"><i class="fas fa-slash"></i></button>
+      <button onclick="addShape('text')" class ="pallete-btn"><i class="fas fa-i-cursor"></i></button> 
   </div>
 </div>
 </div>

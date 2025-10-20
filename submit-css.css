@@ -18,6 +18,7 @@
     color: white;
     justify-items: left;
   }
+
   
   input,
   textarea {
@@ -276,7 +277,7 @@
     align-items: center;
     justify-content: center; /* center buttons horizontally */
   flex-wrap: wrap; /* wrap if too many buttons */
-  gap: 0.5rem; /* space between buttons */
+  gap: 0.1rem; /* space between buttons */
 
   }
   /*====================*/
