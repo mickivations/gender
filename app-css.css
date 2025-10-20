@@ -49,7 +49,7 @@
     min-width: 90%;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -45%); /* This moves it back by half its own width and height */
+    transform: translate(-50%, -50%); /* This moves it back by half its own width and height */
     background-color: rgba(0, 0, 0, .8);
     padding: 10px;
     z-index: 1000 !important;
@@ -62,7 +62,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
-    width: 100%;
+    width: 80%;
   }
   
   #brushSliderContainer label {
@@ -309,6 +309,8 @@
     height: 100vh;
     overflow: hidden; /* prevent scroll */
   }
+
+  
   
   .toolbar {
     display: flex;

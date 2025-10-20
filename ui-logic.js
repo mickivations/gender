@@ -130,7 +130,7 @@ function handleOutsideClick(e) {
   function enterDrawing()
   {
     console.log("starting to draw")
-    document.getElementById('toolBtn').innerHTML = '<span class="material-symbols-outlined material-icons">edit_off</span>';
+    document.getElementById('toolBtn').innerHTML = '<span class="material-symbols-outlined">handyman</span>';
     document.getElementById('toolBtn').style.color = '#ffffff';
    enableDrawing();
    toolstate = "draw";

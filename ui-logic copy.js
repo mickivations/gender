@@ -2,6 +2,8 @@ import {
     canvas,
     setTool,
     //currentTool,
+    addShape,
+    startDrawingShape,
     getCurrentColor,
     setCurrentColor,
     undo,
@@ -18,7 +20,8 @@ import {
     deleteObject,
     duplicateObject,
     zoomIn,
-    zoomOut
+    zoomOut,
+
   } from './canvas-setup.js';
   
 const possessiveOptions = ["my", "the"];
@@ -32,6 +35,9 @@ const contextDescriptors = [
 
 let selectedIdentityDescriptors = [];
 let selectedContextDescriptors = [];
+
+let currentShape = null; // 'rect', 'circle', 'triangle', etc.
+
 
 // === Selected State ===
 let selectedPossessive = "my";
@@ -136,7 +142,7 @@ function handleOutsideClick(e) {
   function leaveDrawing() {
     console.log("Switching to select mode");
     document.getElementById('toolBtn').innerHTML =
-      '<span class="material-symbols-outlined material-icons">edit_off</span>';
+      '<span class="material-symbols-outlined material-icons">design_services</span>';
 
     document.getElementById('toolBtn').style.color = getCurrentColor();
     
@@ -852,7 +858,21 @@ function addTag(tag) {
 
   
   renderAll();
-  
+  const shapesMenu = document.getElementById('shapesMenu');
+const toggleBtn = document.getElementById('toggleShapesMenu');
+
+toggleBtn.addEventListener('click', () => {
+  if (shapesMenu.style.display === 'none' || shapesMenu.style.display === '') {
+    shapesMenu.style.display = 'flex'; // or 'block' depending on your layout
+  } else {
+    shapesMenu.style.display = 'none';
+  }
+});
+
+function addShapeButton(shapeType) {
+  addShape(shapeType);
+  closeColorPicker();
+}
 
 window.toggleToolMenu = toggleToolMenu;
 window.toggleSliderMenu = toggleSliderMenu;
@@ -872,6 +892,7 @@ window.zoomIn = zoomIn;
 window.zoomOut = zoomOut;
 window.closeColorPicker = closeColorPicker;
 window.toggleDropdown = toggleDropdown;
+window.addShape = addShapeButton,
 //window.openColorMenu = openColorMenu;
 
 
