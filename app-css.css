@@ -1,5 +1,5 @@
 :root {
-    --toolbar_height: min(calc(86vh - 100vw), 25vh); /* prevent absurd height */
+    --toolbar_height: min(calc(80vh - 100vw), 22vh); /* prevent absurd height */
     --toolbar_button_width: calc(100vw / 6);
     --toolbar_button_height: calc(var(--toolbar_height)/2);
     --canvas_height: calc(88vh - var(--toolbar_height));
