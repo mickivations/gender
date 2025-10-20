@@ -29,7 +29,7 @@
     padding-top: 5px;
   }
 
-  button {
+  button, a {
     font-family: "MyCustomFont", sans-serif;
     font-weight: 100;
     font-size: 2rem; 
