@@ -101,8 +101,9 @@
     transition: all 0.2s ease;
   }
   
-  .close_colors, #resetBtn, #sellectBtn {
+ .pallete-btn {
     display: inline-block;
+    min-width: 30%;
     margin-top: 10px;
     padding: 5px 10px;
     border: 1px solid white;
@@ -113,6 +114,10 @@
     /*font-family: "Poppins", sans-serif !important;*/
   }
   
+  .btn-containter
+  {
+    width:80%;
+  }
   
   body {
     font-family: "Poppins", sans-serif;
