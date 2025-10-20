@@ -691,6 +691,7 @@ function disableDrawing() {
   canvas.isDrawingMode = false;
   canvas.selection = true;
   console.log("drawing disabled");
+  currentTool = "select";
 }
 
 // Enable free drawing mode and set the color
