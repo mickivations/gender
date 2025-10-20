@@ -35,7 +35,7 @@ function getCurrentColor() {
 // === FIXED FLOATING MENU IMPLEMENTATION ===
 function showFloatingMenu(selectedObject) {
   const menu = document.getElementById('floatingMenu');
-  if (!menu || !selectedObject) return;
+  if (!menu || isDrawingShape || !selectedObject) return;
   
   const bounds = selectedObject.getBoundingRect();
   const canvasRect = canvas.getElement().getBoundingClientRect();
