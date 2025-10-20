@@ -65,14 +65,14 @@ function hideFloatingMenu() {
 // Enhanced canvas event handlers
 canvas.on('selection:created', (e) => {
   activeObject = e.selected[0];
-  if (currentTool == "select" && activeObject && activeObject.hasBeenUnlocked) {
+  if (!isDrawingShape && activeObject && activeObject.hasBeenUnlocked) {
     showFloatingMenu(activeObject);
   }
 });
 
 canvas.on('selection:updated', (e) => {
   activeObject = e.selected[0];
-  if (activeObject && activeObject.hasBeenUnlocked) {
+  if (!isDrawingShape && activeObject && activeObject.hasBeenUnlocked) {
     showFloatingMenu(activeObject);
   } else {
     hideFloatingMenu();
@@ -90,7 +90,7 @@ canvas.on('selection:cleared', () => {
 
 // Update menu position when object moves
 canvas.on('object:moving', (e) => {
-  if (e.target === activeObject && activeObject.hasBeenUnlocked) {
+  if (!isDrawingShape && e.target === activeObject && activeObject.hasBeenUnlocked) {
     showFloatingMenu(activeObject);
   }
 });
