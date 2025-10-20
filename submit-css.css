@@ -263,7 +263,7 @@
   }
   
   .secret-btn{
-    font-family: "Poppins, sans-serif" !important;
+    font-family: "Poppins", sans-serif !important;
     border:none;
     outline: none !important;
   }
