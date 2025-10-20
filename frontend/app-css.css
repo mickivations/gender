@@ -30,9 +30,9 @@
   }
 
   button, a {
-    font-family: "MyCustomFont", sans-serif;
-    font-weight: 100;
-    font-size: 1.65rem; 
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1.35rem; 
     /*border: 1px solid white;*/
     background-color: #000;
     color: white;
@@ -175,7 +175,7 @@
     border: 1px solid white;
     border-radius: 5px;
     background-color: transparent !important;
-    font-family: "MyCustomFont";
+    font-family: "Poppins", sans-serif;
 
   }
   
