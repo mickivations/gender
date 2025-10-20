@@ -262,6 +262,23 @@
     cursor: pointer;
   }
   
+  .secret-btn{
+    font-family: "Poppins, sans-serif" !important;
+    border:none;
+    outline: none !important;
+  }
+
+  #shapesMenu
+  {
+    display:none;
+    margin: auto;
+    margin-bottom: 10%;
+    align-items: center;
+    justify-content: center; /* center buttons horizontally */
+  flex-wrap: wrap; /* wrap if too many buttons */
+  gap: 0.5rem; /* space between buttons */
+
+  }
   /*====================*/
   /* Tag Selection Area */
   /*====================*/
@@ -521,4 +538,10 @@ textarea::-ms-input-placeholder {
   z-index: 9999;
   background-color: black;
   text-align: center;
+  }
+
+  .poppins-semibold {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600 !important;
+    font-style: normal;
   }
