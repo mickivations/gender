@@ -141,10 +141,10 @@ function handleOutsideClick(e) {
   
   function leaveDrawing() {
     console.log("Switching to select mode");
+    document.getElementById('toolBtn').style.color = '#ffffff';
     document.getElementById('toolBtn').innerHTML =
-      '<span class="material-symbols-outlined material-icons">design_services</span>';
-
-    document.getElementById('toolBtn').style.color = getCurrentColor();
+      '<span class="material-symbols-outlined">jump_to_element</span>';
+      
     
     disableDrawing();
     toolstate = "select";
